@@ -5,24 +5,12 @@
   },
   "hosting": [
     {
-      "public": "public",
+      "target": "good-deal",
+      "public": "dist/good-deal",
       "ignore": [
         "firebase.json",
         "**/.*",
         "**/node_modules/**"
-      ],
-      "rewrites": [
-        {
-          "source": "**",
-          "destination": "/index.html"
-        }
-      ]
-    },
-    {
-      "target": "good-deal",
-      "public": "dist/good-deal",
-      "ignore": [
-        "**/.*"
       ],
       "headers": [
         {
