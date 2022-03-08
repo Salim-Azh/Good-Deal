@@ -107,6 +107,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "good-deal:build:production",
+            "firebaseProject": "good-deal-f8d6d",
+            "firebaseHostingSite": "good-deal-f8d6d"
+          }
         }
       }
     }

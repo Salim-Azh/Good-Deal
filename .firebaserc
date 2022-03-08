@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "good-deal-f8d6d"
+  },
+  "targets": {
+    "good-deal-f8d6d": {
+      "hosting": {
+        "good-deal": [
+          "good-deal-f8d6d"
+        ]
+      }
+    }
   }
 }
