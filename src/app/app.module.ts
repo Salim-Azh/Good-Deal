@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth,getAuth } from '@angular/fire/auth';
@@ -14,13 +15,39 @@ import { provideMessaging,getMessaging } from '@angular/fire/messaging';
 import { provideRemoteConfig,getRemoteConfig } from '@angular/fire/remote-config';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 
+
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+
+import { FooterMobileComponent } from './components/footer-mobile/footer-mobile.component';
+import { HomeComponent } from './components/home/home.component';
+import { AccountComponent } from './components/account/account.component';
+import { MessagesComponent } from './components/messages/messages.component';
+import { PublishComponent } from './components/publish/publish.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+
+import {MatIconModule} from '@angular/material/icon';
+import { MatSliderModule } from '@angular/material/slider';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FooterMobileComponent,
+    HomeComponent,
+    PublishComponent,
+    MessagesComponent,
+    AccountComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FlexLayoutModule,
+    MatIconModule,
+    MatButtonModule,
+    MatSliderModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
@@ -28,6 +55,8 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
       registrationStrategy: 'registerWhenStable:30000'
     }),
     BrowserAnimationsModule,
+    MatToolbarModule,
+    AngularSvgIconModule.forRoot(),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
