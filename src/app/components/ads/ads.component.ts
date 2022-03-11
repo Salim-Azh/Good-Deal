@@ -8,7 +8,7 @@ import { Ads } from './ads';
 })
 export class AdsComponent implements OnInit {
 
-  @Input() ads: Ads = null;
+  @Input() ads: Ads | null = null;
   constructor() { }
 
   ngOnInit(): void {
