@@ -24,7 +24,7 @@ import { HomeComponent } from './components/home/home.component';
 import { AccountComponent } from './components/account/account.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { PublishComponent } from './components/publish/publish.component';
-import { AdsComponent } from './ads/ads.component';
+import { AdsComponent } from './components/ads/ads.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 import {MatIconModule} from '@angular/material/icon';
