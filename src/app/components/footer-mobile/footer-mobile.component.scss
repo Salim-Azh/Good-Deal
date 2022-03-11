@@ -1,0 +1,41 @@
+.toolbarNav {
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+    /*Safari3-4,iOS4.0.2-4.2,Android2.3+*/
+    -moz-box-shadow: 3px 3px 5px 6px #ccc;
+    /*Firefox3.5-3.6*/
+    box-shadow: 2px 2px 4px 5px #ccc;
+    border-radius: 25px 25px 0 0;
+    -webkit-border-radius: 25px 25px 0 0;
+    -moz-border-radius: 25px 25px 0 0;
+    -ms-border-radius: 25px 25px 0 0;
+    -o-border-radius: 25px 25px 0 0;
+    padding: 0.5em;
+}
+
+button {
+    width: auto;
+    height: auto;
+    color: rgba(81, 96, 121, 1);
+}
+
+.footer_icon {
+    display: block;
+}
+
+.mat-icon {
+    background-repeat: no-repeat;
+    display: inline-block;
+    fill: currentColor;
+    font-size: 30px;
+    height: 2px;
+}
+
+.active-link {
+    color: #F1895C;
+}
