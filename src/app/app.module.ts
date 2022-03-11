@@ -24,13 +24,17 @@ import { HomeComponent } from './components/home/home.component';
 import { AccountComponent } from './components/account/account.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { PublishComponent } from './components/publish/publish.component';
+import { AdsComponent } from './ads/ads.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 import {MatIconModule} from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { AdsComponent } from './ads/ads.component';
+import { MatCardModule } from '@angular/material/card';
+
+
+
 
 @NgModule({
   declarations: [
@@ -50,6 +54,7 @@ import { AdsComponent } from './ads/ads.component';
     MatIconModule,
     MatButtonModule,
     MatSliderModule,
+    MatCardModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
