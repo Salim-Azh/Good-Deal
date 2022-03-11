@@ -1,0 +1,21 @@
+footer{
+    position: fixed;
+    bottom: 0px;
+    overflow: hide;
+    width: 100%;
+    height: 50px;
+    background-color: whitesmoke;
+}
+
+.toolbar-icon {
+  line-height: 0;
+}
+
+.toolbar-icon-text {
+  line-height: 1.8;
+  font-size: 70%;
+}
+
+.active-menu-item {
+  color: #ff7900;
+}
