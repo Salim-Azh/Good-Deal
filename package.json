@@ -25,6 +25,7 @@
     "@angular/service-worker": "~13.2.0",
     "angular-svg-icon": "^13.0.0",
     "firebase": "^9.6.8",
+    "nodejs": "^0.0.0",
     "rxfire": "^6.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
