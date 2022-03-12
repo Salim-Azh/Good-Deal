@@ -1,1 +1,9 @@
-<app-my-ads-list></app-my-ads-list>
+
+<div *ngIf="isAuthenticated!==undefined; else notLoggedIn">
+  <button onclick="signOut()" class="btn"></button>
+  <app-my-ads-list ></app-my-ads-list>
+</div>
+
+<ng-template #notLoggedIn>
+  <app-sign-in></app-sign-in>
+</ng-template>

@@ -1,48 +1,32 @@
 import { Injectable } from '@angular/core';
 import {
-  getAuth,
+  Auth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged,
-  UserCredential
-} from 'firebase/auth';
-import { BehaviorSubject } from 'rxjs';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+  onAuthStateChanged } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  currentUser: any = undefined;
-
-  private authStatusSub = new BehaviorSubject(this.currentUser);
-  currentAuthStatus = this.authStatusSub.asObservable();
-
-  constructor(public fireAuth: AngularFireAuth, public router: Router) {
-    this.authStatusListener();
+  constructor(private auth: Auth,private router: Router) {
   }
 
-  authStatusListener(): void {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user)=>{
+  authStatusListener(): any {
+    onAuthStateChanged(this.auth, (user)=>{
       if(user){
-        console.log(user);
-        this.authStatusSub.next(user);
-        console.log('User is logged in');
+        return user;
       }
       else{
-        this.authStatusSub.next(null);
-        console.log('User is logged out');
+        return false;
       }
     });
   }
 
-  signUp(email: string, password: string): Promise<any> {
-    const auth = getAuth();
-    return createUserWithEmailAndPassword(auth, email, password)
+  signUp(email: string, password: string) {
+    return createUserWithEmailAndPassword(this.auth, email, password)
       .then((_userCredential) => {
         this.router.navigate(['home']);
       })
@@ -51,15 +35,14 @@ export class AuthService {
       });
   }
 
-  private handleError(error: any): void{
+  private handleError(error: any){
     const errorCode = error.code;
     const errorMessage = error.message;
     window.alert(`${errorCode}: ${errorMessage}`);
   }
 
-  signIn(email: string, password: string): Promise<any> {
-    const auth = getAuth();
-    return signInWithEmailAndPassword(auth, email, password)
+  signIn(email: string, password: string) {
+    return signInWithEmailAndPassword(this.auth, email, password)
       .then((_userCredential) => {
           this.router.navigate(['home']);
       })
@@ -68,9 +51,8 @@ export class AuthService {
       });
   }
 
-  signOut(): Promise<any>{
-    const auth = getAuth();
-    return signOut(auth).then(() => {
+  signOut(){
+    return signOut(this.auth).then(() => {
       this.router.navigate(['home']);
     }).catch((error) => {
       window.alert(error);

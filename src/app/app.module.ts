@@ -29,6 +29,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MyAdsListComponent } from './components/my-ads-list/my-ads-list.component';
 
 import { AuthService } from './shared/services/auth.service';
+import { SignInComponent } from './components/sign-in/sign-in.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { AuthService } from './shared/services/auth.service';
     AccountComponent,
     PageNotFoundComponent,
     MyAdsListComponent,
+    SignInComponent,
   ],
   imports: [
     BrowserModule,
