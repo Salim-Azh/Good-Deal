@@ -30,6 +30,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MyAdsListComponent } from './components/my-ads-list/my-ads-list.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { MatButtonModule } from '@angular/material/button';
     PublishComponent,
     MessagesComponent,
     AccountComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    MyAdsListComponent,
   ],
   imports: [
     BrowserModule,
