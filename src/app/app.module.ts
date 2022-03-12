@@ -15,10 +15,6 @@ import { provideMessaging,getMessaging } from '@angular/fire/messaging';
 import { provideRemoteConfig,getRemoteConfig } from '@angular/fire/remote-config';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 
-
-import { AngularSvgIconModule } from 'angular-svg-icon';
-
-
 import { FooterMobileComponent } from './components/footer-mobile/footer-mobile.component';
 import { HomeComponent } from './components/home/home.component';
 import { AccountComponent } from './components/account/account.component';
@@ -31,6 +27,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MyAdsListComponent } from './components/my-ads-list/my-ads-list.component';
+
+import { AuthService } from './shared/services/auth.service';
 
 @NgModule({
   declarations: [
@@ -58,7 +56,6 @@ import { MyAdsListComponent } from './components/my-ads-list/my-ads-list.compone
     }),
     BrowserAnimationsModule,
     MatToolbarModule,
-    AngularSvgIconModule.forRoot(),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
@@ -66,7 +63,7 @@ import { MyAdsListComponent } from './components/my-ads-list/my-ads-list.compone
     provideRemoteConfig(() => getRemoteConfig()),
     provideStorage(() => getStorage()),
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
