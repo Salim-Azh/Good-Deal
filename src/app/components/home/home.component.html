@@ -1,2 +1,6 @@
-<app-ads *ngFor="let ads of recherche" [ads]="ads">
-</app-ads>
+<div class="content">
+    <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="flex-start">
+        <app-ads fxFlex.xs="50%" *ngFor="let ads of recherche" [ads]="ads">
+        </app-ads>
+    </div>
+</div>
