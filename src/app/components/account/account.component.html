@@ -1,1 +1,9 @@
-<p>account works!</p>
+
+<div *ngIf="authService.user |async">
+  <button (click)="signOut()" class="btn btn-primary"> Se déconnecter</button>
+  <app-my-ads-list ></app-my-ads-list>
+</div>
+
+<app-sign-in
+  *ngIf="!(authService.user |async)"
+  [redirectTo]="path"  ></app-sign-in>

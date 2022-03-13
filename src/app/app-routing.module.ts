@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AccountComponent } from './components/account/account.component';
-import { AdsDetailsComponent } from './components/ads-details/ads-details.component';
+import { AdDetailsComponent } from './components/ad-details/ad-details.component';
 import { HomeComponent } from './components/home/home.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -13,8 +13,9 @@ const routes: Routes = [
   {path: 'publish', component: PublishComponent},
   {path: 'messages', component: MessagesComponent},
   {path: 'account', component: AccountComponent},
-  {path: '**', component: PageNotFoundComponent},
-  {path: 'ads-details', component: AdsDetailsComponent}
+  {path: 'home/ads/:id/details', component: AdDetailsComponent},
+  {path: '**', component: PageNotFoundComponent}
+
 ];
 
 @NgModule({

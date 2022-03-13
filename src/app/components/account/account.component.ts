@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Firestore } from '@angular/fire/firestore';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss']
 })
-export class AccountComponent implements OnInit {
+export class AccountComponent {
+  path: string = "/home"
 
-  constructor() { }
+  constructor(public authService: AuthService, private firestore: Firestore) {}
 
-  ngOnInit(): void {
+  signOut(){
+    this.authService.signOut();
   }
-
 }

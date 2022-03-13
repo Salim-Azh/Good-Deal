@@ -1,0 +1,19 @@
+<br/>
+<br/>
+<h1>Bienvenue {{user.username}}</h1>
+<h2>Mes annonces</h2>
+<ul class="list-group list-group-flush" *ngIf="ads.length > 0; else noAds">
+  <li class="list-group-item py-4" *ngFor="let ad of ads">
+    <div class="d-flex w-100 justify-content-between">
+      <a  [title]="'Détails de : ' + ad.title"
+          [routerLink]="['/home/ads', ad.id, 'details']"
+          class="link-dark d-inline-block text-truncate fs-6 vw-100">
+        {{ ad.title }}
+      </a>
+    </div>
+  </li>
+</ul>
+
+<ng-template #noAds>
+  Vous n'avez pas d'annonces en ligne
+</ng-template>
