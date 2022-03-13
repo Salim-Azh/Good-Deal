@@ -1,6 +1,7 @@
 <div class="content">
+    <h3>Résulats de la recherche</h3>
     <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="flex-start">
-        <app-ads fxFlex.xs="50%" *ngFor="let ads of recherche" [ads]="ads">
+        <app-ads fxFlex.xs="50%" *ngFor="let ads of ads$ | async">
         </app-ads>
     </div>
 </div>

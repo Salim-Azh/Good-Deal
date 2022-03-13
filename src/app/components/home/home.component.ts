@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 import { Ads } from '../ads/ads';
+
 
 @Component({
   selector: 'app-home',
@@ -9,14 +12,39 @@ import { Ads } from '../ads/ads';
 
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  ads$: Observable<any[]>;
+  constructor(firestore: Firestore) { 
+    const collect = collection(firestore, 'ads');
+    this.ads$ = collectionData(collect);
+  }
 
   ngOnInit(): void {
   }
 
-  recherche: Ads[] = [
+  /**recherche: Ads[] = [
     {
-      imageUrl: '../../../assets/img/pc.jpeg', 
+      imagesUrl: '../../../assets/img/pc.jpeg', 
+      title: 'Ordinateur portable', 
+      price:200, 
+      residenceName:'Résidence UQAM'
+    },
+    {
+      imagesUrl: '../../../assets/img/pc.jpeg', 
+      title: 'Ordinateur portable', 
+      price:200, 
+      residenceName:'Résidence UQAM'
+    },{
+      imagesUrl: '../../../assets/img/pc.jpeg', 
+      title: 'Ordinateur portable', 
+      price:200, 
+      residenceName:'Résidence UQAM'
+    },{
+      imagesUrl: '../../../assets/img/pc.jpeg', 
+      title: 'Ordinateur portable', 
+      price:200, 
+      residenceName:'Résidence UQAM'
+    },{
+      imagesUrl: '../../../assets/img/pc.jpeg', 
       title: 'Ordinateur portable', 
       price:200, 
       residenceName:'Résidence UQAM'
@@ -31,8 +59,13 @@ export class HomeComponent implements OnInit {
       title: 'Ordinateur portable', 
       price:200, 
       residenceName:'Résidence UQAM'
+    },{
+      imageUrl: '../../../assets/img/pc.jpeg', 
+      title: 'Ordinateur portable', 
+      price:200, 
+      residenceName:'Résidence UQAM'
     }
-  ]
+  ]**/
 
 
 }
