@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class MessagesComponent implements OnInit {
 
-  path: string = "/meassages";
+  path: string = "/messages";
   constructor(public authService: AuthService) { }
 
   ngOnInit(): void {
