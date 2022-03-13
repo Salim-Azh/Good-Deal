@@ -1,14 +1,15 @@
-<h2>Mes Annonces</h2>
-
+<br/>
+<br/>
+<h1>Bienvenue {{user.username}}</h1>
+<h2>Mes annonces</h2>
 <ul class="list-group list-group-flush" *ngIf="ads.length > 0; else noAds">
   <li class="list-group-item py-4" *ngFor="let ad of ads">
     <div class="d-flex w-100 justify-content-between">
-      <a  [title]="ad.tilte + ' details'"
-          [routerLink]="['/ads', ad.id]"
-          class="link-dark d-inline-block text-truncate" style="max-width: 10rem;">
+      <a  [title]="'Détails ' + ad.title"
+          [routerLink]="['/ads', ad.adRef]"
+          class="link-dark d-inline-block text-truncate fs-6" style="max-width: 12rem;">
         {{ ad.title }}
       </a>
-
     </div>
   </li>
 </ul>
