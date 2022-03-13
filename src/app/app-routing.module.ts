@@ -14,7 +14,7 @@ const routes: Routes = [
   {path: 'messages', component: MessagesComponent},
   {path: 'account', component: AccountComponent},
   {path: '**', component: PageNotFoundComponent},
-  {path: 'ads', component: AdsDetailsComponent}
+  {path: 'ads-details', component: AdsDetailsComponent}
 ];
 
 @NgModule({
