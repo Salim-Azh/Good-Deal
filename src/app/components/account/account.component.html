@@ -1,9 +1,9 @@
 
-<div *ngIf="isAuthenticated!==undefined; else notLoggedIn">
-  <button onclick="signOut()" class="btn"></button>
+<div *ngIf="authService.user |async">
+  <button (click)="signOut()" class="btn btn-primary"> Se déconnecter</button>
   <app-my-ads-list ></app-my-ads-list>
 </div>
 
-<ng-template #notLoggedIn>
-  <app-sign-in></app-sign-in>
-</ng-template>
+<app-sign-in
+  *ngIf="!(authService.user |async)"
+  [redirectTo]="path"  ></app-sign-in>

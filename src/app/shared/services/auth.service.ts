@@ -4,32 +4,25 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged } from '@angular/fire/auth';
+  onAuthStateChanged,
+  User,
+  authState } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private auth: Auth,private router: Router) {
-  }
 
-  authStatusListener(): any {
-    onAuthStateChanged(this.auth, (user)=>{
-      if(user){
-        return user;
-      }
-      else{
-        return false;
-      }
-    });
+  user: Observable<User|null>;
+
+  constructor(private auth: Auth,private router: Router) {
+    this.user = authState(auth);
   }
 
   signUp(email: string, password: string) {
     return createUserWithEmailAndPassword(this.auth, email, password)
-      .then((_userCredential) => {
-        this.router.navigate(['home']);
-      })
       .catch((error) => {
         this.handleError(error);
       });
@@ -43,9 +36,6 @@ export class AuthService {
 
   signIn(email: string, password: string) {
     return signInWithEmailAndPassword(this.auth, email, password)
-      .then((_userCredential) => {
-          this.router.navigate(['home']);
-      })
       .catch((error) => {
         this.handleError(error);
       });

@@ -7,42 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyAdsListComponent implements OnInit {
 
-  ads: any[] = [
-    {
-      title: "Routeur",
-    },
-    {
-      title: "Table"
-    },
-    {
-      title: "Livre"
-    },
-    {
-      title: "Poubelle"
-    },
-    {
-      title: "Vaisselles"
-    },
-    {
-      title: "Livre"
-    },
-    {
-      title: "Livre"
-    },
-    {
-      title: "Livre"
-    },
-    {
-      title: "Livre"
-    },
-    {
-      title: "Livre"
-    },
-    {
-      title: "Livre"
-    },
-  ];
-  constructor() { }
+  ads: any[] = [];
+  constructor() {}
 
   ngOnInit(): void {
   }

@@ -7,12 +7,12 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
-  isAuthenticated: any;
-  constructor(private authService: AuthService) {
+
+  path: string = "/home"
+  constructor(public authService: AuthService) {
   }
 
   ngOnInit(): void {
-    this.isAuthenticated = this.authService.authStatusListener();
   }
 
   signOut(){
