@@ -32,6 +32,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { AdsDetailsComponent } from './components/ads-details/ads-details.component';
 
 
 
@@ -45,7 +46,8 @@ import { MatCardModule } from '@angular/material/card';
     MessagesComponent,
     AccountComponent,
     PageNotFoundComponent,
-    AdsComponent
+    AdsComponent,
+    AdsDetailsComponent
   ],
   imports: [
     BrowserModule,
