@@ -1,1 +1,6 @@
-<p>messages works!</p>
+<div *ngIf="(authService.user |async);else notLoggedIn">
+  <p>messages works!</p>
+</div>
+<ng-template #notLoggedIn>
+  <app-sign-in [redirectTo]="path"></app-sign-in>
+</ng-template>
