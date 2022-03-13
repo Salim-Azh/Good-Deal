@@ -29,6 +29,7 @@ import { MyAdsListComponent } from './components/my-ads-list/my-ads-list.compone
 import { SignInComponent } from './components/sign-in/sign-in.component';
 
 import { AuthService } from './services/auth.service';
+import { AdDetailsComponent } from './components/ad-details/ad-details.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { AuthService } from './services/auth.service';
     PageNotFoundComponent,
     MyAdsListComponent,
     SignInComponent,
+    AdDetailsComponent,
   ],
   imports: [
     BrowserModule,

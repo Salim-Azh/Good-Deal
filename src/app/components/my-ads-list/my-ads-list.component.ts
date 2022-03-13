@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { getAuth } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, DocumentReference, getDoc } from 'firebase/firestore';
 import { User } from 'src/app/model/user.model';
 
 @Component({
@@ -11,17 +11,19 @@ import { User } from 'src/app/model/user.model';
 })
 export class MyAdsListComponent implements OnInit {
 
-  ads: any[] = [];
+  ads: { adRef: DocumentReference, title: string, id?:string }[] = [];
   user:User = new User();
+
   constructor(private firestore: Firestore) {}
 
   async ngOnInit(): Promise<void> {
     const uid = getAuth().currentUser?.uid
-    this.ads = await this.getUserAds(uid);
     this.user = await this.getUser(uid);
+    this.ads = this.user.ads
+    this.formatAds()
   }
 
-  async getUserAds(id: any) {
+  /*async getUserAds(id: any) {
     if (id) {
       const docRef = doc(this.firestore, "users", id);
       const docSnap = await getDoc(docRef);
@@ -29,7 +31,7 @@ export class MyAdsListComponent implements OnInit {
           return docSnap.get("ads")
       }
     }
-  }
+  }*/
 
   async getUser(id: any): Promise<any> {
     if (id) {
@@ -46,4 +48,9 @@ export class MyAdsListComponent implements OnInit {
     }
   }
 
+  formatAds(){
+    this.ads.forEach(ad => {
+      ad.id = ad.adRef.id
+    });
+  }
 }
