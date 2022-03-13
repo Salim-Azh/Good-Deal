@@ -1,7 +1,9 @@
 img {
-    max-width: 100%;
-    max-height: 100px;
+    max-width: 121%;
+    max-height: 120px;
+    border-bottom: 1px solid lightgrey;
 }
+
 
 mat-card-content{
     text-align: left;
@@ -9,4 +11,12 @@ mat-card-content{
 
 mat-card-title{
     font-size: 18px;
+}
+
+p{
+    color: #F1895C;
+}
+
+a{
+    text-decoration: none;
 }
