@@ -1,6 +1,6 @@
 import { DocumentReference, Timestamp } from "firebase/firestore";
 
-export class Ads {
+export class Ad {
    id!: string;
    advertiser!: DocumentReference;
    advertiserName!: string;
