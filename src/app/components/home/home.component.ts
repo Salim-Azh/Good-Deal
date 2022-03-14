@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Firestore } from '@angular/fire/firestore';
+import { getAuth } from 'firebase/auth';
+import { doc, DocumentReference, getDoc, collection, query, getDocs } from 'firebase/firestore';
+import { User } from '../../model/user.model';
+import { Residence } from '../../model/residence.model'
 
 
 @Component({
@@ -9,62 +12,66 @@ import { Observable } from 'rxjs';
   styleUrls: ['./home.component.scss']
 })
 
+
+
 export class HomeComponent implements OnInit {
 
-  ads$: Observable<any[]>;
-  constructor(firestore: Firestore) { 
-    const collect = collection(firestore, 'ads');
-    this.ads$ = collectionData(collect);
+  residences: Residence[] = [];
+
+  constructor(private firestore: Firestore) {}
+
+  async ngOnInit(): Promise<void> {
+
+    this.residences = await this.getResidences();
+
   }
 
-  ngOnInit(): void {
-  }
+  /**
+   * Récupérer toutes les résidences dans la bdd firebase
+   */
+  async getResidences(): Promise<any[]> {
 
-  /**recherche: Ads[] = [
-    {
-      imagesUrl: '../../../assets/img/pc.jpeg', 
-      title: 'Ordinateur portable', 
-      price:200, 
-      residenceName:'Résidence UQAM'
-    },
-    {
-      imagesUrl: '../../../assets/img/pc.jpeg', 
-      title: 'Ordinateur portable', 
-      price:200, 
-      residenceName:'Résidence UQAM'
-    },{
-      imagesUrl: '../../../assets/img/pc.jpeg', 
-      title: 'Ordinateur portable', 
-      price:200, 
-      residenceName:'Résidence UQAM'
-    },{
-      imagesUrl: '../../../assets/img/pc.jpeg', 
-      title: 'Ordinateur portable', 
-      price:200, 
-      residenceName:'Résidence UQAM'
-    },{
-      imagesUrl: '../../../assets/img/pc.jpeg', 
-      title: 'Ordinateur portable', 
-      price:200, 
-      residenceName:'Résidence UQAM'
-    },
-    {
-      imageUrl: '../../../assets/img/pc.jpeg', 
-      title: 'Ordinateur portable', 
-      price:200, 
-      residenceName:'Résidence UQAM'
-    },{
-      imageUrl: '../../../assets/img/pc.jpeg', 
-      title: 'Ordinateur portable', 
-      price:200, 
-      residenceName:'Résidence UQAM'
-    },{
-      imageUrl: '../../../assets/img/pc.jpeg', 
-      title: 'Ordinateur portable', 
-      price:200, 
-      residenceName:'Résidence UQAM'
+    const residencesRef = collection(this.firestore, 'residence');
+    const q = query(residencesRef);
+    const querySnapshot = await getDocs(q);
+
+    const res: Residence[] = [];
+
+    querySnapshot.forEach((doc) => {
+      if(doc.exists()){
+        var r = new Residence(
+          doc.id, 
+          doc.get('name'), 
+          doc.get('ads')
+        )
+
+        res.push(r);
+      }
+    })
+
+    return res;
+  }
+  
+  /**
+   * Récupérer l'utilisateur et ses informations dans la bdd firebase
+   * */
+  /*async getUser(id: any): Promise<any> {
+    if (id) {
+      const docRef = doc(this.firestore, "users", id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return {
+          id: docSnap.id,
+          username: docSnap.get("username"),
+          residence: docSnap.get("residence"),
+          ads: docSnap.get("ads")
+        } as User
+      }
     }
-  ]**/
+  }
 
+  async getAllAds(): Promise<any>{
+
+  }*/
 
 }

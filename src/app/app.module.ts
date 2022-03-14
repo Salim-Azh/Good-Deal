@@ -31,7 +31,6 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 
 import { AuthService } from './services/auth.service';
 import { AdDetailsComponent } from './components/ad-details/ad-details.component';
-import { AdComponent } from './components/ad/ad.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +44,6 @@ import { AdComponent } from './components/ad/ad.component';
     MyAdsListComponent,
     SignInComponent,
     AdDetailsComponent,
-    AdComponent,
   ],
   imports: [
     BrowserModule,
