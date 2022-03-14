@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth,getAuth } from '@angular/fire/auth';
@@ -24,9 +25,12 @@ import { HomeComponent } from './components/home/home.component';
 import { AccountComponent } from './components/account/account.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { PublishComponent } from './components/publish/publish.component';
+import { AdsComponent } from './components/ads/ads.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { MyAdsListComponent } from './components/my-ads-list/my-ads-list.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
+
+
 
 import { AuthService } from './services/auth.service';
 import { AdDetailsComponent } from './components/ad-details/ad-details.component';
@@ -40,6 +44,7 @@ import { AdDetailsComponent } from './components/ad-details/ad-details.component
     MessagesComponent,
     AccountComponent,
     PageNotFoundComponent,
+    AdsComponent,
     MyAdsListComponent,
     SignInComponent,
     AdDetailsComponent,
@@ -51,6 +56,7 @@ import { AdDetailsComponent } from './components/ad-details/ad-details.component
     MatIconModule,
     MatButtonModule,
     MatSliderModule,
+    MatCardModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
