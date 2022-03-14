@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth,getAuth } from '@angular/fire/auth';
@@ -30,6 +31,7 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 
 import { AuthService } from './services/auth.service';
 import { AdDetailsComponent } from './components/ad-details/ad-details.component';
+import { AdComponent } from './components/ad/ad.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,7 @@ import { AdDetailsComponent } from './components/ad-details/ad-details.component
     MyAdsListComponent,
     SignInComponent,
     AdDetailsComponent,
+    AdComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +54,7 @@ import { AdDetailsComponent } from './components/ad-details/ad-details.component
     MatIconModule,
     MatButtonModule,
     MatSliderModule,
+    MatCardModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
