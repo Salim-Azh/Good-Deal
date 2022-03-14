@@ -18,60 +18,30 @@ export class HomeComponent implements OnInit {
 
   residences: Residence[] = [];
 
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore) { }
 
   async ngOnInit(): Promise<void> {
 
-    this.residences = await this.getResidences();
+    const querySnapshot = await this.getResidences();
 
-  }
+    querySnapshot.docs.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      //console.log(doc.id, " => ", doc.data());
+      if (doc.exists()) {
+        this.residences.push({
+          id: doc.id,
+          name: doc.get('name'),
+          displayAddress: doc.get('displayAddress'),
+          latitude: doc.get('latitude'),
+          longitude: doc.get('longitude')
 
-  /**
-   * Récupérer toutes les résidences dans la bdd firebase
-   */
-  async getResidences(): Promise<any[]> {
-
-    const residencesRef = collection(this.firestore, 'residence');
-    const q = query(residencesRef);
-    const querySnapshot = await getDocs(q);
-
-    const res: Residence[] = [];
-
-    querySnapshot.forEach((doc) => {
-      if(doc.exists()){
-        var r = new Residence(
-          doc.id, 
-          doc.get('name'), 
-          doc.get('ads')
-        )
-
-        res.push(r);
+        } as Residence)
       }
-    })
-
-    return res;
-  }
-  
-  /**
-   * Récupérer l'utilisateur et ses informations dans la bdd firebase
-   * */
-  /*async getUser(id: any): Promise<any> {
-    if (id) {
-      const docRef = doc(this.firestore, "users", id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        return {
-          id: docSnap.id,
-          username: docSnap.get("username"),
-          residence: docSnap.get("residence"),
-          ads: docSnap.get("ads")
-        } as User
-      }
-    }
+    });
   }
 
-  async getAllAds(): Promise<any>{
-
-  }*/
-
+  async getResidences(){
+    let res: Residence[] = [];
+    return getDocs(collection(this.firestore, "residences"));
+  }
 }

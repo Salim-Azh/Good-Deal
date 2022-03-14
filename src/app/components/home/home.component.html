@@ -1,6 +1,10 @@
 <div class="content">
     <h3>Résulats de la recherche</h3>
 
+    <div *ngFor="let item of residences">
+      <p>{{item}}</p>
+    </div>
+
     <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="flex-start" >
         <div fxFlex.xs="50%" *ngFor="let res of residences">
             <a routerLink="/home/">
@@ -11,18 +15,17 @@
                           {{res.name}}
                        </mat-card-title>
                        <p>
-                         
+
                        </p>
                    </mat-card-content>
                 </mat-card>
             </a>
         </div>
     </div>
-    
+
 </div>
 
 <ng-template #noAds>
     Il n'y a pas d'annonces pour cette résidence.
 </ng-template>
- 
- 
+
