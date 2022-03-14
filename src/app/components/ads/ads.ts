@@ -7,7 +7,7 @@ export interface Ads {
     category: string,
     createdAt: Timestamp,
     description: string,
-    imagesUrl: string,
+    imagesUrl: any[],
     latitude: number,
     longitude: number,
     price: number,
