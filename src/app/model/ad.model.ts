@@ -6,6 +6,7 @@ export class Ad {
    advertiserName!: string;
    category!: string;
    createdAt!: Timestamp;
+   deal!: boolean;
    description!: string;
    imagesUrl!: any[];
    latitude!: number;
