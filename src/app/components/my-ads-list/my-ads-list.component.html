@@ -4,12 +4,14 @@
 <h2>Mes annonces</h2>
 <ul class="list-group list-group-flush" *ngIf="ads.length > 0; else noAds">
   <li class="list-group-item py-4" *ngFor="let ad of ads">
-    <div class="d-flex w-100 justify-content-between">
+    <div class="d-flex justify-content-evenly align-items-center">
       <a  [title]="'Détails de : ' + ad.title"
           [routerLink]="['/home/ads', ad.id, 'details']"
-          class="link-dark d-inline-block text-truncate fs-6 vw-100">
+          class="link-dark d-inline-block text-truncate fs-6"
+          style="max-width: 50vw;">
         {{ ad.title }}
       </a>
+      <button class="btn-sm btn-deal" (click)="markAdAsDealById(ad.id)">Deal</button>
     </div>
   </li>
 </ul>

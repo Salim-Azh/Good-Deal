@@ -23,16 +23,6 @@ export class MyAdsListComponent implements OnInit {
     this.formatAds()
   }
 
-  /*async getUserAds(id: any) {
-    if (id) {
-      const docRef = doc(this.firestore, "users", id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-          return docSnap.get("ads")
-      }
-    }
-  }*/
-
   async getUser(id: any): Promise<any> {
     if (id) {
       const docRef = doc(this.firestore, "users", id);
@@ -52,5 +42,9 @@ export class MyAdsListComponent implements OnInit {
     this.ads.forEach(ad => {
       ad.id = ad.adRef.id
     });
+  }
+
+  markAdAsDealById(id:any){
+    
   }
 }
