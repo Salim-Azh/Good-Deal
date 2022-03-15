@@ -88,4 +88,16 @@ export class MyAdsListComponent implements OnInit {
       this.ngOnInit()
     }
   }
+
+  deleteAd(id:any, adRef:any, title:any){
+    const confirm = window.confirm(`Vous allez supprimer votre annonce toutes les données associée seront perdues. \n Voulez-vous vraiment supprimer l'annonce ${title}?`);
+
+      if (confirm) {
+        console.log('ok');
+      }
+      else{
+        console.log('ko')
+      }
+
+  }
 }
