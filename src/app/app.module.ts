@@ -25,9 +25,12 @@ import { HomeComponent } from './components/home/home.component';
 import { AccountComponent } from './components/account/account.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { PublishComponent } from './components/publish/publish.component';
+import { AdsComponent } from './components/ads/ads.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { MyAdsListComponent } from './components/my-ads-list/my-ads-list.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
+
+
 
 import { AuthService } from './services/auth.service';
 import { AdDetailsComponent } from './components/ad-details/ad-details.component';
@@ -41,6 +44,7 @@ import { AdDetailsComponent } from './components/ad-details/ad-details.component
     MessagesComponent,
     AccountComponent,
     PageNotFoundComponent,
+    AdsComponent,
     MyAdsListComponent,
     SignInComponent,
     AdDetailsComponent,

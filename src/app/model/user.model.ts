@@ -4,6 +4,6 @@ export class User {
     id!: string;
     username!: string;
     residence!: DocumentReference;
-    ads!: { adRef: DocumentReference; title: string; }[];
+    ads!: { adRef: DocumentReference; title: string; deal:boolean; }[];
 
 }
