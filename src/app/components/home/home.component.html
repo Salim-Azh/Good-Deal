@@ -1,7 +1,32 @@
 <div class="content">
     <h3>Résulats de la recherche</h3>
-    <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="flex-start">
-        <app-ads fxFlex.xs="50%" *ngFor="let ads of ads$ | async">
-        </app-ads>
+
+    <!--<div *ngFor="let item of residences">
+      <p>{{item}}</p>
+    </div>-->
+
+    <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="flex-start" >
+        <div fxFlex.xs="50%" *ngFor="let ad of ads">
+            <div *ngIf="ad.deal!"></div>
+            <a routerLink="/home/">
+                <mat-card class="mat-elevation-z4">
+                   <img mat-card-image src="">
+                   <mat-card-content>
+                       <mat-card-title>
+                          {{ad.title}}
+                       </mat-card-title>
+                       <p>
+                          {{ad.price}}
+                       </p>
+                   </mat-card-content>
+                </mat-card>
+            </a>
+        </div>
     </div>
+
 </div>
+
+<ng-template #noAds>
+    Il n'y a pas d'annonces pour cette résidence.
+</ng-template>
+
