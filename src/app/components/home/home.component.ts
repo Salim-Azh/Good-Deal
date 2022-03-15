@@ -4,6 +4,7 @@ import { getAuth } from 'firebase/auth';
 import { doc, DocumentReference, getDoc, collection, query, getDocs } from 'firebase/firestore';
 import { User } from '../../model/user.model';
 import { Residence } from '../../model/residence.model'
+import { Ad } from 'src/app/model/ad.model';
 
 
 @Component({
@@ -17,6 +18,7 @@ import { Residence } from '../../model/residence.model'
 export class HomeComponent implements OnInit {
 
   residences: Residence[] = [];
+  ads: Ad[]= [];
 
   constructor(private firestore: Firestore) { }
 
@@ -33,15 +35,36 @@ export class HomeComponent implements OnInit {
           name: doc.get('name'),
           displayAddress: doc.get('displayAddress'),
           latitude: doc.get('latitude'),
-          longitude: doc.get('longitude')
-
+          longitude: doc.get('longitude'),
         } as Residence)
       }
+
+
+    });
+
+    const querySnapshot2 = await this.getResidencesAdsById(this.residences[0].id)
+    querySnapshot2.docs.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, " => ", doc.data());
+      /*if (doc.exists()) {
+        this.residences.push({
+          id: doc.id,
+          name: doc.get('name'),
+          displayAddress: doc.get('displayAddress'),
+          latitude: doc.get('latitude'),
+          longitude: doc.get('longitude'),
+        } as Residence)
+      }*/
+
+
     });
   }
 
   async getResidences(){
-    let res: Residence[] = [];
     return getDocs(collection(this.firestore, "residences"));
+  }
+
+  async getResidencesAdsById(id: any){
+    return getDocs(collection(this.firestore, "residences/"+id+"/ads"));
   }
 }

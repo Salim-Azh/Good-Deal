@@ -1,4 +1,5 @@
 import { DocumentReference } from 'firebase/firestore';
+import { Ad } from './ad.model';
 
 export class Residence {
    id!: string;
@@ -7,13 +8,4 @@ export class Residence {
    displayAddress!: string;
    latitude!: number;
    longitude!: number;
-
-   //ads!: { adRef: DocumentReference; title:string; price:number; imgUrl:any[]};
-   //ads!: any[];
-
- /* constructor(id:string, name:string, ads:any[]){
-      this.id=id;
-      this.name=name;
-      this.ads=ads;
-   }*/
 }
