@@ -7,12 +7,16 @@
     <div class="d-flex justify-content-between align-items-center">
       <a  [title]="'Détails de : ' + ad.title"
           [routerLink]="['/home/ads', ad.id, 'details']"
-          class="link-dark d-inline-block text-truncate fs-6"
+          class="link-dark d-inline-block text-truncate fs-6 me-2"
           style="max-width: 50vw;">
         {{ ad.title }}
       </a>
-      <button *ngIf="!ad.deal" class="btn-sm btn-deal" (click)="markAdAsDealByRef(ad.id, ad.adRef, ad.title)">Deal</button>
-      <button *ngIf="ad.deal" class="btn-sm btn-secondary" (click)="cancelAdDealByRef(ad.id, ad.adRef, ad.title)">Rétablir</button>
+
+      <div class="d-flex flex-row justify-content-between align-items-center" style="min-width: 10vw;">
+        <button *ngIf="!ad.deal" class="btn-sm btn-deal" (click)="markAdAsDealByRef(ad.id, ad.adRef, ad.title)">Deal</button>
+        <button *ngIf="ad.deal" class="btn-sm btn-secondary" (click)="cancelAdDealByRef(ad.id, ad.adRef, ad.title)">Rétablir</button>
+        <button class="btn-sm btn-danger-custom" (click)="deleteAd(ad.id, ad.adRef, ad.title)">Supprimer</button>
+      </div>
     </div>
   </li>
 </ul>
