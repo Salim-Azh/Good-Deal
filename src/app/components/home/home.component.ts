@@ -3,7 +3,7 @@ import { Firestore } from '@angular/fire/firestore';
 import { getAuth } from 'firebase/auth';
 import { doc, DocumentReference, getDoc, collection, query, getDocs } from 'firebase/firestore';
 import { User } from '../../model/user.model';
-import { Residence } from '../../model/residence.model'
+import { Residence } from 'src/app/model/residence.model'
 import { Ad } from 'src/app/model/ad.model';
 
 
