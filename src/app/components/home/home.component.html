@@ -12,8 +12,6 @@
                 <div *ngFor="let ad of ads"
                     [class.selected]="ad === selected"
                     (click)="onSelect(ad)">
-                    <!--a  [title]="'Détails de : ' + ad.title"
-                        [routerLink]="['/home/ads', ad.id, 'details']"-->
                         <mat-card class="mat-elevation-z4">
                             <img mat-card-image src="../../../assets/img/asus-router.jpg">
                                 <mat-card-content>
@@ -25,7 +23,6 @@
                                     </p>
                                 </mat-card-content>
                         </mat-card>
-                    <!--/a-->
                 </div>
             </div>
         </div>
