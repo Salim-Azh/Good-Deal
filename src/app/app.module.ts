@@ -12,6 +12,9 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth,getAuth } from '@angular/fire/auth';
@@ -32,8 +35,18 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 
 
 
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+// for AngularFireDatabase
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+
+
+
 import { AuthService } from './services/auth.service';
 import { AdDetailsComponent } from './components/ad-details/ad-details.component';
+import { HeaderComponent } from './components/header/header.component';
+import { SearchbarComponent } from './components/searchbar/searchbar.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +61,8 @@ import { AdDetailsComponent } from './components/ad-details/ad-details.component
     MyAdsListComponent,
     SignInComponent,
     AdDetailsComponent,
+    HeaderComponent,
+    SearchbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,6 +72,14 @@ import { AdDetailsComponent } from './components/ad-details/ad-details.component
     MatButtonModule,
     MatSliderModule,
     MatCardModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAnalyticsModule,
+    AngularFirestoreModule.enablePersistence(),
+    AngularFireDatabaseModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
