@@ -53,6 +53,6 @@ export class SearchbarComponent implements OnInit {
 
   firequery(start, end) {
     return this.afs.collection('ads', ref =>
-    ref.limit(4).orderBy('title').startAt(start).endAt(end)).valueChanges();
+    ref.limit(5).orderBy('title').startAt(start).endAt(end)).valueChanges();
   }
 }
