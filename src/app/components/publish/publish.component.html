@@ -1,5 +1,36 @@
 <div *ngIf="(authService.user |async);else notLoggedIn">
-  <p>publish works!</p>
+
+<h2 align="center">Nouvelle Annonce</h2>
+
+  <form>
+
+    <div>
+      <label class="monText">Titre</label>
+      <input style="height: 50px;" type="text" id="title" name="title" class="form-control mb-4 mt-2" placeholder="Titre" required autofocus>
+    </div>
+
+    <label class="monText">Catégorie</label>
+    <select style="height: 50px;" class="form-control mb-4 mt-2" id="category" name="category" >
+      <option value=""></option>
+      <option value="Electronique">Electronique</option>
+      <option value="Mobilier">Mobilier</option>
+      </select>
+
+    <label class="monText">Résidence</label>
+    <input style="height: 50px;" type="text" id="residenceName" name="residenceName" class="form-control mb-4" placeholder="Résidence" required autofocus>
+
+    <label class="monText">Prix</label>
+    <input style="height: 50px;" type="number" id="price" name="price" class="form-control mb-4" placeholder="Prix" required autofocus>
+
+    <label class="monText">Description</label>
+    <textarea style="height: 100px;" class="form-control mb-4 mt-2" id="description" name="description"></textarea>
+
+    <div align="center">
+      <button  style="background-color: #FF7900;" class="btn btn-lg btn-primary" type="submit">Publier</button>
+    </div>
+
+
+  </form>
 </div>
 <ng-template #notLoggedIn>
   <app-sign-in [redirectTo]="path"></app-sign-in>
