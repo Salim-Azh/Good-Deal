@@ -1,5 +1,5 @@
 <div *ngIf="(authService.user |async);else notLoggedIn">
-  <p>publish works!</p>
+  <p>publish works! </p>
 </div>
 <ng-template #notLoggedIn>
   <app-sign-in [redirectTo]="path"></app-sign-in>
