@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Ad } from '../../model/ad.model'
 
 @Component({
   selector: 'app-ad-details',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ad-details.component.scss']
 })
 export class AdDetailsComponent implements OnInit {
+
+  @Input() ad!: Ad;
 
   constructor() { }
 

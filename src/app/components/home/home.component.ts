@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { collection, getDocs } from 'firebase/firestore';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage'
@@ -27,12 +27,31 @@ export class HomeComponent implements OnInit {
 
   selected: Ad | null= null;
 
+
+  /**
+   * Récupération d'éléements html pour gérer la version phone de l'affichage des détails d'une annonce
+   * Failed 
+  */
+  @ViewChild('listAds') listAds!: ElementRef;
+  @ViewChild('deatailsAds') detailsAds!: ElementRef;
+
   async onSelect(ad:Ad){
     this.selected=ad;
+
+    /**
+     * Lorsqu'on clique sur une annonce ses détails doivent apparaître en pleine écran
+     */
+    this.listAds.nativeElement.setAttribute('fxHide.lt-sm','');
+    /**
+     * Et la liste des autres annonces doit disparaître
+     */
+    this.detailsAds.nativeElement.removeAttribute('fxHide.lt-sm');
   }
   
 
-  constructor(public authService: AuthService, private firestore: Firestore) { }
+  constructor(
+    public authService: AuthService, 
+    private firestore: Firestore) { }
 
   async ngOnInit(): Promise<void> {
 
@@ -70,11 +89,6 @@ export class HomeComponent implements OnInit {
     });
 
 
-    /**
-     * Test sur les annonces d'une seule résidence
-     * Une boucle for dans une boucle for pour récupérer les annonces de toutes les résidences ne fonctionne pas
-     * A régler pour la verison 2
-     */
     const querySnapshot2 = await this.getResidencesAdsById(this.residences[1].id)
     querySnapshot2.docs.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots

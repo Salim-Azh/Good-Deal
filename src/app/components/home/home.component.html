@@ -3,7 +3,7 @@
 
     <!-- L'accueil utilise le patron maître-détail  -->
 
-    <div class="content" fxFlex.gt-sm="40">
+    <div #listAds class="content" fxFlex.gt-sm="40" fxShow.gt-sm>
         <h3>Résulats de la recherche</h3>
         <div *ngIf="ads.length > 0; else noAds">
         <div *ngIf="(authService.user | async)==null; else loggedIn"></div>
@@ -32,10 +32,10 @@
         </div>
     </div>
 
-    <div class="content" fxHide fxShow.gt-sm>
-        <div *ngIf="selected != null">
-            <p>{{selected.title}}</p>
-        </div>
+    <div #detailsAds class="content" id="ad-details" *ngIf="selected != null" fxHide.lt-sm fxShow.gt-sm>
+            <app-ad-details
+                [ad]="selected">
+            </app-ad-details>
 
     </div>
 </div>
@@ -47,3 +47,4 @@
 <ng-template #loggedIn>
     <p>Je suis connectée!</p>
 </ng-template>
+
