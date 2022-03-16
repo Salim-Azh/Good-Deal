@@ -25,6 +25,13 @@ export class HomeComponent implements OnInit {
   residences: Residence[] = [];
   ads: Ad[]= [];
 
+  selected: Ad | null= null;
+
+  async onSelect(ad:Ad){
+    this.selected=ad;
+  }
+  
+
   constructor(public authService: AuthService, private firestore: Firestore) { }
 
   async ngOnInit(): Promise<void> {
@@ -59,7 +66,6 @@ export class HomeComponent implements OnInit {
           longitude: doc.get('longitude'),
         } as Residence)
       }
-
 
     });
 
