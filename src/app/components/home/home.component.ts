@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { collection, getDocs } from 'firebase/firestore';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage'
-import { Residence } from 'src/app/model/residence.model'
+import { doc, getDoc, collection, query, getDocs, where, QuerySnapshot, DocumentData } from 'firebase/firestore';
+import { User } from '../../model/user.model';
+import { getAuth } from 'firebase/auth';
 import { Ad } from 'src/app/model/ad.model';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -13,141 +13,125 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./home.component.scss']
 })
 
-
-/**
- * Gère l'affichage de l'accueil 
- *  - Un utilisateur non connecté a accès à toutes les annonces de toutes les résidences
- *  - Un utilisateur connecté a accès aux annonces de sa résidence (un filtre est appliqué par défaut)
- */
-
 export class HomeComponent implements OnInit {
 
-  residences: Residence[] = [];
-  ads: Ad[]= [];
   /**
-   * Récupération d'éléements html pour gérer la version phone de l'affichage des détails d'une annonce
-   * Failed 
+   * const storage = getStorage();
+   * const url = getDownloadURL(ref(storage, 'asus-router-5b2c15befa6bcc0036b45c76.jpg'));
+   */
+
+  ads: Ad[] = [];
+  /**
+   * Récupération d'elements html pour gérer la version phone de l'affichage des détails d'une annonce
+   * Failed
   */
   @ViewChild('listAds') listAds!: ElementRef;
   @ViewChild('deatailsAds') detailsAds!: ElementRef;
 
-  selected: Ad | null= null;
 
-  async onSelect(ad:Ad){
-    this.selected=ad;
+  selected: Ad | null = null;
+
+  async onSelect(ad: Ad) {
+    this.selected = ad;
 
     /**
-     * Lorsqu'on clique sur une annonce ses détails doivent apparaître en pleine écran
+     * Lorsqu'on clique sur une annonce ses details doivent apparaitre en pleine ecran
      */
-    this.listAds.nativeElement.setAttribute('fxHide.lt-sm','');
+    this.listAds.nativeElement.setAttribute('fxHide.lt-sm', '');
     /**
-     * Et la liste des autres annonces doit disparaître
+     * Et la liste des autres annonces doit disparaitre
      */
     this.detailsAds.nativeElement.removeAttribute('fxHide.lt-sm');
   }
-  
 
-  constructor(
-    public authService: AuthService, 
-    private firestore: Firestore) { }
+
+  constructor(public authService: AuthService, private firestore: Firestore) { }
 
   async ngOnInit(): Promise<void> {
-
-
-    /**
-     * Test pour la récupération des images dans le storage de firebase
-     *  Failed à cause d'un problème d'accès et d'authentification
-     *  A régler pour la version 2
-     *  (en attendant j'utilise une image stoquée en local)
-     * 
-     * const storage = getStorage();
-     * const url = getDownloadURL(ref(storage, 'asus-router-5b2c15befa6bcc0036b45c76.jpg'));
-     */
-    
-    const querySnapshot = await this.getResidences();
-
-    querySnapshot.docs.forEach(async (doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      //console.log(doc.id, " => ", doc.data());
-
-      if (doc.exists()) {
-        this.residences.push({
-          id: doc.id,
-          name: doc.get('name'),
-          displayAddress: doc.get('displayAddress'),
-          latitude: doc.get('latitude'),
-          longitude: doc.get('longitude'),
-        } as Residence)
-        const querySnapshot2 = await this.getResidencesAdsById(doc.id)
-        querySnapshot2.docs.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
-          if (doc.exists()) {
-            this.ads.push({
-              id: doc.id,
-              advertiser: doc.get('advertiser'),
-              advertiserName: doc.get('advertiserName'),
-              category: doc.get('category'),
-              createdAt: doc.get('createdAt'),
-              deal: doc.get('deal'),
-              description: doc.get('description'),
-              imagesUrl: doc.get('imagesUrl'),
-              latitude: doc.get('latitude'),
-              longitude: doc.get('longitude'),
-              price: doc.get('price'),
-              residenceName: doc.get('residenceName'),
-              state: doc.get('state'),
-              title: doc.get('title'),
-            } as Ad)
-          }
-
-
-        });
+    try {
+      const results = await this.searchDefault();
+      if (results) {
+        this.ads = results;
       }
-
-    });
-
-
-    const querySnapshot2 = await this.getResidencesAdsById(this.residences[1].id)
-    querySnapshot2.docs.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      //console.log(doc.id, " => ", doc.data());
-      if (doc.exists()) {
-        this.ads.push({
-          id: doc.id,
-          advertiser:doc.get('advertiser'),
-          advertiserName:doc.get('advertiserName'),
-          category:doc.get('category'),
-          createdAt:doc.get('createdAt'),
-          deal:doc.get('deal'),
-          description:doc.get('description'),
-          imagesUrl:doc.get('imagesUrl'),
-          latitude:doc.get('latitude'),
-          longitude:doc.get('longitude'),
-          price:doc.get('price'),
-          residenceName:doc.get('residenceName'),
-          state:doc.get('state'),
-          title:doc.get('title'),
-        } as Ad)
-      }
-    });
-    
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  /**
-   * 
-   * @returns Tous les documents se trouvant dans la collection Residences de firebase
-   */
-  async getResidences(){
-    return getDocs(collection(this.firestore, "residences"));
+  async searchDefault() {
+    if (!getAuth().currentUser) {
+      const docsSnap = await this.getResultsForSearchDefaultLogout();
+      return this.fillResults(docsSnap)
+    }
+    else {
+      const docsSnap = await this.getResultsForSearchDefaultConnected();
+      if (docsSnap) {
+        return this.fillResults(docsSnap)
+      }
+    }
+    return null;
   }
 
-  /**
-   * 
-   * @param id de la residence donc l'ont veut les annonces
-   * @returns tous les documents se trouvant dans la collection ads pour une residence donnée
-   */
-  async getResidencesAdsById(id: any){
-    return getDocs(collection(this.firestore, "residences/"+id+"/ads"));
+  getResultsForSearchDefaultLogout() {
+    return getDocs(collection(this.firestore, "ads"));
+  }
+
+  async getResultsForSearchDefaultConnected() {
+    const uid = getAuth().currentUser?.uid;
+    const user = await this.getUser(uid);
+    if (user) {
+      const q = query(collection(this.firestore, "ads"), where("residenceRef", "==", user.residence));
+      return getDocs(q);
+    }
+    return null
+  }
+
+  async getUser(id: any): Promise<any> {
+    if (id) {
+      const docRef = doc(this.firestore, "users", id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        let ads = [];
+
+        for (const adObj in docSnap.get("ads")) {
+          ads.push({
+            adRef: docSnap.get("ads")[adObj].adRef,
+            title: docSnap.get("ads")[adObj].title,
+            deal: docSnap.get("ads")[adObj].deal,
+            id: adObj
+          })
+        }
+        return {
+          id: docSnap.id,
+          username: docSnap.get("username"),
+          residence: docSnap.get("residence"),
+          ads: ads
+        } as User
+      }
+    }
+  }
+
+  fillResults(docSnap: QuerySnapshot<DocumentData>) {
+    let res: Ad[] = [];
+    docSnap.docs.forEach(adDoc => {
+      const ad = {
+        id: adDoc.id,
+        advertiser: adDoc.get('advertiser'),
+        advertiserName: adDoc.get('advertiserName'),
+        category: adDoc.get('category'),
+        createdAt: adDoc.get('createdAt'),
+        deal: adDoc.get('deal'),
+        description: adDoc.get('description'),
+        imagesUrl: adDoc.get('imagesUrl'),
+        latitude: adDoc.get('latitude'),
+        longitude: adDoc.get('longitude'),
+        price: adDoc.get('price'),
+        residenceName: adDoc.get('residenceName'),
+        state: adDoc.get('state'),
+        title: adDoc.get('title'),
+      } as Ad
+      res.push(ad);
+    });
+    return res;
   }
 }
