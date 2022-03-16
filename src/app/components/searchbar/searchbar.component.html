@@ -9,23 +9,23 @@
 
 
 <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="flex-start">
-    <div fxFlex.xs="50%" *ngFor="let city of title">
-        <div *ngIf="city.deal!"></div>
+    <div fxFlex.xs="50%" *ngFor="let item of items">
+        <div *ngIf="item.deal!"></div>
         <a>
             <mat-card class="mat-elevation-z4">
                 <img mat-card-image src="">
                 <mat-card-content>
                     <mat-card-title>
-                        {{city.title}}
+                        {{item.title}}
                     </mat-card-title>
                     <p>
-                        {{city.price}}
+                        {{item.price}}
                     </p>
                 </mat-card-content>
             </mat-card>
         </a>
-        <div *ngIf="city?.length < 1">
-            <p>Sorry, no city found</p>
+        <div *ngIf="item?.length < 1">
+            <p>Sorry, no items found</p>
         </div>
     </div>
 </div>

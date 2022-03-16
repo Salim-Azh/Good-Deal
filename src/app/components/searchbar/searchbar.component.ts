@@ -28,19 +28,18 @@ export class SearchbarComponent implements OnInit {
   startAt = new Subject();
   endAt = new Subject();
 
-  title;
-
   startobs = this.startAt.asObservable();
   endobs = this.endAt.asObservable();
 
-  constructor(private afs: AngularFirestore) {
+  items;
 
-  }
+  constructor(private afs: AngularFirestore) {
+   }
 
   ngOnInit() {
     combineLatest(this.startobs, this.endobs).subscribe((value: any[]) => {
-      this.firequery(value[0], value[1]).subscribe((title) => {
-        this.title = title;
+      this.firequery(value[0], value[1]).subscribe((items) => {
+        this.items = items;
       })
     })
   }
