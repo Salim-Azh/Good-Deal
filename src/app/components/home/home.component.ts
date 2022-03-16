@@ -24,16 +24,14 @@ export class HomeComponent implements OnInit {
 
   residences: Residence[] = [];
   ads: Ad[]= [];
-
-  selected: Ad | null= null;
-
-
   /**
    * Récupération d'éléements html pour gérer la version phone de l'affichage des détails d'une annonce
    * Failed 
   */
   @ViewChild('listAds') listAds!: ElementRef;
   @ViewChild('deatailsAds') detailsAds!: ElementRef;
+
+  selected: Ad | null= null;
 
   async onSelect(ad:Ad){
     this.selected=ad;
