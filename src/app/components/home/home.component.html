@@ -1,24 +1,37 @@
-<div class="content">
-    <h3>Résulats de la recherche</h3>
-    <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="flex-start" >
-        <div fxFlex="50" *ngFor="let i of [1,2,3,4,5,6,7]">
-            <div *ngFor="let ad of ads">
-                <a  [title]="'Détails de : ' + ad.title"
-                    [routerLink]="['/home/ads', ad.id, 'details']">
-                    <mat-card class="mat-elevation-z4">
-                        <img mat-card-image src="../../../assets/img/asus-router.jpg">
-                            <mat-card-content>
-                                <mat-card-title>
-                                    {{ad.title}}
-                                </mat-card-title>
-                                <p>
-                                    {{ad.price}}$CA
-                                </p>
-                            </mat-card-content>
-                    </mat-card>
-                </a>
+<div fxLayout="row">
+
+
+    <!-- L'accueil utilise le patron maître-détail  -->
+
+    <div class="content" fxFlex.gt-sm="40">
+        <h3>Résulats de la recherche</h3>
+        <div *ngIf="ads.length > 0; else noAds">
+        <div *ngIf="(authService.user | async)==null; else loggedIn"></div>
+        <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="flex-start" >
+            <div fxFlex="50" *ngFor="let i of [1,2,3,4,5,6,7]">
+                <div *ngFor="let ad of ads">
+                    <a  [title]="'Détails de : ' + ad.title"
+                        [routerLink]="['/home/ads', ad.id, 'details']">
+                        <mat-card class="mat-elevation-z4">
+                            <img mat-card-image src="../../../assets/img/asus-router.jpg">
+                                <mat-card-content>
+                                    <mat-card-title>
+                                        {{ad.title}}
+                                    </mat-card-title>
+                                    <p>
+                                        {{ad.price}}$CA
+                                    </p>
+                                </mat-card-content>
+                        </mat-card>
+                    </a>
+                </div>
             </div>
         </div>
+        </div>
+    </div>
+
+    <div class="content" fxHide fxShow.gt-sm>
+        <app-ad-details></app-ad-details>
     </div>
 </div>
 
@@ -26,3 +39,6 @@
     Il n'y a pas d'annonces pour cette résidence.
 </ng-template>
 
+<ng-template #loggedIn>
+    <p>Je suis connectée!</p>
+</ng-template>
