@@ -53,15 +53,11 @@ export class MyAdsListComponent implements OnInit {
         deal: true
       });
 
+
       const userRef = doc(this.firestore,'users/'+this.user.id);
+      const dealProperty = `ads.${adId}.deal`
       await updateDoc(userRef,{
-        ads: {
-          [adId]: {
-            "adRef": adRef,
-            "deal": true,
-            "title": adTitle
-          }
-        }
+        [dealProperty]: true
       })
 
       this.ngOnInit()
@@ -75,14 +71,9 @@ export class MyAdsListComponent implements OnInit {
       });
 
       const userRef = doc(this.firestore,'users/'+this.user.id);
+      const dealProperty = `ads.${adId}.deal`
       await updateDoc(userRef,{
-        ads: {
-          [adId]: {
-            "adRef": adRef,
-            "deal": false,
-            "title": adTitle
-          }
-        }
+        [dealProperty]: false
       });
 
       this.ngOnInit()
