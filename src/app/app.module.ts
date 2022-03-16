@@ -33,19 +33,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { MyAdsListComponent } from './components/my-ads-list/my-ads-list.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 
-
-
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-// for AngularFireDatabase
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-
-
-
 import { AuthService } from './services/auth.service';
 import { AdDetailsComponent } from './components/ad-details/ad-details.component';
-import { HeaderComponent } from './components/header/header.component';
 import { SearchbarComponent } from './components/searchbar/searchbar.component';
 
 @NgModule({
@@ -61,7 +50,6 @@ import { SearchbarComponent } from './components/searchbar/searchbar.component';
     MyAdsListComponent,
     SignInComponent,
     AdDetailsComponent,
-    HeaderComponent,
     SearchbarComponent,
   ],
   imports: [
@@ -76,16 +64,6 @@ import { SearchbarComponent } from './components/searchbar/searchbar.component';
     MatAutocompleteModule,
     FormsModule,
     ReactiveFormsModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAnalyticsModule,
-    AngularFirestoreModule.enablePersistence(),
-    AngularFireDatabaseModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the app is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    }),
     BrowserAnimationsModule,
     MatToolbarModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),

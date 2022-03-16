@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { doc, getDoc, collection, query, getDocs, where, QuerySnapshot, DocumentData } from 'firebase/firestore';
 import { User } from '../../model/user.model';
 import { getAuth } from 'firebase/auth';
 import { Ad } from 'src/app/model/ad.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { SearchbarComponent } from '../searchbar/searchbar.component';
 
 
 @Component({
@@ -13,8 +14,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./home.component.scss']
 })
 
-export class HomeComponent implements OnInit {
-
+export class HomeComponent implements OnInit, AfterViewInit {
   /**
    * const storage = getStorage();
    * const url = getDownloadURL(ref(storage, 'asus-router-5b2c15befa6bcc0036b45c76.jpg'));
@@ -28,24 +28,15 @@ export class HomeComponent implements OnInit {
   @ViewChild('listAds') listAds!: ElementRef;
   @ViewChild('deatailsAds') detailsAds!: ElementRef;
 
+  @ViewChild(SearchbarComponent) searchResults!: Ad[];
 
   selected: Ad | null = null;
 
-  async onSelect(ad: Ad) {
-    this.selected = ad;
-
-    /**
-     * Lorsqu'on clique sur une annonce ses details doivent apparaitre en pleine ecran
-     */
-    this.listAds.nativeElement.setAttribute('fxHide.lt-sm', '');
-    /**
-     * Et la liste des autres annonces doit disparaitre
-     */
-    this.detailsAds.nativeElement.removeAttribute('fxHide.lt-sm');
-  }
-
-
   constructor(public authService: AuthService, private firestore: Firestore) { }
+
+  ngAfterViewInit(): void {
+    console.log(this.searchResults)
+  }
 
   async ngOnInit(): Promise<void> {
     try {
@@ -134,4 +125,18 @@ export class HomeComponent implements OnInit {
     });
     return res;
   }
+
+  async onSelect(ad: Ad) {
+    this.selected = ad;
+
+    /**
+     * Lorsqu'on clique sur une annonce ses details doivent apparaitre en pleine ecran
+     */
+    this.listAds.nativeElement.setAttribute('fxHide.lt-sm', '');
+    /**
+     * Et la liste des autres annonces doit disparaitre
+     */
+    this.detailsAds.nativeElement.removeAttribute('fxHide.lt-sm');
+  }
+
 }

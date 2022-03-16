@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
-import { getAuth } from 'firebase/auth';
-import { doc, DocumentReference, getDoc, collection, query, getDocs } from 'firebase/firestore';
+import { collection, Firestore, getDocs, query, where } from 'firebase/firestore';
 import { Ad } from 'src/app/model/ad.model';
 @Component({
   selector: 'app-searchbar',
@@ -10,32 +8,41 @@ import { Ad } from 'src/app/model/ad.model';
 })
 export class SearchbarComponent implements OnInit {
 
-  ads: Ad[]= [];
+  searchResults: Ad[]= [];
 
   constructor(private firestore: Firestore) {}
 
   ngOnInit() {
-    /*combineLatest(this.startobs, this.endobs).subscribe((value: any[]) => {
-      this.firequery(value[0], value[1]).subscribe((items) => {
-        this.items = items;
-      })
-    })*/
+
   }
 
-  searchTextWithNoFilters(input: any){
+  async getSearchResultsTextWithNoFilters(input: any){
     if(input){
+      const q = query(collection(this.firestore, "ads"), where("title", ">=",input), where("title", "<=", input+'\uf8ff'));
+      const docSnap =  await getDocs(q);
+      if(docSnap.size > 0){
+        this.searchResults = [];
+      }
+      docSnap.docs.forEach(element => {
+        const ad = {
+          id: element.id,
+          advertiser: element.get('advertiser'),
+          advertiserName: element.get('advertiserName'),
+          category: element.get('category'),
+          createdAt: element.get('createdAt'),
+          deal: element.get('deal'),
+          description: element.get('description'),
+          imagesUrl: element.get('imagesUrl'),
+          latitude: element.get('latitude'),
+          longitude: element.get('longitude'),
+          price: element.get('price'),
+          residenceName: element.get('residenceName'),
+          state: element.get('state'),
+          title: element.get('title'),
+        } as Ad
 
+        this.searchResults.push(ad);
+      });
     }
   }
-
-
-  /*getsearchbar(input: string) {
-    this.startAt.next(q);
-    this.endAt.next(q + '\uf8ff');
-  }
-
-  firequery(start, end) {
-    return this.afs.collection('ads', ref =>
-    ref.limit(5).orderBy('title').startAt(start).endAt(end)).valueChanges();
-  }*/
 }

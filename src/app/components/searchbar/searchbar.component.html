@@ -1,8 +1,10 @@
 <mat-toolbar class=" fixed sticky header_rect">
   <mat-toolbar-row fxLayoutAlign="center center" class="example-icon">
-    <input type="text" class="form-control" #strSearch>
-    <button (click)='searchTextWithNoFilters(strSearch.value)' mat-icon-button class=" search-icon" aria-label="Rechercher">
+    <input type="search" placeholder="Recherher" class="form-control  mr-sm-2" aria-label="Rechercher" #strSearch>
+    <button (click)='getSearchResultsTextWithNoFilters(strSearch.value)' mat-icon-button class=" search-icon"
+      aria-label="Rechercher">
       <mat-icon>search</mat-icon>
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
+

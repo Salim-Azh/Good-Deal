@@ -2,6 +2,10 @@
    padding: 16px;
 }
 
+.full-width{
+  min-width: 100vw;
+}
+
 h3 {
     text-align: left;
 }
@@ -11,23 +15,23 @@ img {
     max-height: 120px;
     border-bottom: 1px solid lightgrey;
  }
-  
+
  mat-card-content{
     text-align: left;
  }
-  
+
  mat-card-title{
     font-size: 15px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
  }
-  
+
  p{
     color: #F1895C;
  }
-  
+
  a{
     text-decoration: none;
  }
- 
+
