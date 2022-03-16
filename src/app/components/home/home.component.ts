@@ -28,20 +28,31 @@ export class HomeComponent implements OnInit {
 
   }
 
-  /**
-   * all residences with no filters
-   */
+  async searchDefault() {
+    if (!getAuth().currentUser) {
+      const docsSnap = await this.getResultsForSearchDefaultLogout();
+      return this.fillResults(docsSnap)
+    }
+    else {
+      const docsSnap = await this.getResultsForSearchDefaultConnected();
+      if (docsSnap) {
+        return this.fillResults(docsSnap)
+      }
+    }
+    return null;
+  }
+
   getResultsForSearchDefaultLogout() {
     return getDocs(collection(this.firestore, "ads"));
   }
 
-  async getResultsForSearchDefaultConnected(){
+  async getResultsForSearchDefaultConnected() {
     const uid = getAuth().currentUser?.uid;
     const user = await this.getUser(uid);
-      if (user) {
-        const q = query(collection(this.firestore, "ads"), where("residenceRef", "==", user.residence));
-        return getDocs(q);
-      }
+    if (user) {
+      const q = query(collection(this.firestore, "ads"), where("residenceRef", "==", user.residence));
+      return getDocs(q);
+    }
     return null
   }
 
@@ -52,7 +63,7 @@ export class HomeComponent implements OnInit {
       if (docSnap.exists()) {
         let ads = [];
 
-        for(const adObj in docSnap.get("ads")){
+        for (const adObj in docSnap.get("ads")) {
           ads.push({
             adRef: docSnap.get("ads")[adObj].adRef,
             title: docSnap.get("ads")[adObj].title,
@@ -70,21 +81,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  async searchDefault() {
-    if (!getAuth().currentUser) {
-      const docsSnap = await this.getResultsForSearchDefaultLogout();
-      return this.fillResults(docsSnap)
-    }
-    else{
-      const docsSnap = await this.getResultsForSearchDefaultConnected();
-      if (docsSnap) {
-        return this.fillResults(docsSnap)
-      }
-    }
-    return null;
-  }
-
-  fillResults(docSnap: QuerySnapshot<DocumentData>){
+  fillResults(docSnap: QuerySnapshot<DocumentData>) {
     let res: Ad[] = [];
     docSnap.docs.forEach(adDoc => {
       const ad = {
