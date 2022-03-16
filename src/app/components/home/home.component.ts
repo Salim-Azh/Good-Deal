@@ -1,20 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { doc, getDoc, collection, query, getDocs, where, QuerySnapshot, DocumentData } from 'firebase/firestore';
 import { User } from '../../model/user.model';
-import { Ad } from 'src/app/model/ad.model';
 import { getAuth } from 'firebase/auth';
+import { Ad } from 'src/app/model/ad.model';
+import { AuthService } from 'src/app/services/auth.service';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+
 export class HomeComponent implements OnInit {
 
-  ads: Ad[] = [];
+  /**
+   * const storage = getStorage();
+   * const url = getDownloadURL(ref(storage, 'asus-router-5b2c15befa6bcc0036b45c76.jpg'));
+   */
 
-  constructor(private firestore: Firestore) { }
+  ads: Ad[] = [];
+  /**
+   * Récupération d'elements html pour gérer la version phone de l'affichage des détails d'une annonce
+   * Failed
+  */
+  @ViewChild('listAds') listAds!: ElementRef;
+  @ViewChild('deatailsAds') detailsAds!: ElementRef;
+
+
+  selected: Ad | null = null;
+
+  async onSelect(ad: Ad) {
+    this.selected = ad;
+
+    /**
+     * Lorsqu'on clique sur une annonce ses details doivent apparaitre en pleine ecran
+     */
+    this.listAds.nativeElement.setAttribute('fxHide.lt-sm', '');
+    /**
+     * Et la liste des autres annonces doit disparaitre
+     */
+    this.detailsAds.nativeElement.removeAttribute('fxHide.lt-sm');
+  }
+
+
+  constructor(public authService: AuthService, private firestore: Firestore) { }
 
   async ngOnInit(): Promise<void> {
     try {
@@ -25,7 +56,6 @@ export class HomeComponent implements OnInit {
     } catch (error) {
       console.log(error)
     }
-
   }
 
   async searchDefault() {
