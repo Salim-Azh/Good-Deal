@@ -1,5 +1,5 @@
 .content {
-    padding: 16px;
+   padding: 16px;
 }
 
 h3 {
@@ -12,14 +12,15 @@ img {
     border-bottom: 1px solid lightgrey;
  }
   
-  
  mat-card-content{
     text-align: left;
-    margin: -5px;
  }
   
  mat-card-title{
     font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
  }
   
  p{
