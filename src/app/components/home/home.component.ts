@@ -13,21 +13,23 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./home.component.scss']
 })
 
+/**
+ * La classe HomeComponent permet 
+ *    - l'affichage de toutes les annonces si l'utilisateur n'est pas connecté
+ *    - l'affichage de toutes les annonces de la résidence de l'utilisateur s'il est connecté
+ *    - la recherche suivant le titre, la catégorie de l'annonce ou la résidence 
+ *  
+ */
 export class HomeComponent implements OnInit {
   /**
+   * Récupération de l'url de l'image
+   *  Failed à cause d'un problème d'accès et d'authentification
+   * 
    * const storage = getStorage();
    * const url = getDownloadURL(ref(storage, 'asus-router-5b2c15befa6bcc0036b45c76.jpg'));
    */
 
   ads: Ad[] = [];
-  /**
-   * Récupération d'elements html pour gérer la version phone de l'affichage des détails d'une annonce
-   * Failed
-  */
-  @ViewChild('listAds') listAds!: ElementRef;
-  @ViewChild('deatailsAds') detailsAds!: ElementRef;
-
-  selected: Ad | null = null;
 
   constructor(public authService: AuthService, private firestore: Firestore) { }
 
@@ -123,6 +125,7 @@ export class HomeComponent implements OnInit {
   async getSearchResultsTextWithNoFilters(input: any){
     if(input){
       const q = query(collection(this.firestore, "ads"), where("title", ">=",input), where("title", "<=", input+'\uf8ff'));
+
       const docSnap =  await getDocs(q);
       if(docSnap.size > 0){
         this.ads = [];
@@ -151,12 +154,88 @@ export class HomeComponent implements OnInit {
   }
 
 
+  async getSearchResultsTextByCategory(input: any){
+    if(input){
+      
+      const q = query(collection(this.firestore, "ads"), where("category", ">=",input), where("category", "<=", input+'\uf8ff'));
+
+      const docSnap =  await getDocs(q);
+      if(docSnap.size > 0){
+        this.ads = [];
+      }
+      docSnap.docs.forEach(element => {
+        const ad = {
+          id: element.id,
+          advertiser: element.get('advertiser'),
+          advertiserName: element.get('advertiserName'),
+          category: element.get('category'),
+          createdAt: element.get('createdAt'),
+          deal: element.get('deal'),
+          description: element.get('description'),
+          imagesUrl: element.get('imagesUrl'),
+          latitude: element.get('latitude'),
+          longitude: element.get('longitude'),
+          price: element.get('price'),
+          residenceName: element.get('residenceName'),
+          state: element.get('state'),
+          title: element.get('title'),
+        } as Ad
+
+        this.ads.push(ad);
+      });
+        
+      
+    }
+  }
+
+  async getSearchResultsTextByResidence(input: any){
+    if(input){
+      const q = query(collection(this.firestore, "ads"), where("residenceName", ">=",input), where("residenceName", "<=", input+'\uf8ff'));
+
+      const docSnap =  await getDocs(q);
+      if(docSnap.size > 0){
+        this.ads = [];
+      }
+      docSnap.docs.forEach(element => {
+        const ad = {
+          id: element.id,
+          advertiser: element.get('advertiser'),
+          advertiserName: element.get('advertiserName'),
+          category: element.get('category'),
+          createdAt: element.get('createdAt'),
+          deal: element.get('deal'),
+          description: element.get('description'),
+          imagesUrl: element.get('imagesUrl'),
+          latitude: element.get('latitude'),
+          longitude: element.get('longitude'),
+          price: element.get('price'),
+          residenceName: element.get('residenceName'),
+          state: element.get('state'),
+          title: element.get('title'),
+        } as Ad
+
+        this.ads.push(ad);
+      });
+        
+      
+    }
+  }
+
+  /**
+   * Récupération d'elements html pour gérer la version phone de l'affichage des détails d'une annonce
+   * Failed
+  *  
+  *  @ViewChild('listAds') listAds!: ElementRef;
+  * @ViewChild('deatailsAds') detailsAds!: ElementRef;
+  */
+
+  selected: Ad | null = null;
+
   async onSelect(ad: Ad) {
     
     this.selected = ad;
     //this.listAds.nativeElement.setAttribute('fxHide.lt-sm', '');
     //this.detailsAds.nativeElement.removeAttribute('fxHide.lt-sm');
-    
   }
 
 }
