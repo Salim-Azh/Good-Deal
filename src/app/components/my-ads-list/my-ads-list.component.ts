@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { getAuth } from 'firebase/auth';
-import { doc, DocumentReference, getDoc, updateDoc } from 'firebase/firestore';
+import { deleteDoc, deleteField, doc, DocumentReference, getDoc, updateDoc } from 'firebase/firestore';
 import { User } from 'src/app/model/user.model';
 
 @Component({
@@ -11,10 +11,10 @@ import { User } from 'src/app/model/user.model';
 })
 export class MyAdsListComponent implements OnInit {
 
-  ads: { adRef: DocumentReference, title: string, id?:string, deal: boolean}[] = [];
-  user:User = new User();
+  ads: { adRef: DocumentReference, title: string, id?: string, deal: boolean }[] = [];
+  user: User = new User();
 
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore) { }
 
   async ngOnInit(): Promise<void> {
     const uid = getAuth().currentUser?.uid
@@ -29,7 +29,7 @@ export class MyAdsListComponent implements OnInit {
       if (docSnap.exists()) {
         let ads = [];
 
-        for(const adObj in docSnap.get("ads")){
+        for (const adObj in docSnap.get("ads")) {
           ads.push({
             adRef: docSnap.get("ads")[adObj].adRef,
             title: docSnap.get("ads")[adObj].title,
@@ -47,16 +47,16 @@ export class MyAdsListComponent implements OnInit {
     }
   }
 
-  async markAdAsDealByRef(adId:any, adRef:any, adTitle: any){
+  async markAdAsDealByRef(adId: any, adRef: any, adTitle: any) {
     if (adRef && adId) {
       await updateDoc(adRef, {
         deal: true
       });
 
 
-      const userRef = doc(this.firestore,'users/'+this.user.id);
+      const userRef = doc(this.firestore, 'users/' + this.user.id);
       const dealProperty = `ads.${adId}.deal`
-      await updateDoc(userRef,{
+      await updateDoc(userRef, {
         [dealProperty]: true
       })
 
@@ -64,15 +64,15 @@ export class MyAdsListComponent implements OnInit {
     }
   }
 
-  async cancelAdDealByRef(adId:any, adRef:any, adTitle: any){
+  async cancelAdDealByRef(adId: any, adRef: any, adTitle: any) {
     if (adRef && adId) {
       await updateDoc(adRef, {
         deal: false
       });
 
-      const userRef = doc(this.firestore,'users/'+this.user.id);
+      const userRef = doc(this.firestore, 'users/' + this.user.id);
       const dealProperty = `ads.${adId}.deal`
-      await updateDoc(userRef,{
+      await updateDoc(userRef, {
         [dealProperty]: false
       });
 
@@ -80,15 +80,21 @@ export class MyAdsListComponent implements OnInit {
     }
   }
 
-  deleteAd(id:any, adRef:any, title:any){
+
+  //NOT WORKING ON NESTED MAPS
+  async deleteAd(id: any, adRef: any, title: any) {
     const confirm = window.confirm(`Vous allez supprimer votre annonce toutes les données associée seront perdues. \n Voulez-vous vraiment supprimer l'annonce ${title}?`);
+    if (confirm) {
+      await deleteDoc(adRef);
+      const userRef = doc(this.firestore, "users/" + this.user.id);
+      console.log(`users.${userRef.id}.ads.${id}`)
+      await updateDoc(userRef, {
+        ads:{
+          [id]: deleteField()
+        }
+      });
 
-      if (confirm) {
-        console.log('ok');
-      }
-      else{
-        console.log('ko')
-      }
-
+      this.ngOnInit();
+    }
   }
 }

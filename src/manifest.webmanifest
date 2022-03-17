@@ -2,7 +2,7 @@
   "name": "Good Deal",
   "short_name": "Good Deal",
   "description": "Good Deal PWA is an Angular app which enables all students in Montreal to make online trade in an easy way.",
-  "theme_color": "#387ef5",
+  "theme_color": "#F1895C",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
