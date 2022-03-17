@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import Publish from '../../model/publish';
+import { NgForm } from '@angular/forms';
+//import Publish from '../../model/publish';
 import { Injectable } from '@angular/core';
+import { PublishService } from '../../services/publish.service';
 //import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+//import { doc, getDoc, collection, query, getDocs, where, QuerySnapshot, DocumentData } from 'firebase/firestore';
 
 
 @Injectable({
@@ -18,17 +21,17 @@ export class PublishComponent implements OnInit {
 
   path: string = "/publish";
 
-  constructor(public authService: AuthService) { }
+
+  constructor(private publishService: PublishService, public authService: AuthService) { }
 
   ngOnInit(): void {
   }
 
-  /*
-  savePublish(): void {
-    create(publish: Publish): any {
-      return this.publishRef.add({ publish });
-    }
+
+  onSubmit(form: NgForm) {
+    this.publishService.addPublish(form.value).
+      then(() => form.reset());
   }
-  */
+
 
 }

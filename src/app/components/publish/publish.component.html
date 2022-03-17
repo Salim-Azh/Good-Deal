@@ -2,7 +2,7 @@
 
 <h2 align="center">Nouvelle Annonce</h2>
 
-  <form>
+  <form #bookForm="ngForm" (ngSubmit)="onSubmit(bookForm)" >
 
     <div>
       <label class="monText">Titre</label>
@@ -26,7 +26,7 @@
     <textarea style="height: 100px;" class="form-control mb-4 mt-2" id="description" name="description"></textarea>
 
     <div align="center">
-      <button  style="background-color: #FF7900;" class="btn btn-lg btn-primary" type="submit">Publier</button>
+      <button  style="background-color: #FF7900;" class="btn btn-lg btn-primary" type="submit" [disabled]="!bookForm.valid" [disabled]="bookForm.invalid">Publier</button>
     </div>
 
 

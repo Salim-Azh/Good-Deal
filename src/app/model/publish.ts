@@ -1,16 +1,16 @@
-export default class Publish {
-  id!: string;
+export interface Publish {
+  id: string;
   //advertiser!: DocumentReference;
-  advertiserName!: string;
-  category!: string;
+  advertiserName: string;
+  category: string;
   //createdAt!: Timestamp;
-  deal!: boolean;
-  description!: string;
-  imagesUrl!: any[];
-  latitude!: number;
-  longitude!: number;
-  price!: number;
-  residenceName!: string;
-  state!: string;
-  title!: string;
+  deal: boolean;
+  description: string;
+  imagesUrl: any[];
+  latitude: number;
+  longitude: number;
+  price: number;
+  residenceName: string;
+  state: string;
+  title: string;
 }
