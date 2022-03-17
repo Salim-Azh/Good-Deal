@@ -12,9 +12,7 @@ export class SearchbarComponent implements OnInit {
 
   constructor(private firestore: Firestore) {}
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   async getSearchResultsTextWithNoFilters(input: any){
     if(input){

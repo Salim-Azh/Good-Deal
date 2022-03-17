@@ -66,6 +66,7 @@ import { SearchbarComponent } from './components/searchbar/searchbar.component';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatToolbarModule,
+    ServiceWorkerModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

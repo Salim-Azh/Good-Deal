@@ -1,4 +1,13 @@
-<app-searchbar class="full-width" #searchBar></app-searchbar>
+<mat-toolbar class=" fixed sticky header_rect">
+  <mat-toolbar-row fxLayoutAlign="center center" class="example-icon">
+    <input type="search" placeholder="Recherher" class="form-control  mr-sm-2" aria-label="Rechercher" #strSearch>
+    <button (click)='getSearchResultsTextWithNoFilters(strSearch.value)' mat-icon-button class=" search-icon"
+      aria-label="Rechercher">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
 <div fxLayout="row">
   <!-- L'accueil utilise le patron maitre-detail  -->
 
