@@ -30,8 +30,6 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { MyAdsListComponent } from './components/my-ads-list/my-ads-list.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 
-
-
 import { AuthService } from './services/auth.service';
 import { AdDetailsComponent } from './components/ad-details/ad-details.component';
 

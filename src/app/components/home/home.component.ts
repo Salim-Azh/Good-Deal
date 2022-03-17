@@ -14,7 +14,6 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 
 export class HomeComponent implements OnInit {
-
   /**
    * const storage = getStorage();
    * const url = getDownloadURL(ref(storage, 'asus-router-5b2c15befa6bcc0036b45c76.jpg'));
@@ -28,24 +27,10 @@ export class HomeComponent implements OnInit {
   @ViewChild('listAds') listAds!: ElementRef;
   @ViewChild('deatailsAds') detailsAds!: ElementRef;
 
-
   selected: Ad | null = null;
 
-  async onSelect(ad: Ad) {
-    this.selected = ad;
-
-    /**
-     * Lorsqu'on clique sur une annonce ses details doivent apparaitre en pleine ecran
-     */
-    this.listAds.nativeElement.setAttribute('fxHide.lt-sm', '');
-    /**
-     * Et la liste des autres annonces doit disparaitre
-     */
-    this.detailsAds.nativeElement.removeAttribute('fxHide.lt-sm');
-  }
-
-
   constructor(public authService: AuthService, private firestore: Firestore) { }
+
 
   async ngOnInit(): Promise<void> {
     try {
@@ -134,4 +119,46 @@ export class HomeComponent implements OnInit {
     });
     return res;
   }
+
+  async getSearchResultsTextWithNoFilters(input: any){
+    if(input){
+      const q = query(collection(this.firestore, "ads"), where("title", ">=",input), where("title", "<=", input+'\uf8ff'));
+      const docSnap =  await getDocs(q);
+      if(docSnap.size > 0){
+        this.ads = [];
+      }
+      docSnap.docs.forEach(element => {
+        const ad = {
+          id: element.id,
+          advertiser: element.get('advertiser'),
+          advertiserName: element.get('advertiserName'),
+          category: element.get('category'),
+          createdAt: element.get('createdAt'),
+          deal: element.get('deal'),
+          description: element.get('description'),
+          imagesUrl: element.get('imagesUrl'),
+          latitude: element.get('latitude'),
+          longitude: element.get('longitude'),
+          price: element.get('price'),
+          residenceName: element.get('residenceName'),
+          state: element.get('state'),
+          title: element.get('title'),
+        } as Ad
+
+        this.ads.push(ad);
+      });
+    }
+  }
+
+
+  async onSelect(ad: Ad) {
+    /*
+    this.selected = ad;
+    this.listAds.nativeElement.setAttribute('fxHide.lt-sm', '');
+    //Et la liste des autres annonces doit disparaitre
+
+    this.detailsAds.nativeElement.removeAttribute('fxHide.lt-sm');
+    */
+  }
+
 }
