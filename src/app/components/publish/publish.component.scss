@@ -1,0 +1,52 @@
+.container {
+    width: auto;
+    height: auto;
+}
+
+@media (min-width: 300px) and (max-width: 380px) {
+    .scroll {
+        display: block;
+        height: auto;
+        position: relative;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        max-height: 550px;
+    }
+}
+
+@media (min-width: 395px) and (max-width: 415px) {
+    .scroll {
+        display: block;
+        height: auto;
+        position: relative;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        max-height: 780px;
+    }
+}
+
+@media (min-width: 381px) and (max-width: 394px) {
+    .scroll {
+        display: block;
+        height: auto;
+        position: relative;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        max-height: 720px;
+    }
+}
+
+@media (max-width: 299px) {
+    .scroll {
+        display: block;
+        height: auto;
+        position: relative;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        max-height: 880px;
+    }
+}
