@@ -13,6 +13,7 @@ export class Ad {
    longitude!: number;
    price!: number;
    residenceName!: string;
+   residenceRef!:DocumentReference;
    state!: string;
    title!: string;
 }
