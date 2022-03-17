@@ -14,11 +14,17 @@ export class PublishComponent implements OnInit {
 
   path: string = "/publish";
 
+  residenceName: string = "Residence ..."
 
   constructor(public authService: AuthService, private firestore: Firestore) { }
 
   async ngOnInit(): Promise<void> {
-    console.log("test")
+    const uid = getAuth().currentUser?.uid
+    const authUser: User = await this.getUser(uid);
+    if (authUser) {
+      const docSnap = await getDoc(authUser.residence);
+      this.residenceName = docSnap.get('name')
+    }
   }
 
   async createAd(title: any, category: any, price: any, description: any, state: any) {
@@ -45,7 +51,7 @@ export class PublishComponent implements OnInit {
       } as Ad
 
       const newAdRef = await addDoc(collection(this.firestore, "ads"), newAd);
-      console.log("Document written with ID: ", newAdRef.id);
+      //console.log("Document written with ID: ", newAdRef.id);
 
       const dealProperty = `ads.${newAdRef.id}.deal`
       const adRefProp = `ads.${newAdRef.id}.adRef`
@@ -53,7 +59,7 @@ export class PublishComponent implements OnInit {
 
       await updateDoc(userRef,{
         [adRefProp] : newAdRef,
-        [dealProperty]: true,
+        [dealProperty]: false,
         [titleRefProp] : title
       })
     }

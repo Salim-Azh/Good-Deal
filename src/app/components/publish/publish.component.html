@@ -1,44 +1,48 @@
 <div *ngIf="(authService.user |async);else notLoggedIn">
   <div class="flex container">
-    <label class="monText">Titre</label>
-    <input type="text" id="title" name="title" class="form-control mb-4 mt-2" placeholder="Titre" autofocus #Formtitle>
+    <form>
+      <label class="monText">Titre</label>
+      <input type="text" id="title" name="title" class="form-control mb-4 mt-2" placeholder="Titre" autofocus
+        #Formtitle>
 
-    <label class="monText">Catégorie</label>
-    <select class="form-select" id="category" name="category" #FormCat>
-      <option selected>Choisissez une catégorie</option>
-      <option value="Electronique">Electronique</option>
-      <option value="Mobilier">Mobilier</option>
-    </select>
+      <label class="monText">Catégorie</label>
+      <select class="form-select" id="category" name="category" #FormCat>
+        <option selected>Choisissez une catégorie</option>
+        <option value="Electronique">Electronique</option>
+        <option value="Mobilier">Mobilier</option>
+      </select>
 
-    <label class="monText">Prix</label>
-    <div class="input-group">
-      <input type="number" class="form-control" aria-label="Dollar amount (with dot and two decimal places)" #FormPrice>
-      <span class="input-group-text">$</span>
-      <span class="input-group-text">0.00</span>
-    </div>
+      <label class="monText">Prix</label>
+      <div class="input-group">
+        <input type="number" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"
+          #FormPrice>
+        <span class="input-group-text">$</span>
+        <span class="input-group-text">0.00</span>
+      </div>
 
-    <label class="monText">Résidence</label>
-    <input type="text" id="residenceName" name="residenceName" class="form-control mb-4" placeholder="Résidence ... "
-      autofocus disabled>
+      <label class="monText">Résidence</label>
+      <input type="text" id="residenceName" name="residenceName" class="form-control mb-4" placeholder={{residenceName}}
+        autofocus disabled>
 
-    <label for="state">État</label>
-    <select class="form-select" id="state" name="state" #FormState>
-      <option selected>État de l'article</option>
-      <option value="new">Neuf</option>
-      <option value="like new">Usagé - Comme Neuf</option>
-      <option value="used">Usagé</option>
-    </select>
+      <label for="state">État</label>
+      <select class="form-select" id="state" name="state" #FormState>
+        <option selected>État de l'article</option>
+        <option value="new">Neuf</option>
+        <option value="like new">Usagé - Comme Neuf</option>
+        <option value="used">Usagé</option>
+      </select>
 
-    <label class="monText">Description</label>
-    <textarea class="form-control mb-4 mt-2" id="description" name="description" #FormDesc></textarea>
+      <label class="monText">Description</label>
+      <textarea class="form-control mb-4 mt-2" id="description" name="description" #FormDesc></textarea>
 
-    <button style="background-color: #FF7900;" class="btn btn-primary" (click)="createAd(
-      Formtitle.value,
-      FormCat.value,
-      FormPrice.value,
-      FormDesc.value,
-      FormState.value
-      )">Publier</button>
+      <button style="background-color: #FF7900;" class="btn btn-primary" type="reset" (click)="createAd(
+        Formtitle.value,
+        FormCat.value,
+        FormPrice.value,
+        FormDesc.value,
+        FormState.value
+        )">Publier</button>
+    </form>
   </div>
 </div>
 <ng-template #notLoggedIn>
