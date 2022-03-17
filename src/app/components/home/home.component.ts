@@ -152,13 +152,11 @@ export class HomeComponent implements OnInit {
 
 
   async onSelect(ad: Ad) {
-    /*
+    
     this.selected = ad;
-    this.listAds.nativeElement.setAttribute('fxHide.lt-sm', '');
-    //Et la liste des autres annonces doit disparaitre
-
-    this.detailsAds.nativeElement.removeAttribute('fxHide.lt-sm');
-    */
+    //this.listAds.nativeElement.setAttribute('fxHide.lt-sm', '');
+    //this.detailsAds.nativeElement.removeAttribute('fxHide.lt-sm');
+    
   }
 
 }
