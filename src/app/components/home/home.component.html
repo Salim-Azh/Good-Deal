@@ -1,22 +1,25 @@
 <mat-toolbar class=" fixed sticky header_rect">
   <mat-toolbar-row fxLayoutAlign="center center" class="example-icon">
-    <input type="search" placeholder="Recherher" class="form-control  mr-sm-2" aria-label="Rechercher" #strSearch>
-    <button (click)=
-    "getSearchResultsTextWithNoFilters(strSearch.value);
-      getSearchResultsTextByCategory(strSearch.value);
-      getSearchResultsTextByResidence(strSearch.value)" 
-      mat-icon-button class=" search-icon"
-      aria-label="Rechercher">
-      <mat-icon>search</mat-icon>
-    </button>
+      <input
+        type="search"
+        placeholder="Recherher"
+        class="form-control  mr-sm-2"
+        aria-label="Rechercher"
+        #strSearch/>
+      <button
+        (click)="getSearchResultsTextWithNoFilters(strSearch.value);"
+        mat-icon-button class=" search-icon"
+        aria-label="Rechercher">
+        <mat-icon>search</mat-icon>
+      </button>
   </mat-toolbar-row>
 </mat-toolbar>
 
 <div fxLayout="row">
   <!-- L'accueil utilise le patron maitre-detail  -->
-
   <div #listAds class="content" fxFlex.gt-sm="40" fxFill fxShow.gt-sm>
     <h3>Résulats de la recherche</h3>
+
     <div *ngIf="ads.length > 0; else noAds">
       <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="flex-start">
           <div fxFlex="50" *ngFor="let ad of ads" [class.selected]="ad === selected" (click)="onSelect(ad)">
@@ -45,5 +48,5 @@
 
 
 <ng-template #noAds>
-  Il n'y a pas d'annonces pour cette résidence.
+  Aucune annonce trouvée pour votre recherche.
 </ng-template>

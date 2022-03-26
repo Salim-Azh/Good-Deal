@@ -13,8 +13,8 @@
       </a>
 
       <div class="d-flex flex-row justify-content-between align-items-center" style="min-width: 10vw;">
-        <button *ngIf="!ad.deal" class="btn-sm btn-deal" (click)="markAdAsDealByRef(ad.id, ad.adRef, ad.title)">Deal</button>
-        <button *ngIf="ad.deal" class="btn-sm btn-secondary" (click)="cancelAdDealByRef(ad.id, ad.adRef, ad.title)">Rétablir</button>
+        <button *ngIf="!ad.deal" class="btn-sm btn-deal" (click)="markAdAsDealByRef(ad.id, ad.adRef)">Deal</button>
+        <button *ngIf="ad.deal" class="btn-sm btn-secondary" (click)="cancelAdDealByRef(ad.id, ad.adRef)">Rétablir</button>
         <button class="btn-sm btn-danger-custom" (click)="deleteAd(ad.id, ad.adRef, ad.title)">Supprimer</button>
       </div>
     </div>

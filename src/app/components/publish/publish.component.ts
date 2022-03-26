@@ -5,6 +5,8 @@ import { Ad } from 'src/app/model/ad.model';
 import { getAuth } from 'firebase/auth';
 import { User } from 'src/app/model/user.model';
 import { Firestore } from '@angular/fire/firestore';
+import { UserService } from 'src/app/services/user.service';
+import { AdService } from 'src/app/services/ad.service';
 @Component({
   selector: 'app-publish',
   templateUrl: './publish.component.html',
@@ -12,81 +14,38 @@ import { Firestore } from '@angular/fire/firestore';
 })
 export class PublishComponent implements OnInit {
 
+  user: User;
   path: string = "/publish";
 
   residenceName: string = "Residence ..."
 
-  constructor(public authService: AuthService, private firestore: Firestore) { }
+  constructor(
+    public authService: AuthService,
+    private userService: UserService,
+    private adService: AdService
+  ) {
+    this.user = new User();
+  }
 
   async ngOnInit(): Promise<void> {
     const uid = getAuth().currentUser?.uid
-    const authUser: User = await this.getUser(uid);
-    if (authUser) {
-      const docSnap = await getDoc(authUser.residence);
+    this.user = await this.userService.getUser(uid);
+    if (this.user) {
+      const docSnap = await getDoc(this.user.residence);
       this.residenceName = docSnap.get('name')
     }
   }
 
-  async createAd(title: any, category: any, price: any, description: any, state: any) {
-    const uid = getAuth().currentUser?.uid
-    const authUser: User = await this.getUser(uid);
-    if (authUser) {
-      const docSnap = await getDoc(authUser.residence);
-      const userRef = doc(this.firestore, `users/${authUser.id}`);
-
-      const newAd = {
-        advertiser: userRef,
-        advertiserName: authUser.username,
-        category: category,
-        createdAt: Timestamp.fromDate(new Date()),
-        deal: false,
-        description: description,
-        latitude: docSnap.get('latitude'),
-        longitude: docSnap.get('longitude'),
-        price: price,
-        residenceName: docSnap.get('name'),
-        residenceRef: authUser.residence,
-        state: state,
-        title: title,
-      } as Ad
-
-      const newAdRef = await addDoc(collection(this.firestore, "ads"), newAd);
-      //console.log("Document written with ID: ", newAdRef.id);
-
-      const dealProperty = `ads.${newAdRef.id}.deal`
-      const adRefProp = `ads.${newAdRef.id}.adRef`
-      const titleRefProp = `ads.${newAdRef.id}.title`
-
-      await updateDoc(userRef,{
-        [adRefProp] : newAdRef,
-        [dealProperty]: false,
-        [titleRefProp] : title
-      })
+  async createAd(
+    title: string,
+    category: any,
+    price: any,
+    description: any,
+    state: any
+  ) {
+    if (this.user) {
+      this.adService.createAd(title, category, price, description, state);
     }
   }
 
-  async getUser(id: any): Promise<any> {
-    if (id) {
-      const docRef = doc(this.firestore, "users", id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        let ads = [];
-
-        for (const adObj in docSnap.get("ads")) {
-          ads.push({
-            adRef: docSnap.get("ads")[adObj].adRef,
-            title: docSnap.get("ads")[adObj].title,
-            deal: docSnap.get("ads")[adObj].deal,
-            id: adObj
-          })
-        }
-        return {
-          id: docSnap.id,
-          username: docSnap.get("username"),
-          residence: docSnap.get("residence"),
-          ads: ads
-        } as User
-      }
-    }
-  }
 }
