@@ -1,11 +1,11 @@
-import { DocumentReference } from 'firebase/firestore';
-import { Ad } from './ad.model';
+import { DocumentReference } from "firebase/firestore";
 
-export class Residence {
-   id!: string;
-   name!: string;
-   city!: string;
-   displayAddress!: string;
-   latitude!: number;
-   longitude!: number;
+export interface Residence {
+   id: string;
+   reference: DocumentReference;
+   name: string;
+   city: string;
+   displayAddress: string;
+   latitude: number;
+   longitude: number;
 }

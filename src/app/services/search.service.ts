@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { getAuth } from 'firebase/auth';
-import { collection, getDocs, query, QuerySnapshot, where } from 'firebase/firestore';
-import { DocumentData } from 'rxfire/firestore/interfaces';
+import { collection, DocumentData, DocumentReference, getDocs, query, QuerySnapshot, where } from 'firebase/firestore';
 import { Ad } from '../model/ad.model';
 import { User } from '../model/user.model';
 import { UserService } from './user.service';
@@ -22,16 +21,17 @@ export class SearchService {
     return this.userService.getUser(uid);
   }
 
-  private getResultsForSearchDefaultLogout() {
-    return getDocs(
+  async getAds() {
+    const docsSnap = await getDocs(
       query(
         collection(this.firestore, "ads"),
         where("deal", "==", false)
       )
     );
+    return this.fillResults(docsSnap)
   }
 
-  private async getResultsForSearchDefaultConnected() {
+  private async getResultsSearchDefaultConnected() {
     const user: User = await this.getUser();
     if (user) {
       const q = query(
@@ -47,11 +47,10 @@ export class SearchService {
   async searchDefault() {
     let ads: Ad[] = [];
     if (!getAuth().currentUser) {
-      const docsSnap = await this.getResultsForSearchDefaultLogout();
-      ads = this.fillResults(docsSnap)
+      ads = await this.getAds();
     }
     else {
-      const docsSnap = await this.getResultsForSearchDefaultConnected();
+      const docsSnap = await this.getResultsSearchDefaultConnected();
       if (docsSnap) {
         ads = this.fillResults(docsSnap)
       }
@@ -59,6 +58,52 @@ export class SearchService {
     return ads;
   }
 
+  async searchText(input: string){
+    let ads: Ad[] = [];
+    if(input){
+      const text = input.toLowerCase();
+      const q = query(
+        collection(this.firestore, "ads"),
+        where("deal", "==", false),
+        where("titleIgnoreCase", ">=",text),
+        where("titleIgnoreCase", "<=", text+'\uf8ff')
+      );
+      const docSnap =  await getDocs(q);
+      ads = this.fillResults(docSnap);
+    }
+    return ads;
+  }
+
+  async searchResidence(residenceRef: DocumentReference<DocumentData>) {
+    let ads: Ad[] = [];
+    if (residenceRef) {
+      const q = query(
+        collection(this.firestore, "ads"),
+        where("deal", "==", false),
+        where("residenceRef", "==", residenceRef)
+      );
+      const docSnap =  await getDocs(q);
+      ads = this.fillResults(docSnap);
+    }
+    return ads;
+  }
+
+  async searchTextResidence(input: string, residenceRef: DocumentReference<DocumentData>) {
+    let ads: Ad[] = [];
+    if (input && residenceRef) {
+      const text = input.toLowerCase();
+      const q = query(
+        collection(this.firestore, "ads"),
+        where("deal", "==", false),
+        where("residenceRef", "==", residenceRef),
+        where("titleIgnoreCase", ">=",text),
+        where("titleIgnoreCase", "<=", text+'\uf8ff')
+      );
+      const docSnap =  await getDocs(q);
+      ads = this.fillResults(docSnap);
+    }
+    return ads;
+  }
 
   private fillResults(docSnap: QuerySnapshot<DocumentData>) {
     let ads: Ad[] = [];
@@ -86,23 +131,6 @@ export class SearchService {
     return ads;
   }
 
-  async getSearchResultsTextWithNoFilters(input: string){
-    let ads: Ad[] = [];
-    if(input){
-      const text = input.toLowerCase();
-      const q = query(
-        collection(this.firestore, "ads"),
-        where("deal", "==", false),
-        where("titleIgnoreCase", ">=",text),
-        where("titleIgnoreCase", "<=", text+'\uf8ff')
-      );
-      const docSnap =  await getDocs(q);
-      ads = this.fillResults(docSnap);
-    }
-    return ads;
-  }
-
-
 /*
   async getSearchResultsTextByCategory(input: any){
     let ads: Ad[] = [];
@@ -112,22 +140,6 @@ export class SearchService {
         where("category", ">=",input),
         where("category", "<=", input+'\uf8ff'),
         where("deal", "==", false));
-
-      const docSnap =  await getDocs(q);
-      ads = this.fillResults(docSnap);
-    }
-    return ads;
-  }
-
-  async getSearchResultsTextByResidence(input: any){
-    let ads: Ad[] = [];
-    if(input){
-      const q = query(
-        collection(this.firestore, "ads"),
-        where("residenceName", ">=",input),
-        where("residenceName", "<=", input+'\uf8ff'),
-        where("deal", "==", false)
-      );
 
       const docSnap =  await getDocs(q);
       ads = this.fillResults(docSnap);

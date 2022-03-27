@@ -1,19 +1,29 @@
-<mat-toolbar class=" fixed sticky header_rect">
-  <mat-toolbar-row fxLayoutAlign="center center" class="example-icon">
-      <input
-        type="search"
-        placeholder="Recherher"
-        class="form-control  mr-sm-2"
-        aria-label="Rechercher"
-        #strSearch/>
-      <button
-        (click)="getSearchResultsTextWithNoFilters(strSearch.value);"
-        mat-icon-button class=" search-icon"
+<div class="header_rect p-3">
+  <div class="container-fluid">
+    <form class="d-flex align-items-center">
+      <input type="search" placeholder="Rechercher" class="form-control me-1" aria-label="Rechercher" #strSearch />
+
+      <button type="button" (click)="search(strSearch.value);" mat-icon-button class="search-btn"
         aria-label="Rechercher">
         <mat-icon>search</mat-icon>
+        Rechercher
       </button>
-  </mat-toolbar-row>
-</mat-toolbar>
+
+      <button (click)="switchFilters()" class="btn btn-outline-secondary btn-sm btn-filters"
+        type="button">Filtres</button>
+    </form>
+  </div>
+</div>
+<div *ngIf="showFilters" class="mx-4 mt-3 px-2 py-2 filters-container">
+  <h3 class="ms-2">Filtres</h3>
+  <select class="form-select custom-select" name="residence" id="residence" #residenceRef
+    (change)="onChangeResidence(residenceRef.value)">
+    <option selected value="none">-- Résidence --</option>
+    <option *ngFor="let res of residences" value={{res.name}}>{{res.name}}</option>
+  </select>
+</div>
+
+
 
 <div fxLayout="row">
   <!-- L'accueil utilise le patron maitre-detail  -->
@@ -22,19 +32,19 @@
 
     <div *ngIf="ads.length > 0; else noAds">
       <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="flex-start">
-          <div fxFlex="50" *ngFor="let ad of ads" [class.selected]="ad === selected" (click)="onSelect(ad)">
-            <mat-card class="mat-elevation-z4">
-              <img mat-card-image src="../../../assets/img/asus-router.jpg" alt="Image de l'annonce">
-              <mat-card-content>
-                <mat-card-title>
-                  {{ad.title}}
-                </mat-card-title>
-                <p>
-                  {{ad.price}}$CA
-                </p>
-              </mat-card-content>
-            </mat-card>
-          </div>
+        <div fxFlex="50" *ngFor="let ad of ads" [class.selected]="ad === selected" (click)="onSelect(ad)">
+          <mat-card class="mat-elevation-z4">
+            <img mat-card-image src="../../../assets/img/asus-router.jpg" alt="Image de l'annonce">
+            <mat-card-content>
+              <mat-card-title>
+                {{ad.title}}
+              </mat-card-title>
+              <p>
+                {{ad.price}}$CA
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
       </div>
     </div>
   </div>
