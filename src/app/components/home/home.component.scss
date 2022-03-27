@@ -33,7 +33,7 @@ img {
 
  .search-btn {
   color: rgba(255, 121, 0, 1);
-  margin-right: 5rem;
+  margin-right: 7rem;
 }
 
 .header_rect {
@@ -42,7 +42,7 @@ img {
 }
 
 
-input {
+.input-search {
   outline-color: #ff7900;
   border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -51,8 +51,10 @@ input {
   -o-border-radius: 10px;
 }
 
-.btn-filters{
-  height: 30px;
+.badge-filter{
+  position: absolute;
+  top:15px;
+  background-color: #ff7900;
 }
 
 .custom-select{

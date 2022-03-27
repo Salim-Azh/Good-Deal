@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit {
   }
 
   switchFilters(){
-    this.showFilters = !this.showFilters
+    this.showFilters = !this.showFilters;
   }
 
   onChangeResidence(residenceName : string){

@@ -1,7 +1,7 @@
 <div class="header_rect p-3">
   <div class="container-fluid">
     <form class="d-flex align-items-center">
-      <input type="search" placeholder="Rechercher" class="form-control me-1" aria-label="Rechercher" #strSearch />
+      <input type="search" placeholder="Rechercher" class="form-control me-1 input-search" aria-label="Rechercher" #strSearch />
 
       <button type="button" (click)="search(strSearch.value);" mat-icon-button class="search-btn"
         aria-label="Rechercher">
@@ -9,21 +9,39 @@
         Rechercher
       </button>
 
-      <button (click)="switchFilters()" class="btn btn-outline-secondary btn-sm btn-filters"
-        type="button">Filtres</button>
+      <button (click)="switchFilters()" class="btn btn-outline-secondary btn-sm" type="button">
+        Filtres <span *ngIf="selectedResidence" class="badge badge-filter" id="badgeFilter">1</span>
+      </button>
+
     </form>
   </div>
 </div>
+
 <div *ngIf="showFilters" class="mx-4 mt-3 px-2 py-2 filters-container">
   <h3 class="ms-2">Filtres</h3>
+
   <select class="form-select custom-select" name="residence" id="residence" #residenceRef
     (change)="onChangeResidence(residenceRef.value)">
-    <option selected value="none">-- Résidence --</option>
-    <option *ngFor="let res of residences" value={{res.name}}>{{res.name}}</option>
+
+    <div *ngIf="!selectedResidence; then noneSelected else noneNotSelected"></div>
+
+    <ng-template #noneSelected>
+      <option selected value="none">-- Résidence --</option>
+      <ng-container *ngFor="let res of residences">
+        <option value={{res.name}}>{{res.name}}</option>
+      </ng-container>
+    </ng-template>
+
+    <ng-template #noneNotSelected>
+      <option value="none">-- Résidence --</option>
+      <ng-container *ngFor="let res of residences">
+        <option *ngIf="selectedResidence && res.name == selectedResidence.name" selected value={{res.name}}>{{res.name}}</option>
+        <option *ngIf="selectedResidence && res.name != selectedResidence.name" value={{res.name}}>{{res.name}}</option>
+      </ng-container>
+    </ng-template>
+    
   </select>
 </div>
-
-
 
 <div fxLayout="row">
   <!-- L'accueil utilise le patron maitre-detail  -->
