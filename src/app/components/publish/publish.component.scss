@@ -3,6 +3,14 @@
     height: auto;
 }
 
+.modal__content {
+    position: absolute;
+    width: 100%;
+    bottom: 100px;
+    top: 5px;
+    overflow-y: scroll;
+}
+
 @media (min-width: 300px) and (max-width: 380px) {
     .scroll {
         display: block;
