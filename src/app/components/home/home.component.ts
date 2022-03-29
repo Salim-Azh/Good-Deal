@@ -74,6 +74,7 @@ export class HomeComponent implements OnInit {
         }
       });
     }
+    this.showFilters = false;
   }
 
   async getSearchResultsTextWithNoFilters(input: any) {
