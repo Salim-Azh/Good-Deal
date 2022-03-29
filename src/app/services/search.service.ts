@@ -61,17 +61,9 @@ export class SearchService {
   async searchText(input: string){
     let ads: Ad[] = [];
     if(input){
-      const text = input.toLowerCase();
-      const q = query(
-        collection(this.firestore, "ads"),
-        where("deal", "==", false),
-        where("titleIgnoreCase", ">=",text),
-        where("titleIgnoreCase", "<=", text+'\uf8ff')
-      );
-      const docSnap =  await getDocs(q);
-      ads = this.fillResults(docSnap);
+      ads = await this.getAds();
     }
-    return ads;
+    return this.textSearch(ads,input);
   }
 
   async searchResidence(residenceRef: DocumentReference<DocumentData>) {
@@ -91,18 +83,26 @@ export class SearchService {
   async searchTextResidence(input: string, residenceRef: DocumentReference<DocumentData>) {
     let ads: Ad[] = [];
     if (input && residenceRef) {
-      const text = input.toLowerCase();
       const q = query(
         collection(this.firestore, "ads"),
         where("deal", "==", false),
-        where("residenceRef", "==", residenceRef),
-        where("titleIgnoreCase", ">=",text),
-        where("titleIgnoreCase", "<=", text+'\uf8ff')
+        where("residenceRef", "==", residenceRef)
       );
       const docSnap =  await getDocs(q);
       ads = this.fillResults(docSnap);
     }
-    return ads;
+    return this.textSearch(ads, input);
+  }
+
+  private textSearch(ads: Ad[], text: string){
+    let results: Ad[] = [];
+    ads.forEach(ad => {
+      const re = new RegExp(`\\b${text}\\b`, 'i');
+      if(ad.titleIgnoreCase.search(re) != -1){
+        results.push(ad);
+      }
+    });
+    return results;
   }
 
   private fillResults(docSnap: QuerySnapshot<DocumentData>) {

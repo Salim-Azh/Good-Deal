@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { User } from '../../model/user.model';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Ad } from 'src/app/model/ad.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { SearchService } from 'src/app/services/search.service';
 import { ResidenceService } from 'src/app/services/residence.service';
 import { Residence } from 'src/app/model/residence.model';
+import { Firestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-home',
@@ -35,7 +36,7 @@ export class HomeComponent implements OnInit {
   selectedResidence: Residence | undefined = undefined;
   user: User;
   selected: Ad | null = null;
-
+  authUid: string |undefined;
   showFilters: boolean;
 
   constructor(
@@ -46,25 +47,38 @@ export class HomeComponent implements OnInit {
   ) {
     this.user = new User();
     this.showFilters = false;
+    this.authUid = undefined;
+
   }
 
+  async init(){
+    onAuthStateChanged(getAuth(), async user => {
+      this.ads = await this.searchService.searchDefault();
+      if (user) {
+        this.authUid = user.uid;
+        this.user = await this.userService.getUser(this.authUid);
+        this.residences = await this.residenceService.getResidences();
+        this.residences.forEach(residence => {
+          if (this.user.residence.path == residence.reference.path) {
+            this.selectedResidence = residence;
+          }
+        });
+      }
+      else{
+        this.residences = await this.residenceService.getResidences();
+      }
+    })
+  }
 
   async ngOnInit(): Promise<void> {
-    const uid = getAuth().currentUser?.uid;
-    try {
-      this.user = await this.userService.getUser(uid);
-      this.ads = await this.searchService.searchDefault();
-      this.residences = await this.residenceService.getResidences();
-    } catch (error) {
-      console.log(error)
-    }
+    await this.init()
   }
 
   switchFilters(){
     this.showFilters = !this.showFilters;
   }
 
-  onChangeResidence(residenceName : string){
+  onChangeResidence(residenceName : string, input?:string){
     if (residenceName =="none") {
       this.selectedResidence = undefined;
     } else {
@@ -75,6 +89,7 @@ export class HomeComponent implements OnInit {
       });
     }
     this.showFilters = false;
+    this.search(input);
   }
 
   async getSearchResultsTextWithNoFilters(input: any) {
@@ -86,6 +101,7 @@ export class HomeComponent implements OnInit {
   async search(input?: string) {
     if(this.selectedResidence){
       if (input) {
+        console.log("a")
         this.ads = await this.searchService.searchTextResidence(input, this.selectedResidence.reference);
       }
       else {
