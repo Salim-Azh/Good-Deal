@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from '../../model/user.model';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Ad } from 'src/app/model/ad.model';
@@ -7,7 +7,6 @@ import { UserService } from 'src/app/services/user.service';
 import { SearchService } from 'src/app/services/search.service';
 import { ResidenceService } from 'src/app/services/residence.service';
 import { Residence } from 'src/app/model/residence.model';
-import { Firestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-home',
