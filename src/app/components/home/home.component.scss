@@ -1,5 +1,5 @@
 .content {
-   padding: 16px;
+    padding: 16px;
 }
 
 h3 {
@@ -10,67 +10,77 @@ img {
     max-width: 121%;
     max-height: 120px;
     border-bottom: 1px solid lightgrey;
- }
+}
 
- mat-card-content{
+mat-card-content {
     text-align: left;
- }
+}
 
- mat-card-title{
+mat-card-title {
     font-size: 15px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
- }
+}
 
- p{
+p {
     color: #F1895C;
- }
+}
 
- a{
+a {
     text-decoration: none;
- }
+}
 
- .search-btn {
-  color: rgba(255, 121, 0, 1);
-  margin-right: 7rem;
+.search-btn {
+    color: rgba(255, 121, 0, 1);
+    margin-right: 7rem;
 }
 
 .header_rect {
-  filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.161));
-  background-color: white;
+    filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.161));
+    background-color: white;
 }
-
 
 .input-search {
-  outline-color: #ff7900;
-  border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
+    outline-color: #ff7900;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
 }
 
-.badge-filter{
-  position: absolute;
-  top:15px;
-  background-color: #ff7900;
+.badge-filter {
+    position: absolute;
+    top: 15px;
+    background-color: #ff7900;
 }
 
-.custom-select{
-  border-color:rgba(81, 96, 121, 1);
-  color: rgba(81, 96, 121, 1);
-  max-width: 50rem;
+.custom-select {
+    border-color: rgba(81, 96, 121, 1);
+    color: rgba(81, 96, 121, 1);
+    max-width: 50rem;
 }
 
-.filters-container{
-  background-color: white;
-  filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.161));
-  border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-
+.filters-container {
+    background-color: white;
+    filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.161));
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
 }
 
+
+/*.modal__content {
+    position: absolute;
+    width: auto;
+    bottom: 80px;
+    top: 80px;
+    overflow-y: auto;
+}*/
+
+.detail .select.selected mat-card {
+    box-shadow: 2px 2px 2px 2px #ff7900;
+}
