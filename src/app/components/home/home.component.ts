@@ -58,9 +58,34 @@ export class HomeComponent implements OnInit {
   
   }
 
+  /**
+   * Innitialisation du patron maître-détails 
+   * selon la taille de l'écran
+   */
+   async initMasterDetailsPattern(){
+
+    this.getScreenWidth = window.innerWidth;
+
+    if(this.getScreenWidth < this.SCREEN_SM){
+      this.adsDisplay = "block";
+      this.adDetailsDisplay = "none";
+    }else{
+      this.returnDisplay = "none";
+    }
+  }
+
   async init(){
+
+    await this.initMasterDetailsPattern();
+
     onAuthStateChanged(getAuth(), async user => {
+
       this.ads = await this.searchService.searchDefault();
+
+      if(this.getScreenWidth > this.SCREEN_SM){
+        this.selected = this.ads[0];
+      }
+
       if (user) {
         this.authUid = user.uid;
         this.user = await this.userService.getUser(this.authUid);
@@ -77,25 +102,8 @@ export class HomeComponent implements OnInit {
     })
   }
 
-
-  /**
-   * Innitialisation du patron maître-détails 
-   * selon la taille de l'écran
-   */
-  async initMasterDetailsPattern(){
-
-    this.getScreenWidth = window.innerWidth;
-
-    if(this.getScreenWidth < this.SCREEN_SM){
-      this.adsDisplay = "block";
-      this.adDetailsDisplay = "none";
-    }
-
-  }
-
   async ngOnInit(): Promise<void> {
-    await this.init()
-    await this.initMasterDetailsPattern();
+    await this.init();
   }
 
   /**
@@ -108,17 +116,22 @@ export class HomeComponent implements OnInit {
 
     
     if(this.getScreenWidth < this.SCREEN_SM){
-      console.log(this.detailsMode);
       if(this.detailsMode==false){
         this.adDetailsDisplay = "none";
       }else{
         this.adDetailsDisplay = "block";
+        this.returnDisplay = "block";
         this.adsDisplay = "none";
       } 
     } else {
       this.adDetailsDisplay = "block";
       this.adsDisplay = "block";
       this.returnDisplay = "none";
+
+      if(this.selected==null){
+        this.selected = this.ads[0];
+      }
+
     }
   }
 
@@ -197,7 +210,7 @@ export class HomeComponent implements OnInit {
    */
   async redirectedToAdsList(){
     this.detailsMode = false;
-    console.log(this.detailsMode);
+    this.selected = null;
     this.adDetailsDisplay = "none";
     this.adsDisplay = "block";
   }
