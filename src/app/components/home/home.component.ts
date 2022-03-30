@@ -42,6 +42,7 @@ export class HomeComponent implements OnInit {
   SCREEN_SM = 960;
   adsDisplay = "";
   adDetailsDisplay = "";
+  returnDisplay = "";
 
   constructor(
     public authService: AuthService,
@@ -107,6 +108,7 @@ export class HomeComponent implements OnInit {
       this.adDetailsDisplay = "none";
     } else {
       this.adDetailsDisplay = "block";
+      this.returnDisplay = "none";
     }
   }
 
@@ -170,6 +172,19 @@ export class HomeComponent implements OnInit {
     if(this.getScreenWidth < this.SCREEN_SM){
       this.adsDisplay = "none";
       this.adDetailsDisplay = "block";
+      this.returnDisplay = "block";
+    }else{
+      this.returnDisplay = "none";
     }
+  }
+
+  /**Mode téléphone:
+   * permet à l'utilisateur de retourner dur la liste des annonces
+   * lorsqu'il est sur les détails d'une annonce
+   * 
+   */
+  async redirectedToAdsList(){
+    this.adDetailsDisplay = "none";
+    this.adsDisplay = "block";
   }
 }
