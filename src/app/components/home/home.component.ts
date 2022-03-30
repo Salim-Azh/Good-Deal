@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { User } from '../../model/user.model';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Ad } from 'src/app/model/ad.model';
@@ -38,6 +38,11 @@ export class HomeComponent implements OnInit {
   authUid: string |undefined;
   showFilters: boolean;
 
+  public getScreenWidth: any;
+  SCREEN_SM = 960;
+  adsDisplay = "";
+  adDetailsDisplay = "";
+
   constructor(
     public authService: AuthService,
     private userService: UserService,
@@ -47,7 +52,7 @@ export class HomeComponent implements OnInit {
     this.user = new User();
     this.showFilters = false;
     this.authUid = undefined;
-
+  
   }
 
   async init(){
@@ -69,8 +74,40 @@ export class HomeComponent implements OnInit {
     })
   }
 
+
+  /**
+   * Innitialisation du patron maître-détails 
+   * selon la taille de l'écran
+   */
+  async initMasterDetailsPattern(){
+
+    this.getScreenWidth = window.innerWidth;
+
+    if(this.getScreenWidth < this.SCREEN_SM){
+      this.adsDisplay = "block";
+      this.adDetailsDisplay = "none";
+    }
+
+  }
+
   async ngOnInit(): Promise<void> {
     await this.init()
+    await this.initMasterDetailsPattern();
+  }
+
+  /**
+   * Dès que la taille de l'écran change le patron maître-détails s'adapte
+   */
+  @HostListener('window:resize',['$event'])
+  onWindowResize(){
+
+    this.getScreenWidth = window.innerWidth;
+
+    if(this.getScreenWidth < this.SCREEN_SM){
+      this.adDetailsDisplay = "none";
+    } else {
+      this.adDetailsDisplay = "block";
+    }
   }
 
   switchFilters(){
@@ -117,16 +154,22 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  /**
+   * 
+   * @param ad = l'annonce sélectionnée par l'utilisateur
+   * 
+   */
   async onSelect(ad: Ad) {
     this.selected = ad;
-    //this.listAds.nativeElement.setAttribute('fxHide.lt-sm', '');
-    //this.detailsAds.nativeElement.removeAttribute('fxHide.lt-sm');
+
+    /**Mode téléphone : 
+     * lorsqu'une annonce est sélectionné 
+     * la liste des annonces disparait 
+     * et les détails de l'annonce sélectionnée apparaissent
+     */   
+    if(this.getScreenWidth < this.SCREEN_SM){
+      this.adsDisplay = "none";
+      this.adDetailsDisplay = "block";
+    }
   }
-
-
-  //Récupération d'elements html pour gérer la version phone de l'affichage
-  //des détails d'une annonce Failed
-  //@ViewChild('listAds') listAds!: ElementRef;
-  //@ViewChild('deatailsAds') detailsAds!: ElementRef;
-
 }
