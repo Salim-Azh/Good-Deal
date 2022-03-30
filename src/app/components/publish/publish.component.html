@@ -1,26 +1,23 @@
-<div *ngIf="(authService.user |async);else notLoggedIn" class="modal__content">
+<div *ngIf="(authService.user | async);else notLoggedIn" class="modal__content">
     <div class="flex container">
         <form>
-            <label class="monText">Titre</label>
-            <input type="text" id="title" name="title" class="form-control mb-4 mt-2" placeholder="Titre" autofocus #Formtitle>
+            <h2>Déposer une annonce dans la résidence {{residenceName}}</h2>
+            <label class="monText">  Titre de mon annonce</label>
+            <input type="text" id="title" name="title" class="form-control mb-4 mt-2" placeholder="Exemple : Rideaux de douche" autofocus #Formtitle>
 
-            <label class="monText">Catégorie</label>
+            <label class="monText">  Catégorie</label>
             <select class="form-select" id="category" name="category" #FormCat>
-        <option selected>Choisissez une catégorie</option>
-        <option value="Electronique">Electronique</option>
-        <option value="Mobilier">Mobilier</option>
-      </select>
+                <option selected>Choisissez une catégorie</option>
+                <option value="Electronique">Electronique</option>
+                <option value="Mobilier">Mobilier</option>
+            </select>
 
             <label class="monText">Prix</label>
             <div class="input-group">
                 <input type="number" class="form-control" aria-label="Dollar amount (with dot and two decimal places)" #FormPrice>
-                <span class="input-group-text">$</span>
-                <span class="input-group-text">0.00</span>
+                <span class="input-group-text">$CA</span>
             </div>
-
-            <label class="monText">Résidence</label>
-            <input type="text" id="residenceName" name="residenceName" class="form-control mb-4" placeholder={{residenceName}} autofocus disabled>
-
+            
             <label for="state">État</label>
             <select class="form-select" id="state" name="state" #FormState>
         <option selected>État de l'article</option>
