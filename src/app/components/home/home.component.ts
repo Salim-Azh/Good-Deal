@@ -43,6 +43,8 @@ export class HomeComponent implements OnInit {
   adsDisplay = "";
   adDetailsDisplay = "";
   returnDisplay = "";
+  detailsMode = false;
+  
 
   constructor(
     public authService: AuthService,
@@ -104,10 +106,18 @@ export class HomeComponent implements OnInit {
 
     this.getScreenWidth = window.innerWidth;
 
+    
     if(this.getScreenWidth < this.SCREEN_SM){
-      this.adDetailsDisplay = "none";
+      console.log(this.detailsMode);
+      if(this.detailsMode==false){
+        this.adDetailsDisplay = "none";
+      }else{
+        this.adDetailsDisplay = "block";
+        this.adsDisplay = "none";
+      } 
     } else {
       this.adDetailsDisplay = "block";
+      this.adsDisplay = "block";
       this.returnDisplay = "none";
     }
   }
@@ -162,6 +172,8 @@ export class HomeComponent implements OnInit {
    * 
    */
   async onSelect(ad: Ad) {
+    this.detailsMode = true;
+    console.log(this.detailsMode);
     this.selected = ad;
 
     /**Mode téléphone : 
@@ -184,6 +196,8 @@ export class HomeComponent implements OnInit {
    * 
    */
   async redirectedToAdsList(){
+    this.detailsMode = false;
+    console.log(this.detailsMode);
     this.adDetailsDisplay = "none";
     this.adsDisplay = "block";
   }
