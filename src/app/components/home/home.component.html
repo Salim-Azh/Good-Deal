@@ -66,6 +66,9 @@
     </div>
 
     <div class="content ad-details" id="ad-details" *ngIf="selected != null" [style.display]="adDetailsDisplay">
+        <button (click)="redirectedToAdsList()" class="btn btn-outline-secondary btn-sm" type="button" [style.display]="returnDisplay">
+            Retour
+        </button>
         <app-ad-details [ad]="selected">
         </app-ad-details>
     </div>
