@@ -1,5 +1,5 @@
 .content {
-    padding: 16px;
+    padding: 25px;
 }
 
 h3 {
@@ -41,6 +41,7 @@ a {
     background-color: white;
 }
 
+
 .input-search {
     outline-color: #ff7900;
     border-radius: 10px;
@@ -74,4 +75,9 @@ a {
 
 .detail .select.selected mat-card {
     box-shadow: 2px 2px 2px 2px #ff7900;
+}
+
+.ads {
+    background-color: #f5f5f5;
+    border-right: 1px solid lightgrey;
 }
