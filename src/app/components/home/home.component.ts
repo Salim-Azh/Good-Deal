@@ -44,6 +44,10 @@ export class HomeComponent implements OnInit {
   adDetailsDisplay = "";
   returnDisplay = "";
   detailsMode = false;
+
+  searchCSS="";
+  adsCSS="";
+  detailsCSS="";
   
 
   constructor(
@@ -84,6 +88,7 @@ export class HomeComponent implements OnInit {
 
       if(this.getScreenWidth > this.SCREEN_SM){
         this.selected = this.ads[0];
+        this.setTabletCSS();
       }
 
       if (user) {
@@ -114,8 +119,10 @@ export class HomeComponent implements OnInit {
 
     this.getScreenWidth = window.innerWidth;
 
-    
     if(this.getScreenWidth < this.SCREEN_SM){
+      this.searchCSS="";
+      this.adsCSS="";
+      this.detailsCSS="";
       if(this.detailsMode==false){
         this.adDetailsDisplay = "none";
       }else{
@@ -127,12 +134,21 @@ export class HomeComponent implements OnInit {
       this.adDetailsDisplay = "block";
       this.adsDisplay = "block";
       this.returnDisplay = "none";
+      this.setTabletCSS();
 
       if(this.selected==null){
         this.selected = this.ads[0];
       }
 
     }
+  }
+
+  setTabletCSS(){
+
+    this.searchCSS="position:fixed; right:0; left:0; z-index:1;";
+    this.adsCSS="float:left; width:40%; overflow:scroll; padding-top:100px;";
+    this.detailsCSS="float:left; height:100vh !important; width:60%; overflow:hidden; position:fixed; right:0; top:0; padding-top:100px;";
+
   }
 
   switchFilters(){
