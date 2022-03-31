@@ -25,7 +25,40 @@ export class MyAdsListComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const uid = getAuth().currentUser?.uid
     this.user = await this.userService.getUser(uid);
-    this.ads = this.user.ads
+    this.setAds(this.user.ads)
+  }
+
+  setAds(ads: { adRef: DocumentReference, title: string, id?: string, deal: boolean }[]){
+
+    let dealAds: { adRef: DocumentReference, title: string, id?: string, deal: boolean }[] = [];
+    let noDealAds: { adRef: DocumentReference, title: string, id?: string, deal: boolean }[] = [];
+
+    let results: { adRef: DocumentReference, title: string, id?: string, deal: boolean }[] = [];
+
+    // sort by title
+    ads.sort((a,b)=>{
+      return a.title.localeCompare(b.title);
+    })
+
+    //split by deal
+    ads.forEach(ad => {
+      if(ad.deal){
+        dealAds.push(ad);
+      }
+      else{
+        noDealAds.push(ad);
+      }
+    });
+
+    dealAds.forEach(ad => {
+      results.push(ad)
+    });
+
+    noDealAds.forEach(ad=>{
+      results.push(ad)
+    })
+
+    this.ads = results;
   }
 
   async markAdAsDealByRef(adId: any, adRef: any) {

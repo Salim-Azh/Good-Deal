@@ -1,30 +1,36 @@
+<div class=" d-flex align-items-center">
+  <mat-icon>person</mat-icon>
+  <span>{{user.username}}</span>
+</div>
 
-
-  <div class="form-group col-md-16"> <mat-icon>person</mat-icon> {{user.username}}  </div>
-
-<h2>Mes annonces</h2>
+<h2 class="mt-5">Mes annonces</h2>
 <div>
-<ul class="list-group list-group-flush" *ngIf="ads.length > 0; else noAds">
-  <li class="list-group-item py-4" *ngFor="let ad of ads orderByAsc:title">
-    <div class="d-flex justify-content-between align-items-center">
-      <div id="list-example" class="list-group">
-      <h3>{{ ad.title }}</h3>
+  <ul class="list-group list-group-flush" *ngIf="ads.length > 0; else noAds">
+    <li class="list-group-item py-4" *ngFor="let ad of ads">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h3>{{ ad.title }}</h3>
 
-      <div style="min-width: 10vw;">
-        <button mat-icon-button [routerLink]="['/home/ads', ad.id, 'details']" >
-        <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button (click)="deleteAd(ad.id, ad.adRef, ad.title)">
-        <mat-icon>delete</mat-icon>
-        </button>
-        <button *ngIf="!ad.deal" class="btn-sm btn-deal" (click)="markAdAsDealByRef(ad.id, ad.adRef, ad.title)">Publier</button>
-        <button *ngIf="ad.deal" class="btn-sm btn-secondary" (click)="cancelAdDealByRef(ad.id, ad.adRef, ad.title)">Enlever</button>
-      </div>
+          <div class="d-flex justify-content-between align-items-center w-custom">
+            <div>
+              <button mat-icon-button [routerLink]="['/home/ads', ad.id, 'details']">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteAd(ad.id, ad.adRef, ad.title)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
 
+            <button *ngIf="!ad.deal" class="btn-sm btn-secondary btn-noDeal"
+              (click)="markAdAsDealByRef(ad.id, ad.adRef)">Retirer</button>
+            <button *ngIf="ad.deal" class="btn-sm btn-deal"
+              (click)="cancelAdDealByRef(ad.id, ad.adRef)">Rétablir</button>
+          </div>
+
+        </div>
       </div>
-    </div>
-  </li>
-</ul>
+    </li>
+  </ul>
 </div>
 
 <ng-template #noAds>
