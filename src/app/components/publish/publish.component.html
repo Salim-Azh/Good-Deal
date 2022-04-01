@@ -1,41 +1,49 @@
 <div *ngIf="(authService.user | async);else notLoggedIn" class="modal__content">
     <div class="flex container">
         <form>
-            <h2>Déposer une annonce dans la résidence {{residenceName}}</h2>
-            <label class="monText">  Titre de mon annonce</label>
-            <input type="text" id="title" name="title" class="form-control mb-4 mt-2" placeholder="Exemple : Rideaux de douche" autofocus #Formtitle>
+            <div class="section">
+                <h2>Déposer une annonce dans la résidence {{residenceName}}</h2>
+                <label class="monText">  Titre de mon annonce</label>
+                <input type="text" id="title" name="title" class="form-control" placeholder="Exemple : Rideaux de douche" autofocus #Formtitle>
+            </div>
 
-            <label class="monText">  Catégorie</label>
-            <select class="form-select" id="category" name="category" #FormCat>
-                <option selected>Choisissez une catégorie</option>
-                <option value="Electronique">Electronique</option>
-                <option value="Mobilier">Mobilier</option>
-            </select>
+            <div class="section">
+                <label class="monText">  Catégorie</label>
+                <select class="form-select" id="category" name="category" #FormCat>
+                    <option selected>Choisissez une catégorie</option>
+                    <option value="Electronique">Electronique</option>
+                    <option value="Mobilier">Mobilier</option>
+                </select>
+            </div>
 
-            <label class="monText">Prix</label>
-            <div class="input-group">
-                <input type="number" class="form-control" aria-label="Dollar amount (with dot and two decimal places)" #FormPrice>
-                <span class="input-group-text">$CA</span>
+            <div class="section">
+                <label class="monText">Prix</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" aria-label="Dollar amount (with dot and two decimal places)" #FormPrice>
+                    <span class="input-group-text">$CA</span>
+                </div>
             </div>
             
-            <label for="state">État</label>
-            <select class="form-select" id="state" name="state" #FormState>
-        <option selected>État de l'article</option>
-        <option value="new">Neuf</option>
-        <option value="like new">Usagé - Comme Neuf</option>
-        <option value="used">Usagé</option>
-      </select>
+            <div class="section">
+                <label for="state">État</label>
+                <select class="form-select" id="state" name="state" #FormState>
+                    <option selected>État de l'article</option>
+                    <option value="new">Neuf</option>
+                    <option value="like new">Usagé - Comme Neuf</option>
+                    <option value="used">Usagé</option>
+                </select>
+            </div>
 
-            <label class="monText">Description</label>
-            <textarea class="form-control mb-4 mt-2" id="description" name="description" #FormDesc></textarea>
-
-            <button style="background-color: #FF7900;" class="btn btn-primary" type="reset" (click)="createAd(
-        Formtitle.value,
-        FormCat.value,
-        FormPrice.value,
-        FormDesc.value,
-        FormState.value
-        )">Publier</button>
+            <div class="section">
+                <label class="monText">Description</label>
+                <textarea class="form-control" id="description" name="description" #FormDesc></textarea>
+            </div>
+            <button class="btn" type="reset" (click)="createAd(
+                Formtitle.value,
+                FormCat.value,
+                FormPrice.value,
+                FormDesc.value,
+                FormState.value)">Publier</button>
         </form>
     </div>
 </div>

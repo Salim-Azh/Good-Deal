@@ -1,3 +1,5 @@
+
+
 .container {
     width: auto;
     height: auto;
@@ -11,6 +13,19 @@
     bottom: 100px;
     top: 5px;
     overflow-y: scroll;
+}
+
+.section{
+    margin-bottom: 10px;
+}
+
+label{
+    padding:5px;
+}
+
+.btn{
+    background-color: #F1895C;
+    color: white;
 }
 
 @media (min-width: 300px) and (max-width: 380px) {
