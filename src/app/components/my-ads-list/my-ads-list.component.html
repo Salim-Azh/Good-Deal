@@ -1,25 +1,37 @@
-<br/>
-<br/>
-<h1>Bienvenue {{user.username}}</h1>
-<h2>Mes annonces</h2>
-<ul class="list-group list-group-flush" *ngIf="ads.length > 0; else noAds">
-  <li class="list-group-item py-4" *ngFor="let ad of ads">
-    <div class="d-flex justify-content-between align-items-center">
-      <a  [title]="'Détails de : ' + ad.title"
-          [routerLink]="['/home/ads', ad.id, 'details']"
-          class="link-dark d-inline-block text-truncate fs-6 me-2"
-          style="max-width: 50vw;">
-        {{ ad.title }}
-      </a>
+<div class=" d-flex align-items-center">
+  <mat-icon>person</mat-icon>
+  <span>{{user.username}}</span>
+</div>
 
-      <div class="d-flex flex-row justify-content-between align-items-center" style="min-width: 10vw;">
-        <button *ngIf="!ad.deal" class="btn-sm btn-deal" (click)="markAdAsDealByRef(ad.id, ad.adRef)">Vendre</button>
-        <button *ngIf="ad.deal" class="btn-sm btn-secondary" (click)="cancelAdDealByRef(ad.id, ad.adRef)">Vendu</button>
-        <button class="btn-sm btn-danger-custom" (click)="deleteAd(ad.id, ad.adRef, ad.title)">Supprimer</button>
+<h2 class="mt-5">Mes annonces</h2>
+<div>
+  <ul class="list-group list-group-flush" *ngIf="ads.length > 0; else noAds">
+    <li class="list-group-item py-4" *ngFor="let ad of ads">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h3>{{ ad.title }}</h3>
+
+          <div class="d-flex justify-content-between align-items-center w-custom">
+            <div>
+              <button mat-icon-button [routerLink]="['/home/ads', ad.id, 'details']">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteAd(ad.id, ad.adRef, ad.title)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+
+            <button *ngIf="!ad.deal" class="btn-sm btn-secondary btn-noDeal"
+              (click)="markAdAsDealByRef(ad.id, ad.adRef)">Retirer</button>
+            <button *ngIf="ad.deal" class="btn-sm btn-deal"
+              (click)="cancelAdDealByRef(ad.id, ad.adRef)">Rétablir</button>
+          </div>
+
+        </div>
       </div>
-    </div>
-  </li>
-</ul>
+    </li>
+  </ul>
+</div>
 
 <ng-template #noAds>
   Vous n'avez pas d'annonces en ligne

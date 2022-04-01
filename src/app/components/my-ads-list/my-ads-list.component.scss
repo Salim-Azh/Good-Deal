@@ -5,9 +5,10 @@
   margin-right: 5px;
 }
 
-.btn-danger-custom{
-  background-color: darkred;
-  color: white;
+.btn-noDeal{
   border: none;
 }
-
+.w-custom{
+  min-width: 80vw;
+  max-width: 80vw;
+}
