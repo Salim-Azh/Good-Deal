@@ -32,7 +32,7 @@ a {
 }
 
 .search-btn {
-    color: rgba(255, 121, 0, 1);
+    color: rgba(241, 137, 92, 1);
     margin-right: 7rem;
 }
 
@@ -42,7 +42,7 @@ a {
 }
 
 .input-search {
-    outline-color: #ff7900;
+    outline-color: #F1895C;
     border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -53,7 +53,7 @@ a {
 .badge-filter {
     position: absolute;
     top: 15px;
-    background-color: #ff7900;
+    background-color: #F1895C;;
 }
 
 .custom-select {
@@ -73,5 +73,5 @@ a {
 }
 
 .detail .select.selected mat-card {
-    box-shadow: 2px 2px 2px 2px #ff7900;
+    box-shadow: 2px 2px 2px 2px #F1895C;;
 }
