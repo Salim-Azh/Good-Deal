@@ -27,6 +27,7 @@ export class UserService {
         }
         return {
           id: docSnap.id,
+          userRef: docRef,
           username: docSnap.get("username"),
           residence: docSnap.get("residence"),
           ads: ads

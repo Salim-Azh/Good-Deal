@@ -66,7 +66,7 @@
     </div>
 
     <div #detailsAds class="content" id="ad-details" *ngIf="selected != null" fxHide.lt-sm fxShow.gt-sm>
-        <app-ad-details [ad]="selected">
+        <app-ad-details [ad]="selected" [user]="user">
         </app-ad-details>
     </div>
 </div>
