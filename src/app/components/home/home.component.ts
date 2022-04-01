@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
   selectedResidence: Residence | undefined = undefined;
   user: User;
   selected: Ad | null = null;
-  authUid: string |undefined;
+  authUid: string | undefined;
   showFilters: boolean;
 
   public getScreenWidth: any;
@@ -45,11 +45,11 @@ export class HomeComponent implements OnInit {
   returnDisplay = "";
   detailsMode = false;
 
-  searchCSS="";
-  filterCSS="";
-  adsCSS="";
-  detailsCSS="";
-  
+  searchCSS = "";
+  filterCSS = "";
+  adsCSS = "";
+  detailsCSS = "";
+
 
   constructor(
     public authService: AuthService,
@@ -60,26 +60,26 @@ export class HomeComponent implements OnInit {
     this.user = new User();
     this.showFilters = false;
     this.authUid = undefined;
-  
+
   }
 
   /**
-   * Innitialisation du patron maître-détails 
+   * Innitialisation du patron maître-détails
    * selon la taille de l'écran
    */
-   async initMasterDetailsPattern(){
+  async initMasterDetailsPattern() {
 
     this.getScreenWidth = window.innerWidth;
 
-    if(this.getScreenWidth < this.SCREEN_SM){
+    if (this.getScreenWidth < this.SCREEN_SM) {
       this.adsDisplay = "block";
       this.adDetailsDisplay = "none";
-    }else{
+    } else {
       this.returnDisplay = "none";
     }
   }
 
-  async init(){
+  async init() {
 
     await this.initMasterDetailsPattern();
 
@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit {
 
       this.ads = await this.searchService.searchDefault();
 
-      if(this.getScreenWidth > this.SCREEN_SM){
+      if (this.getScreenWidth > this.SCREEN_SM) {
         this.selected = this.ads[0];
         this.setTabletCSS();
       }
@@ -102,7 +102,7 @@ export class HomeComponent implements OnInit {
           }
         });
       }
-      else{
+      else {
         this.residences = await this.residenceService.getResidences();
       }
     })
@@ -115,50 +115,50 @@ export class HomeComponent implements OnInit {
   /**
    * Dès que la taille de l'écran change le patron maître-détails s'adapte
    */
-  @HostListener('window:resize',['$event'])
-  onWindowResize(){
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
 
     this.getScreenWidth = window.innerWidth;
 
-    if(this.getScreenWidth < this.SCREEN_SM){
-      this.searchCSS="";
-      this.adsCSS="";
-      this.detailsCSS="";
-      if(this.detailsMode==false){
+    if (this.getScreenWidth < this.SCREEN_SM) {
+      this.searchCSS = "";
+      this.adsCSS = "";
+      this.detailsCSS = "";
+      if (this.detailsMode == false) {
         this.adDetailsDisplay = "none";
-      }else{
+      }
+      else {
         this.adDetailsDisplay = "block";
         this.returnDisplay = "block";
         this.adsDisplay = "none";
-      } 
-    } else {
+      }
+    }
+    else {
       this.adDetailsDisplay = "block";
       this.adsDisplay = "block";
       this.returnDisplay = "none";
       this.setTabletCSS();
 
-      if(this.selected==null){
+      if (this.selected == null) {
         this.selected = this.ads[0];
       }
 
     }
   }
 
-  setTabletCSS(){
-
-    this.searchCSS="position:fixed; right:0; left:0; z-index:1;";
-    this.adsCSS="float:left; width:40%; overflow:scroll; padding-top:100px;";
-    this.detailsCSS="float:left; height:100vh !important; width:60%; overflow:hidden; position:fixed; right:0; top:0; padding-top:100px;";
-    this.filterCSS="position:fixed; width:56%; top:72px; right:0; z-index:2;";
-    
+  setTabletCSS() {
+    this.searchCSS = "position:fixed; right:0; left:0; z-index:1;";
+    this.adsCSS = "float:left; width:40%; overflow:scroll; padding-top:100px;";
+    this.detailsCSS = "float:left; height:100vh !important; width:60%; overflow:hidden; position:fixed; right:0; top:0; padding-top:100px;";
+    this.filterCSS = "position:fixed; min-width:52vw; left:41vw; top:72px; z-index:2;";
   }
 
-  switchFilters(){
+  switchFilters() {
     this.showFilters = !this.showFilters;
   }
 
-  onChangeResidence(residenceName : string, input?:string){
-    if (residenceName =="none") {
+  onChangeResidence(residenceName: string, input?: string) {
+    if (residenceName == "none") {
       this.selectedResidence = undefined;
     } else {
       this.residences.forEach(residence => {
@@ -178,7 +178,7 @@ export class HomeComponent implements OnInit {
   }
 
   async search(input?: string) {
-    if(this.selectedResidence){
+    if (this.selectedResidence) {
       if (input) {
         console.log("a")
         this.ads = await this.searchService.searchTextResidence(input, this.selectedResidence.reference);
@@ -187,7 +187,7 @@ export class HomeComponent implements OnInit {
         this.ads = await this.searchService.searchResidence(this.selectedResidence.reference);
       }
     }
-    else{
+    else {
       if (input) {
         this.ads = await this.searchService.searchText(input);
       }
@@ -198,25 +198,25 @@ export class HomeComponent implements OnInit {
   }
 
   /**
-   * 
+   *
    * @param ad = l'annonce sélectionnée par l'utilisateur
-   * 
+   *
    */
   async onSelect(ad: Ad) {
     this.detailsMode = true;
     console.log(this.detailsMode);
     this.selected = ad;
 
-    /**Mode téléphone : 
-     * lorsqu'une annonce est sélectionné 
-     * la liste des annonces disparait 
+    /**Mode téléphone :
+     * lorsqu'une annonce est sélectionné
+     * la liste des annonces disparait
      * et les détails de l'annonce sélectionnée apparaissent
-     */   
-    if(this.getScreenWidth < this.SCREEN_SM){
+     */
+    if (this.getScreenWidth < this.SCREEN_SM) {
       this.adsDisplay = "none";
       this.adDetailsDisplay = "block";
       this.returnDisplay = "block";
-    }else{
+    } else {
       this.returnDisplay = "none";
     }
   }
@@ -224,9 +224,9 @@ export class HomeComponent implements OnInit {
   /**Mode téléphone:
    * permet à l'utilisateur de retourner dur la liste des annonces
    * lorsqu'il est sur les détails d'une annonce
-   * 
+   *
    */
-  async redirectedToAdsList(){
+  async redirectedToAdsList() {
     this.detailsMode = false;
     this.selected = null;
     this.adDetailsDisplay = "none";
