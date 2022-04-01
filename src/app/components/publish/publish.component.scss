@@ -1,6 +1,10 @@
+
+
 .container {
     width: auto;
     height: auto;
+    padding: 16px;
+    padding-right: 28px;
 }
 
 .modal__content {
@@ -9,6 +13,20 @@
     bottom: 100px;
     top: 5px;
     overflow-y: scroll;
+}
+
+.section{
+    margin-bottom: 10px;
+}
+
+label{
+    padding:5px;
+}
+
+.btn-sm{
+    background-color: #ff7900;
+    color: white;
+    border: none;
 }
 
 @media (min-width: 300px) and (max-width: 380px) {

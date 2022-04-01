@@ -7,8 +7,8 @@
   <input type="password" class="form-control" id="password" #password>
 </div>
 
-<button *ngIf="signup === false" class="btn btn-primary" (click)="login(email.value, password.value)">Connexion</button>
-<button *ngIf="signup === true" class="btn btn-primary" (click)="register(email.value, password.value)">S'inscrire</button>
+<button *ngIf="signup === false" class="btn" (click)="login(email.value, password.value)">Connexion</button>
+<button *ngIf="signup === true" class="btn" (click)="register(email.value, password.value)">S'inscrire</button>
 
-<button *ngIf="signup === false" (click)="change()">Sign up?</button>
-<button *ngIf="signup === true" (click)="change()">Sign in?</button>
+<button *ngIf="signup === false" (click)="change()" class="btn">Sign up?</button>
+<button *ngIf="signup === true" (click)="change()" class="btn">Sign in?</button>
