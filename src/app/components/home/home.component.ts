@@ -46,6 +46,7 @@ export class HomeComponent implements OnInit {
   detailsMode = false;
 
   searchCSS="";
+  filterCSS="";
   adsCSS="";
   detailsCSS="";
   
@@ -148,7 +149,8 @@ export class HomeComponent implements OnInit {
     this.searchCSS="position:fixed; right:0; left:0; z-index:1;";
     this.adsCSS="float:left; width:40%; overflow:scroll; padding-top:100px;";
     this.detailsCSS="float:left; height:100vh !important; width:60%; overflow:hidden; position:fixed; right:0; top:0; padding-top:100px;";
-
+    this.filterCSS="position:fixed; width:56%; top:72px; right:0; z-index:2;";
+    
   }
 
   switchFilters(){

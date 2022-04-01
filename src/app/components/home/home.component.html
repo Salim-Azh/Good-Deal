@@ -16,7 +16,7 @@
     </div>
 </div>
 
-<div *ngIf="showFilters" class="mx-4 mt-3 px-2 py-2 filters-container">
+<div *ngIf="showFilters" class="mx-4 mt-3 px-2 py-2 filters-container" [style]="filterCSS">
     <h3 class="ms-2">Filtres</h3>
 
     <select class="form-select custom-select" name="residence" id="residence" #residenceRef (change)="onChangeResidence(residenceRef.value, strSearch.value)">
