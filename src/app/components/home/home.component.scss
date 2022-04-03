@@ -80,7 +80,6 @@ a {
 .ad-details {
     background-color: #f5f5f5;
     border-left: 1px solid lightgrey;
-    height: 100vh !important;
 }
 
 .close{
@@ -90,7 +89,7 @@ a {
 }
 
 .btn-close{
-    position:absolute;
-    z-index: 3;
+    position:fixed;
+    z-index: 2;
     top: 5px;
 }
