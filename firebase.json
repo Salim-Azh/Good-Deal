@@ -8,9 +8,7 @@
       "target": "good-deal",
       "public": "dist/good-deal",
       "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
+        "**/.*"
       ],
       "headers": [
         {
