@@ -84,9 +84,13 @@ a {
 }
 
 .close{
-   color: lightgray;
+    color: #ff7900; 
+    font-weight: bold;
+    font-size: 40px;
 }
 
-button {
-    text-align: right;
+.btn-close{
+    position:absolute;
+    z-index: 3;
+    top: 5px;
 }
