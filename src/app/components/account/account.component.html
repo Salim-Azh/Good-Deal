@@ -3,5 +3,11 @@
         <button (click)="signOut()" class="btn-sm btn-primary float-end">Se déconnecter</button>
         <app-my-ads-list></app-my-ads-list>
     </div>
-</div>
-<app-sign-in *ngIf="!(authService.user |async)" [redirectTo]="path"></app-sign-in>
+
+
+    <div *ngIf="authService.user |async">
+        <button (click)="signOut()" class=" btn-sm float-end"> Se déconnecter</button>
+        <app-my-ads-list></app-my-ads-list>
+
+    </div>
+    <app-sign-in *ngIf="!(authService.user |async)" [redirectTo]="path"></app-sign-in>
