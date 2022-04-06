@@ -6,7 +6,7 @@
     <label for="password" class="form-label">Mot de passe</label>
     <input type="password" class="form-control" id="password" #password>
 </div>
-<div class="mb-3">
+<div class="mb-3" *ngIf="signup===true ">
     <label for="residence" class="form-label">Résidence</label>
     <select class="form-select" name="residence " id="residence " #residenceRef>
       <option selected value="none">-- Résidence --</option>
