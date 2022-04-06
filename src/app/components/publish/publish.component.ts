@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { Firestore } from '@angular/fire/firestore';
 import {  getDoc } from "firebase/firestore";
 
 import { getAuth } from 'firebase/auth';
@@ -11,14 +10,12 @@ import { AdService } from 'src/app/services/ad.service';
 
 
 import { BehaviorSubject } from 'rxjs';
-import { map} from 'rxjs/operators';
-import { Observable } from "rxjs";
-
-import  {  Storage , ref, uploadBytesResumable, getDownloadURL  }  from  '@angular/fire/storage' ;
 
 
-//import { Uploadfile } from 'src/app/model/uploadfile.model';
-//import { UploadfileService } from 'src/app/services/uploadfile.service';
+import  {getStorage, ref, getDownloadURL, uploadBytes, uploadBytesResumable  }  from  'firebase/storage' ;
+
+
+
 @Component({
   selector: 'app-publish',
   templateUrl: './publish.component.html',
@@ -53,9 +50,6 @@ export class PublishComponent implements OnInit {
     public authService: AuthService,
     private userService: UserService,
     private adService: AdService,
-
-    public storage: Storage
-
   ) {
     this.user = new User();
     this.showPreview = false;
@@ -84,9 +78,10 @@ export class PublishComponent implements OnInit {
 
     if (this.user) {
       this.showPreview = false;
+      const storage = getStorage()
       // Upload file and metadata to the object 'images/mountains.jpg'
-      const storageRef = ref(this.storage, 'Images/' + file.name);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      const storageRef = ref(storage, 'Images/' + file.name);
+      const uploadTask = uploadBytesResumable (storageRef, file);
       // Listen for state changes, errors, and completion of the upload.
       uploadTask.then(async snapshot => {
         let  url =  await getDownloadURL(snapshot.ref)
@@ -140,25 +135,4 @@ export class PublishComponent implements OnInit {
     }
 
   }
-
-
-
-
-  /*upload($event) {
-    this.patch = $event.target.files[0]
-  }
-
-    uploadImage(event: any, user: User){
-  console.log(this.patch);
-  this.uploadfileService.uploadImage(event.target.files[0], 'images')
-  //this.af.upload("/files"+Math.random()+this.patch, this.patch)
-
-    }*/
-
-
-
-
-
-
-
 }
