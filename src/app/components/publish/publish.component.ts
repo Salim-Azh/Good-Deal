@@ -1,26 +1,24 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Firestore } from '@angular/fire/firestore';
-import {  getFirestore, collection, addDoc, getDoc, doc, Timestamp, updateDoc } from "firebase/firestore";
-import { Ad } from 'src/app/model/ad.model';
+import {  getDoc } from "firebase/firestore";
+
 import { getAuth } from 'firebase/auth';
 import { User } from 'src/app/model/user.model';
 
 import { UserService } from 'src/app/services/user.service';
 import { AdService } from 'src/app/services/ad.service';
 
-import { initializeApp } from "firebase/app";
-//import { getStorage, ref } from "firebase/storage";
 
-import { BehaviorSubject, noop } from 'rxjs';
-import { finalize, map, tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { map} from 'rxjs/operators';
 import { Observable } from "rxjs";
 
-import  {  Storage ,  StorageInstances, getStorage, ref, uploadBytesResumable, getDownloadURL  }  from  '@angular/fire/storage' ;
-import { AngularFireStorage } from '@angular/fire/compat/storage';
+import  {  Storage , ref, uploadBytesResumable, getDownloadURL  }  from  '@angular/fire/storage' ;
 
-import { Uploadfile } from 'src/app/model/uploadfile.model';
-import { UploadfileService } from 'src/app/services/uploadfile.service';
+
+//import { Uploadfile } from 'src/app/model/uploadfile.model';
+//import { UploadfileService } from 'src/app/services/uploadfile.service';
 @Component({
   selector: 'app-publish',
   templateUrl: './publish.component.html',
@@ -35,6 +33,7 @@ export class PublishComponent implements OnInit {
   residenceName: string = "Residence ..."
 
   photoSourceObj: File;
+  showPreview: boolean;
 
   private photoReadersubject = new BehaviorSubject<(string | ArrayBuffer)[]>([]);
   public readablePhotoList$ = this.photoReadersubject.asObservable();
@@ -43,18 +42,10 @@ export class PublishComponent implements OnInit {
   private filePhotoListSubject = new BehaviorSubject<{}[]>([]);
   public filePhotoList$ = this.filePhotoListSubject.asObservable();
 
-  private selectFilePhotoListSubject = new BehaviorSubject<{}[]>([]);
-  public selectedPhotoList$ = this.selectFilePhotoListSubject.asObservable()
-                                  .pipe(
-                                    map((data) => data.length)
-                                  );
 
-  selectAllPhotoStatus:boolean = false;
-  fb;
-  downloadURL: Observable<string>;
 
-  patch: string;
-  //public file: any = {}
+
+
   @Input() file: File;
 
 
@@ -62,18 +53,18 @@ export class PublishComponent implements OnInit {
     public authService: AuthService,
     private userService: UserService,
     private adService: AdService,
-    private uploadfileService: UploadfileService,
-    private af: AngularFireStorage,
-    private firestore: Firestore,
+
     public storage: Storage
 
   ) {
     this.user = new User();
+    this.showPreview = false;
   }
 
   async ngOnInit(): Promise<void> {
     const uid = getAuth().currentUser?.uid
     this.user = await this.userService.getUser(uid);
+
     if (this.user) {
       const docSnap = await getDoc(this.user.residence);
       this.residenceName = docSnap.get('name')
@@ -86,41 +77,38 @@ export class PublishComponent implements OnInit {
     category: any,
     price: any,
     description: any,
+    file: any,
     state: any,
 
   ) {
-    if (this.user) {
-      // Upload file and metadata to the object 'images/mountains.jpg'
 
-    this.adService.createAd(title, category, price, description, state);
+    if (this.user) {
+      this.showPreview = false;
+      // Upload file and metadata to the object 'images/mountains.jpg'
+      const storageRef = ref(this.storage, 'Images/' + file.name);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      // Listen for state changes, errors, and completion of the upload.
+      uploadTask.then(async snapshot => {
+        let  url =  await getDownloadURL(snapshot.ref)
+        let imagesUrl: string[] = [];
+        if (url) {
+          imagesUrl.push(url)
+        }
+        await this.adService.createAd(title, category, price, description, imagesUrl, state);
+      })
+
 
     }
   }
 
-  uploadImage(){
-    console.log(this.file);
-
-    // Upload file and metadata to the object 'images/mountains.jpg'
-    const storageRef = ref(this.storage, 'Images/' + this.file.name);
-    const uploadTask = uploadBytesResumable(storageRef, this.file);
-    // Listen for state changes, errors, and completion of the upload.
-    uploadTask.then(snapshot => {
-      return getDownloadURL(snapshot.ref)
-    }).then(downloadURL => {
-      console.log('downloadURL', downloadURL)
-    })
-    //this.af.upload("Images/"+Math.random()+this.patch, this.patch)
-
-      }
-
-  TakePhoto(FormimagesUrl: HTMLInputElement, _user, event : any) {
+  takePhoto(FormimagesUrl: HTMLInputElement, _user, event : any) {
     this.file = event.target.files[0]
 
     this.photoSourceObj = FormimagesUrl.files[0];
 
 
     if ( !!this.photoSourceObj ) {
-
+      this.showPreview = true;
       const reader = new FileReader();
       reader.readAsDataURL(this.photoSourceObj);
 

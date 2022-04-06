@@ -71,13 +71,13 @@ export class AdService {
     category: any,
     price: any,
     description: any,
+    imagesUrl: string[],
     state: any
   ) {
     const authUser = await this.getUser();
     if (authUser) {
       const docSnap = await getDoc(authUser.residence);
       const userRef = doc(this.firestore, `users/${authUser.id}`);
-
       const newAd = {
         advertiser: userRef,
         advertiserName: authUser.username,
@@ -85,6 +85,7 @@ export class AdService {
         createdAt: Timestamp.fromDate(new Date()),
         deal: false,
         description: description,
+        imagesUrl: imagesUrl,
         latitude: docSnap.get('latitude'),
         longitude: docSnap.get('longitude'),
         price: price,
