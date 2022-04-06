@@ -3,3 +3,12 @@ button {
     color: white;
     border: none;
 }
+
+.modal__content {
+    position: absolute;
+    width: 100%;
+    bottom: 70px;
+    top: 5px;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+}

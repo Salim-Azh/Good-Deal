@@ -1,23 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { collection, addDoc, getDoc, doc, Timestamp, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDoc,
+  doc,
+  Timestamp,
+  updateDoc,
+} from 'firebase/firestore';
 import { Ad } from 'src/app/model/ad.model';
 import { getAuth } from 'firebase/auth';
 import { User } from 'src/app/model/user.model';
 import { Firestore } from '@angular/fire/firestore';
 import { UserService } from 'src/app/services/user.service';
 import { AdService } from 'src/app/services/ad.service';
+import { BehaviorSubject } from 'rxjs';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage';
 @Component({
   selector: 'app-publish',
   templateUrl: './publish.component.html',
-  styleUrls: ['./publish.component.scss']
+  styleUrls: ['./publish.component.scss'],
 })
 export class PublishComponent implements OnInit {
-
   user: User;
-  path: string = "/publish";
+  path: string = '/publish';
 
-  residenceName: string = "Residence ..."
+  residenceName: string = 'Residence ...';
+
+  photoSourceObj: File | null;
+  showPreview: boolean;
+
+  private photoReadersubject = new BehaviorSubject<(string | ArrayBuffer | null)[]>(
+    []
+  );
+  public readablePhotoList$ = this.photoReadersubject.asObservable();
+
+  private filePhotoListSubject = new BehaviorSubject<{}[]>([]);
+  public filePhotoList$ = this.filePhotoListSubject.asObservable();
+
+  @Input() file?: File;
 
   constructor(
     public authService: AuthService,
@@ -25,14 +51,16 @@ export class PublishComponent implements OnInit {
     private adService: AdService
   ) {
     this.user = new User();
+    this.showPreview = false;
+    this.photoSourceObj = null;
   }
 
   async ngOnInit(): Promise<void> {
-    const uid = getAuth().currentUser?.uid
+    const uid = getAuth().currentUser?.uid;
     this.user = await this.userService.getUser(uid);
     if (this.user) {
       const docSnap = await getDoc(this.user.residence);
-      this.residenceName = docSnap.get('name')
+      this.residenceName = docSnap.get('name');
     }
   }
 
@@ -41,10 +69,54 @@ export class PublishComponent implements OnInit {
     category: any,
     price: any,
     description: any,
+    file: any,
     state: any
   ) {
     if (this.user) {
-      this.adService.createAd(title, category, price, description, state);
+      this.showPreview = false;
+      const storage = getStorage();
+      // Upload file and metadata to the object 'images/mountains.jpg'
+      const storageRef = ref(storage, 'Images/' + file.name);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      // Listen for state changes, errors, and completion of the upload.
+      uploadTask.then(async (snapshot) => {
+        let url = await getDownloadURL(snapshot.ref);
+        let imagesUrl: string[] = [];
+        if (url) {
+          imagesUrl.push(url);
+        }
+        await this.adService.createAd(
+          title,
+          category,
+          price,
+          description,
+          imagesUrl,
+          state
+        );
+      });
+    }
+  }
+
+  takePhoto(FormimagesUrl: HTMLInputElement, event: any) {
+    this.file = event.target.files[0];
+    if (FormimagesUrl.files) {
+      this.photoSourceObj = FormimagesUrl.files[0];
+    }
+
+    if (!!this.photoSourceObj) {
+      this.showPreview = true;
+      const reader = new FileReader();
+      reader.readAsDataURL(this.photoSourceObj);
+
+      reader.onload = (_e) => {
+        const imageUrl = reader.result;
+
+        this.photoReadersubject.next([
+          ...this.photoReadersubject.getValue(),
+          imageUrl,
+        ]);
+
+      };
     }
   }
 
