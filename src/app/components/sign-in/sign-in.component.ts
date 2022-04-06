@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Residence } from 'src/app/model/residence.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { ResidenceService } from 'src/app/services/residence.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -10,9 +12,11 @@ import { AuthService } from 'src/app/services/auth.service';
 export class SignInComponent implements OnInit {
   @Input() redirectTo = "";
   signup:boolean = false;
-  constructor(private authService: AuthService, private router: Router) { }
+  residences: Residence[] = [];
+  constructor(private authService: AuthService, private router: Router, private residenceService: ResidenceService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+  this.residences = await this.residenceService.getResidences();
   }
 
   login(email:string, password:string){

@@ -1,14 +1,22 @@
 <div class="mb-3">
-  <label for="email" class="form-label">Email</label>
-  <input type="email" class="form-control" id="email" aria-describedby="emailHelp" #email/>
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" #email/>
 </div>
 <div class="mb-3">
-  <label for="password" class="form-label">Mot de passe</label>
-  <input type="password" class="form-control" id="password" #password>
+    <label for="password" class="form-label">Mot de passe</label>
+    <input type="password" class="form-control" id="password" #password>
 </div>
+<div class="mb-3">
+    <label for="residence" class="form-label">Résidence</label>
+    <select class="form-select" name="residence " id="residence " #residenceRef>
+      <option selected value="none">-- Résidence --</option>
+      <ng-container *ngFor="let res of residences">
+        <option value={{res.name}}>{{res.name}}</option>
+      </ng-container>
+    </select>
+</div>
+<button *ngIf="signup===false " class="btn " (click)="login(email.value, password.value) ">Connexion</button>
+<button *ngIf="signup===true " class="btn " (click)="register(email.value, password.value) ">S'inscrire</button>
 
-<button *ngIf="signup === false" class="btn" (click)="login(email.value, password.value)">Connexion</button>
-<button *ngIf="signup === true" class="btn" (click)="register(email.value, password.value)">S'inscrire</button>
-
-<button *ngIf="signup === false" (click)="change()" class="btn">Sign up?</button>
-<button *ngIf="signup === true" (click)="change()" class="btn">Sign in?</button>
+<button *ngIf="signup===false " (click)="change() " class="btn ">Sign up?</button>
+<button *ngIf="signup===true " (click)="change() " class="btn ">Sign in?</button>
