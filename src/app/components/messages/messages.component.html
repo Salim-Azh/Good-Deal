@@ -1,6 +1,24 @@
+<div class="messagerie">
+
+
 <div *ngIf="(authService.user |async);else notLoggedIn">
-  <p>messages works!</p>
+  <h2>Mes Messages</h2>
+  <div class="list-group list-group-flush" *ngIf="chats.length > 0; else noChat">
+    <div *ngFor="let chat of chats">
+      {{chat.createdAt}}
+      {{chat.lastMessage.messageText}}
+      {{chat.members.u1Username}}
+    </div>
+  </div>
 </div>
+
+</div>
+
 <ng-template #notLoggedIn>
   <app-sign-in [redirectTo]="path"></app-sign-in>
+</ng-template>
+
+
+<ng-template #noChat>
+  Aucune conversation n'a été commencée.
 </ng-template>
