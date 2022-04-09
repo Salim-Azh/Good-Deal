@@ -50,7 +50,7 @@
             <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="flex-start" class="detail">
                 <div fxFlex="50" *ngFor="let ad of ads" [class.selected]="ad === selected" (click)="onSelect(ad)" class="select">
                     <mat-card class="mat-elevation-z4">
-                        <img mat-card-image src="../../../assets/img/asus-router.jpg" alt="Image de l'annonce">
+                        <img mat-card-image src="{{ad.imagesUrl}}" alt="Image de l'annonce" class="cover">
                         <mat-card-content>
                             <mat-card-title>
                                 {{ad.title}}

@@ -7,9 +7,12 @@ h3 {
 }
 
 img {
-    max-width: 121%;
-    max-height: 120px;
     border-bottom: 1px solid lightgrey;
+}
+
+.cover {
+    object-fit: cover;
+    height: 120px;
 }
 
 mat-card-content {

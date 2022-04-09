@@ -8,7 +8,7 @@ export interface Ad {
    createdAt: Timestamp;
    deal: boolean;
    description: string;
-   imagesUrl: any[];
+   imagesUrl: any;
    latitude: number;
    longitude: number;
    price: number;
