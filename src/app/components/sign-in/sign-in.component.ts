@@ -70,8 +70,8 @@ export class SignInComponent implements OnInit {
 
       const residenceRef = this.SelectedValue;
       const username = this.usernameValue;
-      console.log(residenceRef);
-      console.log(username);
+      console.log('reisdence', residenceRef);
+      console.log('Username',username);
       const uid = getAuth().currentUser?.uid;
       console.log('Uid',uid)
       console.log('User: ',email)
@@ -79,11 +79,10 @@ export class SignInComponent implements OnInit {
 
 
       const dbInstance = doc(this.firestore, 'users/'+ uid);
-      const docSnap = await getDoc(this.user.residence);
 
       const docData = {
         ads: this.ads,
-        residence: this.SelectedValue,
+        residence: residenceRef,
         username: username
       };
       setDoc(dbInstance, docData)
