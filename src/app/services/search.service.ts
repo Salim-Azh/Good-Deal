@@ -5,6 +5,7 @@ import { collection, DocumentData, DocumentReference, getDocs, query, QuerySnaps
 import { Ad } from '../model/ad.model';
 import { User } from '../model/user.model';
 import { UserService } from './user.service';
+import { getStorage, ref, listAll,getDownloadURL } from "firebase/storage";
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +46,7 @@ export class SearchService {
   }
 
   async searchDefault() {
-    let ads: Ad[] = [];
+    let ads: Ad[] = [] as any;
     if (!getAuth().currentUser) {
       ads = await this.getAds();
     }
@@ -107,7 +108,15 @@ export class SearchService {
 
   private fillResults(docSnap: QuerySnapshot<DocumentData>) {
     let ads: Ad[] = [];
+
+    const storage = getStorage();
+
     docSnap.docs.forEach(element => {
+
+
+      getDownloadURL(ref(storage, 'Images/' + element.get('imagesUrl')))
+      .then((url) => {
+
       const ad = {
         id: element.id,
         advertiser: element.get('advertiser'),
@@ -116,7 +125,7 @@ export class SearchService {
         createdAt: element.get('createdAt'),
         deal: element.get('deal'),
         description: element.get('description'),
-        imagesUrl: element.get('imagesUrl'),
+        imagesUrl: url,
         latitude: element.get('latitude'),
         longitude: element.get('longitude'),
         price: element.get('price'),
@@ -128,6 +137,7 @@ export class SearchService {
       } as Ad
       ads.push(ad);
     });
+  });
     return ads;
   }
 
