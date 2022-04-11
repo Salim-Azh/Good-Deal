@@ -1,14 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { getAuth } from 'firebase/auth';
-import { doc, DocumentReference, setDoc } from 'firebase/firestore';
+import { DocumentReference } from 'firebase/firestore';
 import { Residence } from 'src/app/model/residence.model';
-import { User } from 'src/app/model/user.model';
-import { AdService } from 'src/app/services/ad.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ResidenceService } from 'src/app/services/residence.service';
-import { UserService } from 'src/app/services/user.service';
-import { Firestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-sign-in',
@@ -36,7 +31,6 @@ export class SignInComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private residenceService: ResidenceService,
-    private userService: UserService,
   ) {
     this.disabledLoginBtn = true;
     this.disabledSignUpBtn = true;

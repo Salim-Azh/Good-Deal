@@ -1,17 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import {
-  collection,
-  addDoc,
-  getDoc,
-  doc,
-  Timestamp,
-  updateDoc,
-} from 'firebase/firestore';
-import { Ad } from 'src/app/model/ad.model';
+import { getDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { User } from 'src/app/model/user.model';
-import { Firestore } from '@angular/fire/firestore';
 import { UserService } from 'src/app/services/user.service';
 import { AdService } from 'src/app/services/ad.service';
 import { BehaviorSubject } from 'rxjs';
