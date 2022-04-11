@@ -6,7 +6,6 @@ import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { Ad } from '../model/ad.model';
 import { User } from '../model/user.model';
 import { UserService } from './user.service';
-import { getStorage, ref, listAll,getDownloadURL } from "firebase/storage";
 
 @Injectable({
   providedIn: 'root'
