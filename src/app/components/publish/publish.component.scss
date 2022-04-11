@@ -1,60 +1,44 @@
 .container {
     width: auto;
     height: auto;
+    padding: 16px;
+    padding-right: 28px;
 }
 
 .modal__content {
     position: absolute;
     width: 100%;
-    bottom: 100px;
+    bottom: 80px;
     top: 5px;
     overflow-y: scroll;
+    margin-bottom: 20px;
 }
 
-@media (min-width: 300px) and (max-width: 380px) {
-    .scroll {
-        display: block;
-        height: auto;
-        position: relative;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        max-height: 550px;
-    }
+.section {
+    margin-bottom: 10px;
 }
 
-@media (min-width: 395px) and (max-width: 415px) {
-    .scroll {
-        display: block;
-        height: auto;
-        position: relative;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        max-height: 780px;
-    }
+label {
+    padding: 5px;
 }
 
-@media (min-width: 381px) and (max-width: 394px) {
-    .scroll {
-        display: block;
-        height: auto;
-        position: relative;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        max-height: 720px;
-    }
+.btn-sm {
+    background-color: #ff7900;
+    color: white;
+    border: none;
 }
 
-@media (max-width: 299px) {
-    .scroll {
-        display: block;
-        height: auto;
-        position: relative;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        max-height: 880px;
-    }
+mat-icon {
+    font-size: 40px;
+    color: #516079;
+}
+
+.image-container {
+    width: 40vw;
+    height: 40vw;
+}
+
+.custom-preview {
+    width: 40vw;
+    height: 40vw;
 }

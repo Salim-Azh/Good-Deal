@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { User } from '../model/user.model';
 
 @Injectable({
@@ -36,4 +36,12 @@ export class UserService {
     }
   }
 
+  async userExistsByEmail(email: string): Promise<any> {
+    if (email) {
+      const usersRef = collection(this.firestore, "users");
+      const q = query(usersRef, where("email","==", email));
+      const querySnapshot = await getDocs(q);
+      return !querySnapshot.empty
+    }
+  }
 }

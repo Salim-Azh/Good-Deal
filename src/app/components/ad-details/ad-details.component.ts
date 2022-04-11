@@ -13,19 +13,20 @@ export class AdDetailsComponent implements OnInit {
   @Input() ad!: Ad;
   @Input() user?: User;
 
-  constructor( private router : Router) { 
+  constructor( private router : Router) {
 
   }
 
   ngOnInit(): void {
   }
-  
+
   contactUser(){
     //Appeler le chat service injecte dans le constructeur
-    //Appeler la methode 
+    //Appeler la methode
     console.log(this.user);
+    console.log(this.ad.advertiserName)
     this.router.navigate(['messages'])
-  
-    
+
+
   }
 }
