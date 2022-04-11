@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { getAuth } from 'firebase/auth';
-import { addDoc, collection, doc, DocumentReference, getDoc, getDocs, query, setDoc } from 'firebase/firestore';
+import { doc, DocumentReference, setDoc } from 'firebase/firestore';
 import { Residence } from 'src/app/model/residence.model';
 import { User } from 'src/app/model/user.model';
 import { AdService } from 'src/app/services/ad.service';
@@ -17,91 +17,136 @@ import { Firestore } from '@angular/fire/firestore';
 })
 export class SignInComponent implements OnInit {
   @Input() redirectTo = "";
-  signup:boolean = false;
+  signup: boolean = false;
   residences: Residence[] = [];
 
-  username: any;
+  disabledLoginBtn: boolean;
+  disabledSignUpBtn : boolean;
 
-  ads: { adRef: DocumentReference, title: string, id?: string, deal: boolean }[] = [];
+  email:string;
+  password:string;
+  firstName: string;
+  lastName: string;
+  residenceName: string;
 
+  showErrorMsg: boolean;
+  errorMsg: string;
 
-  SelectedValue: string;
-  usernameValue: string;
-  authUid: string | undefined;
-  user: User;
-
-  constructor(private authService: AuthService, private router: Router, private residenceService: ResidenceService,
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private residenceService: ResidenceService,
     private userService: UserService,
-    private adService: AdService,
-    private firestore: Firestore) {
-
-      this.user = new User();
-    this.SelectedValue= "";
-    this.usernameValue = "";
-    this.authUid = undefined;
-
-
-
-
-   }
+  ) {
+    this.disabledLoginBtn = true;
+    this.disabledSignUpBtn = true;
+    this.email = "";
+    this.password = "";
+    this.firstName = "";
+    this.lastName = "";
+    this.residenceName = "";
+    this.errorMsg = "";
+    this.showErrorMsg = false;
+  }
 
   async ngOnInit(): Promise<void> {
-  this.residences = await this.residenceService.getResidences();
-
-
+    this.residences = await this.residenceService.getResidences();
   }
 
-
-  login(email:string, password:string){
-    console.log('email');
-    this.authService.signIn(email,password);
-    this.router.navigate([this.redirectTo])
+  setEmailFormState(fEmail:string){
+    this.email = fEmail;
+    this.setDisableBtn();
   }
 
-  change(){
+  setPasswordFormState(fPassword:string){
+    this.password = fPassword;
+    this.setDisableBtn();
+  }
+
+  setFirstNameFormState(fFirstName:string){
+    this.firstName = fFirstName;
+    this.setDisableBtn();
+  }
+
+  setLastNameFormState(fLastName:string){
+    this.lastName = fLastName;
+    this.setDisableBtn();
+  }
+
+  setResidenceNameFormState(fResidenceName:string){
+    this.residenceName = fResidenceName;
+    this.setDisableBtn();
+  }
+
+  setDisableBtn(){
+    if (this.signup) {
+      this.disabledSignUpBtn = !this.email || !this.password || !this.firstName || !this.residenceName
+    }
+    else{
+      this.disabledLoginBtn = !this.email || !this.password
+    }
+  }
+
+  setFormType() {
+    this.showErrorMsg = false;
     this.signup = !this.signup;
-
   }
 
-  async register(email:string, password:string){
+  async login() {
+    const errorMsg: string | void = await this.authService.signIn(this.email, this.password);
+    if (errorMsg) {
+      this.errorMsg = errorMsg;
+      this.showFormError();
+    }
+    else{
+      this.router.navigate([this.redirectTo])
+    }
+  }
 
 
-    this.authService.signUp(email,password).then(async () => {
+  private showFormError(){
+    this.showErrorMsg = true;
+    setTimeout(()=>{
+      this.showErrorMsg = false
+    },
+    5000);
+  }
 
-      const residenceRef = this.SelectedValue;
-      const username = this.usernameValue;
-      console.log('reisdence', residenceRef);
-      console.log('Username',username);
-      const uid = getAuth().currentUser?.uid;
-      console.log('Uid',uid)
-      console.log('User: ',email)
+  async register() {
 
+    const residenceRef = this.getResidenceRefFromName();
+    const username = this.createUsername();
 
+    if (residenceRef) {
+      const errorMsg: string|void = await this.authService.signUp(username, this.email, this.password, residenceRef)
+      if (errorMsg) {
+        this.errorMsg = errorMsg;
+        this.showFormError()
+      }
+      else {
+        this.router.navigate([this.redirectTo])
+      }
+    }
+  }
 
-      const dbInstance = doc(this.firestore, 'users/'+ uid);
+  private createUsername(){
+    let username = "";
+    if (this.lastName) {
+      username = `${this.firstName} ${this.lastName}`
+    }
+    else{
+      username = `${this.firstName}`
+    }
+    return username
+  }
 
-      const docData = {
-        ads: this.ads,
-        residence: residenceRef,
-        username: username
-      };
-      setDoc(dbInstance, docData)
-
+  private getResidenceRefFromName(){
+    let residenceRef: DocumentReference | undefined = undefined;
+    this.residences.forEach(resid => {
+      if (this.residenceName == resid.name) {
+        residenceRef = resid.reference;
+      }
     });
-
-
-
-
-
-
-
-    this.router.navigate([this.redirectTo])
+    return residenceRef;
   }
-
-
-
 }
-
-
-
-

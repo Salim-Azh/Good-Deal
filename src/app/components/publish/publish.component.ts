@@ -74,26 +74,37 @@ export class PublishComponent implements OnInit {
   ) {
     if (this.user) {
       this.showPreview = false;
-      const storage = getStorage();
-      // Upload file and metadata to the object 'images/mountains.jpg'
-      const storageRef = ref(storage, 'Images/' + file.name);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-      // Listen for state changes, errors, and completion of the upload.
-      uploadTask.then(async (snapshot) => {
-        let url = await getDownloadURL(snapshot.ref);
-        let imagesUrl: string[] = [];
-        if (url) {
-          imagesUrl.push(url);
-        }
+      if(file){
+        const storage = getStorage();
+        const storageRef = ref(storage, 'Images/' + file.name);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.then(async (snapshot) => {
+          let url = await getDownloadURL(snapshot.ref);
+          let imagesUrl: string[] = [];
+          if (url) {
+            imagesUrl.push(url);
+          }
+          await this.adService.createAd(
+            title,
+            category,
+            price,
+            description,
+            imagesUrl,
+            state
+          );
+        });
+      }
+      else{
         await this.adService.createAd(
           title,
           category,
           price,
           description,
-          imagesUrl,
+          [],
           state
         );
-      });
+      }
     }
   }
 
