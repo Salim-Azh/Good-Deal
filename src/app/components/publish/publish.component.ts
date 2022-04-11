@@ -81,9 +81,9 @@ export class PublishComponent implements OnInit {
       // Listen for state changes, errors, and completion of the upload.
       uploadTask.then(async (snapshot) => {
         let url = await getDownloadURL(snapshot.ref);
-        let imagesUrl: string[] = [];
+        let imagesUrl: any;
         if (url) {
-          imagesUrl.push(url);
+          imagesUrl = file.name;
         }
         await this.adService.createAd(
           title,

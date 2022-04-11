@@ -23,8 +23,8 @@ export class SignInComponent implements OnInit {
   username: any;
 
   ads: { adRef: DocumentReference, title: string, id?: string, deal: boolean }[] = [];
-
-
+  selectedResidence: Residence | undefined = undefined;
+  residenceRef: string;
   SelectedValue: string;
   usernameValue: string;
   authUid: string | undefined;
@@ -39,6 +39,7 @@ export class SignInComponent implements OnInit {
     this.SelectedValue= "";
     this.usernameValue = "";
     this.authUid = undefined;
+    this.residenceRef = "";
 
 
 
@@ -60,16 +61,18 @@ export class SignInComponent implements OnInit {
 
   change(){
     this.signup = !this.signup;
-
+    console.log('Residence: ',this.residenceRef)
   }
 
-  async register(email:string, password:string){
+  register(email:string, password:string){
 
 
     this.authService.signUp(email,password).then(async () => {
-
-      const residenceRef = this.SelectedValue;
+      let residenceRef = this.SelectedValue;
       const username = this.usernameValue;
+      this.residences = await this.residenceService.getResidences();
+
+
       console.log('reisdence', residenceRef);
       console.log('Username',username);
       const uid = getAuth().currentUser?.uid;
@@ -79,13 +82,24 @@ export class SignInComponent implements OnInit {
 
 
       const dbInstance = doc(this.firestore, 'users/'+ uid);
-
+      if (residenceRef == "none") {
+        this.selectedResidence = undefined;
+      } else {
+        this.residences.forEach(residence => {
+          if (residence.name == residenceRef) {
+          residenceRef = residence.reference.path
+          console.log('Residence name: ',residence.name)
+          console.log('Residence Ref: ',residenceRef)
+          }
+        });
+      }
       const docData = {
         ads: this.ads,
         residence: residenceRef,
         username: username
       };
       setDoc(dbInstance, docData)
+
 
     });
 
@@ -104,4 +118,8 @@ export class SignInComponent implements OnInit {
 
 
 
+
+function SelectedValuer() {
+  throw new Error('Function not implemented.');
+}
 

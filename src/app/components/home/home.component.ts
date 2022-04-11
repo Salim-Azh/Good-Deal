@@ -99,13 +99,19 @@ export class HomeComponent implements OnInit {
         this.residences.forEach(residence => {
           if (this.user.residence.path == residence.reference.path) {
             this.selectedResidence = residence;
+            console.log("Residence: ", this.user.residence.path)
           }
         });
       }
       else {
         this.residences = await this.residenceService.getResidences();
       }
-    })
+
+    }
+
+    )
+
+
   }
 
   async ngOnInit(): Promise<void> {
@@ -163,12 +169,15 @@ export class HomeComponent implements OnInit {
     } else {
       this.residences.forEach(residence => {
         if (residence.name == residenceName) {
+          console.log("Residence name: ", residence.name)
           this.selectedResidence = residence;
         }
       });
     }
     this.showFilters = false;
+
     this.search(input);
+
   }
 
   async getSearchResultsTextWithNoFilters(input: any) {
