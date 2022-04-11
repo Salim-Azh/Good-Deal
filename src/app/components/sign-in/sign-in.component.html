@@ -1,14 +1,43 @@
-<div class="mb-3">
-  <label for="email" class="form-label">Email</label>
-  <input type="email" class="form-control" id="email" aria-describedby="emailHelp" #email/>
-</div>
-<div class="mb-3">
-  <label for="password" class="form-label">Mot de passe</label>
-  <input type="password" class="form-control" id="password" #password>
+<div class="alert alert-danger mt-3" role="alert"*ngIf="showErrorMsg">
+  {{errorMsg}}
 </div>
 
-<button *ngIf="signup === false" class="btn" (click)="login(email.value, password.value)">Connexion</button>
-<button *ngIf="signup === true" class="btn" (click)="register(email.value, password.value)">S'inscrire</button>
+<form class="mt-5" (change)="setDisableBtn()">
+  <ng-container *ngIf="signup===true">
+    <input type="text" class="form-control mb-3" id="firstName" name="firstName" #firstName placeholder="Prénom"
+      (keyup)="setFirstNameFormState(firstName.value)" required />
 
-<button *ngIf="signup === false" (click)="change()" class="btn">Sign up?</button>
-<button *ngIf="signup === true" (click)="change()" class="btn">Sign in?</button>
+    <input type="text" class="form-control mb-3" id="lastName" name="lastName" #lastName placeholder="Nom"
+      (keyup)="setLastNameFormState(lastName.value)" />
+  </ng-container>
+
+  <input type="email" class="form-control mb-3" id="email" aria-describedby="email" #email placeholder="Adresse email"
+    (keyup)="setEmailFormState(email.value)" required />
+
+  <input type="password" class="form-control mb-3" id="password" placeholder="Mot de passe" #password
+    (keyup)="setPasswordFormState(password.value)" required />
+
+  <ng-container *ngIf="signup===true;else signInFrom">
+
+    <select class="form-select mb-3" name="residence " id="residence " #residenceName
+      (change)="setResidenceNameFormState(residenceName.value)" required>
+      <option selected value="none">-- Sélectionnez votre résidence --</option>
+      <ng-container *ngFor="let res of residences">
+        <option value={{res.name}}>{{res.name}}</option>
+      </ng-container>
+    </select>
+
+    <button type="button" [disabled]="disabledSignUpBtn" class="btn btn-sm" (click)="register()">
+      Inscription
+    </button>
+
+    <a (click)="setFormType() " class="">Se connecter ?</a>
+  </ng-container>
+
+  <ng-template #signInFrom>
+    <button type="button" [disabled]="disabledLoginBtn" class="btn btn-sm" (click)="login() ">
+      Connexion
+    </button>
+    <a (click)="setFormType() " class="">S'inscrire ?</a>
+  </ng-template>
+</form>
