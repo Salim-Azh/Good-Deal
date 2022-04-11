@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Ad } from '../../model/ad.model';
-import { GalleryItem, ImageItem } from 'ng-gallery';
+//import { GalleryItem, ImageItem } from 'ng-gallery';
 
 @Component({
   selector: 'app-ad-details',
@@ -10,16 +10,19 @@ import { GalleryItem, ImageItem } from 'ng-gallery';
 export class AdDetailsComponent implements OnInit {
 
   @Input() ad!: Ad;
-  images:  GalleryItem[] = [];
-  thumbHeight=0;
+
+  /**
+   * images:  GalleryItem[] = [];
+   * thumbHeight=0;
+   */
+  
 
   ngOnInit() {
 
-    this.images = [ 
-      new ImageItem({ src: '../../../assets/img/asus-router.jpg'}),
-      new ImageItem({ src: '../../../assets/img/pc-asus.jpeg'}),
-      new ImageItem({ src: '../../../assets/img/pc-asus2.jpg'})
-    ]
+    /**
+     * this.images = [new ImageItem({ src: this.ad.imagesUrl})];
+     */
+    
   }
 
 }

@@ -2,7 +2,12 @@
 
 
 <div>
-    <gallery  [items]="images" [thumb]="false"></gallery>
+    <!--On utilisera la gallery quand on accepte plusieurs images pour un article-->
+    <!--gallery  [items]="images" [thumb]="false"></gallery-->
+    
+    <div fxFill class="img-background">
+        <img src="{{ad.imagesUrl}}" alt="Image de l'annonce" class="cover">
+    </div>
     <div class="details">
         <h2>{{ad.title}}</h2>
         <h3>{{ad.price}}$CA</h3>
