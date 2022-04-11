@@ -6,6 +6,7 @@ import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { Ad } from '../model/ad.model';
 import { User } from '../model/user.model';
 import { UserService } from './user.service';
+import { getStorage, ref, listAll,getDownloadURL } from "firebase/storage";
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,7 @@ export class SearchService {
   }
 
   async searchDefault() {
-    let ads: Ad[] = [];
+    let ads: Ad[] = [] as any;
     if (!getAuth().currentUser) {
       ads = await this.getAds();
     }
@@ -115,6 +116,7 @@ export class SearchService {
 
       getDownloadURL(ref(storage, 'Images/' + element.get('imagesUrl')))
       .then((url) => {
+
       const ad = {
         id: element.id,
         advertiser: element.get('advertiser'),
