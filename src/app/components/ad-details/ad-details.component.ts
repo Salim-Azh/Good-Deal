@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/model/user.model';
+import { ChatService } from 'src/app/services/chat.service';
 import { Ad } from '../../model/ad.model'
 
 @Component({
@@ -13,7 +14,10 @@ export class AdDetailsComponent implements OnInit {
   @Input() ad!: Ad;
   @Input() user?: User;
 
-  constructor( private router : Router) {
+  constructor(
+    private router : Router,
+    private chatService : ChatService,
+  ) {
 
   }
 
@@ -21,10 +25,9 @@ export class AdDetailsComponent implements OnInit {
   }
 
   contactUser(){
-    //Appeler le chat service injecte dans le constructeur
-    //Appeler la methode
-    console.log(this.user);
-    console.log(this.ad.advertiserName)
+    if(this.user && this.ad){
+      this.chatService.createChat(this.user.userRef, this.user.username, this.ad.advertiser, this.ad.advertiserName);
+    }
     this.router.navigate(['messages'])
 
 

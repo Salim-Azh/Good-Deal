@@ -2,7 +2,7 @@ import { DocumentReference } from "firebase/firestore";
 
 export class User {
     id!: string;
-    userRef?: DocumentReference;  
+    userRef!: DocumentReference;
     username!: string;
     residence!: DocumentReference;
     ads!: {
