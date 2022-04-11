@@ -88,7 +88,8 @@ export class HomeComponent implements OnInit {
       this.ads = await this.searchService.searchDefault();
 
       if (this.getScreenWidth > this.SCREEN_SM) {
-        this.selected = this.ads[0];
+        console.log(this.ads);        //le tableau d'annonce n'est pas vide et contient toutes les annonces
+        this.selected = this.ads[0];  //mais quand je récupère le premier élément il est 'undefined'...
         this.setTabletCSS();
       }
 
@@ -205,7 +206,6 @@ export class HomeComponent implements OnInit {
    */
   async onSelect(ad: Ad) {
     this.detailsMode = true;
-    console.log(this.detailsMode);
     this.selected = ad;
 
     /**Mode téléphone :
@@ -224,7 +224,7 @@ export class HomeComponent implements OnInit {
   }
 
   /**Mode téléphone:
-   * permet à l'utilisateur de retourner dur la liste des annonces
+   * permet à l'utilisateur de retourner sur la liste des annonces
    * lorsqu'il est sur les détails d'une annonce
    *
    */
