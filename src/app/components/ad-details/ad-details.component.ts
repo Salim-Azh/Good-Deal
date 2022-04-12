@@ -24,12 +24,10 @@ export class AdDetailsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  contactUser(){
+  async contactUser(){
     if(this.user && this.ad){
-      this.chatService.createChat(this.user.userRef, this.user.username, this.ad.advertiser, this.ad.advertiserName);
+      await this.chatService.createChat(this.user.userRef, this.user.username, this.ad.advertiser, this.ad.advertiserName);
     }
     this.router.navigate(['messages'])
-
-
   }
 }

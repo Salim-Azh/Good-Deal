@@ -1,8 +1,8 @@
 <h3>{{ad.title}}</h3>
-<button *ngIf="user?.username" class="btn btn-sm btn-contact" (click)="contactUser()">Contacter </button>
+<button *ngIf="user?.username" class="btn btn-sm btn-contact" (click)="contactUser()">Contacter</button>
 <p *ngIf="!user?.username">
      Pour contacter {{ad.advertiserName}} :
-    <a routerLink="/account"> Se Connecter</a> 
+    <a routerLink="/account"> Se Connecter</a>
 </p>
 <h4>{{ad.price}}$CA</h4>
 <p>{{ad.description}}</p>
