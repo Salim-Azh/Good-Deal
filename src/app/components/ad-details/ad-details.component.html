@@ -32,11 +32,13 @@
       </div>
     </div>
 
-    <button *ngIf="user?.username" class="btn btn-sm btn-contact" (click)="contactUser()">Contacter</button>
-    <p *ngIf="!user?.username">
-        Pour contacter {{ad.advertiserName}} :
-        <a routerLink="/account"> Se Connecter</a>
-    </p>
+    <ng-container *ngIf="user?.userRef?.path != ad.advertiser.path">
+      <button *ngIf="user?.username" class="btn btn-sm btn-contact" (click)="contactUser()">Contacter</button>
+      <p *ngIf="!user?.username">
+          Pour contacter {{ad.advertiserName}} :
+          <a routerLink="/account"> Se Connecter</a>
+      </p>
+    </ng-container>
 
     <ng-container *ngIf="ad.description">
       <h3 class="font-bold fs-title-2" >Description</h3>

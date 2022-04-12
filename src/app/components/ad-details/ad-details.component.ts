@@ -70,7 +70,10 @@ export class AdDetailsComponent implements OnInit {
 
   async contactUser(){
     if(this.user && this.ad){
-      await this.chatService.createChat(this.user.userRef, this.user.username, this.ad.advertiser, this.ad.advertiserName);
+      const chat = await this.chatService.getChatByMembers(this.user.userRef, this.user.username, this.ad.advertiser, this.ad.advertiserName);
+      if(chat.empty){
+        await this.chatService.createChat(this.user.userRef, this.user.username, this.ad.advertiser, this.ad.advertiserName);
+      }
     }
     this.router.navigate(['messages'])
   }
