@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { format } from 'path';
-import { Ad } from '../../model/ad.model';
+import { Router } from '@angular/router';
+import { User } from 'src/app/model/user.model';
+import { ChatService } from 'src/app/services/chat.service';
+import { Ad } from '../../model/ad.model'
 //import { GalleryItem, ImageItem } from 'ng-gallery';
 
 @Component({
@@ -11,11 +13,15 @@ import { Ad } from '../../model/ad.model';
 export class AdDetailsComponent implements OnInit {
 
   @Input() ad!: Ad;
+  @Input() user?: User;
 
   displayState: string;
   displayDate: string;
 
-  constructor() {
+  constructor(
+    private router : Router,
+    private chatService : ChatService,
+  ) {
     this.displayState = "";
     this.displayDate = "";
   }
@@ -62,4 +68,13 @@ export class AdDetailsComponent implements OnInit {
     this.displayDate = `${date.getFullYear()}-${month}-${day}`
   }
 
+  async contactUser(){
+    if(this.user && this.ad){
+      const chat = await this.chatService.getChatByMembers(this.user.userRef, this.user.username, this.ad.advertiser, this.ad.advertiserName);
+      if(chat.empty){
+        await this.chatService.createChat(this.user.userRef, this.user.username, this.ad.advertiser, this.ad.advertiserName);
+      }
+    }
+    this.router.navigate(['messages'])
+  }
 }

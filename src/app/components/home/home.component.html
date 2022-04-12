@@ -76,7 +76,7 @@
         <button mat-icon-button class="btn-close" [disableRipple]="true" (click)="redirectedToAdsList()" type="button" [style.display]="returnDisplay">
             <mat-icon class="close">close</mat-icon>
         </button>
-        <app-ad-details [ad]="selected">
+        <app-ad-details [ad]="selected" [user]="user">
         </app-ad-details>
     </div>
 </div>
