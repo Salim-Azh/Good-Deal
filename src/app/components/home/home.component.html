@@ -50,12 +50,14 @@
             <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="flex-start" class="detail">
                 <div fxFlex="50" *ngFor="let ad of ads" [class.selected]="ad === selected" (click)="onSelect(ad)" class="select">
                     <mat-card class="mat-elevation-z4">
+
                         <ng-container *ngIf="ad.imagesUrl.length == 0; else imgAvailable">
-                          <img mat-card-image src="../../../assets/img/no-photo-available.png" alt="Image de l'annonce" class="img-size">
+                          <img mat-card-image src="../../../assets/img/no-photo-available.png" alt="Image de l'annonce" class="cover">
                         </ng-container>
                         <ng-template #imgAvailable>
-                          <img mat-card-image src="{{ ad.imagesUrl }}" alt="Image de l'annonce" class="img-size">
+                          <img mat-card-image src="{{ ad.imagesUrl }}" alt="Image de l'annonce" class="cover">
                         </ng-template>
+
                         <mat-card-content>
                             <mat-card-title>
                                 {{ad.title}}
@@ -70,9 +72,9 @@
         </div>
     </div>
 
-    <div class="content ad-details" [style]="detailsCSS" id="ad-details" *ngIf="selected != null" [style.display]="adDetailsDisplay" >
-        <button (click)="redirectedToAdsList()" class="btn btn-outline-secondary btn-sm" type="button" [style.display]="returnDisplay">
-            Retour
+    <div class="ad-details" [style]="detailsCSS" id="ad-details" *ngIf="selected != null" [style.display]="adDetailsDisplay" >
+        <button mat-icon-button class="btn-close" [disableRipple]="true" (click)="redirectedToAdsList()" type="button" [style.display]="returnDisplay">
+            <mat-icon class="close">close</mat-icon>
         </button>
         <app-ad-details [ad]="selected">
         </app-ad-details>

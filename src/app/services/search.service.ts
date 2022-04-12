@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { getAuth } from 'firebase/auth';
 import { collection, DocumentData, DocumentReference, getDocs, query, QuerySnapshot, where } from 'firebase/firestore';
+import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { Ad } from '../model/ad.model';
 import { User } from '../model/user.model';
 import { UserService } from './user.service';
-import { getStorage, ref, listAll,getDownloadURL } from "firebase/storage";
 
 @Injectable({
   providedIn: 'root'
@@ -110,45 +110,26 @@ export class SearchService {
     let ads: Ad[] = [];
 
     docSnap.docs.forEach(element => {
-
-      const ad = {
-        id: element.id,
-        advertiser: element.get('advertiser'),
-        advertiserName: element.get('advertiserName'),
-        category: element.get('category'),
-        createdAt: element.get('createdAt'),
-        deal: element.get('deal'),
-        description: element.get('description'),
-        imagesUrl: element.get('imagesUrl'),
-        latitude: element.get('latitude'),
-        longitude: element.get('longitude'),
-        price: element.get('price'),
-        residenceName: element.get('residenceName'),
-        residenceRef: element.get('residenceRef'),
-        state: element.get('state'),
-        title: element.get('title'),
-        titleIgnoreCase: element.get('titleIgnoreCase')
-      } as Ad
-      ads.push(ad);
-    });
-
+        const ad = {
+          id: element.id,
+          advertiser: element.get('advertiser'),
+          advertiserName: element.get('advertiserName'),
+          category: element.get('category'),
+          createdAt: element.get('createdAt'),
+          deal: element.get('deal'),
+          description: element.get('description'),
+          imagesUrl: element.get('imagesUrl'),
+          latitude: element.get('latitude'),
+          longitude: element.get('longitude'),
+          price: element.get('price'),
+          residenceName: element.get('residenceName'),
+          residenceRef: element.get('residenceRef'),
+          state: element.get('state'),
+          title: element.get('title'),
+          titleIgnoreCase: element.get('titleIgnoreCase')
+        } as Ad
+        ads.push(ad);
+      });
     return ads;
   }
-
-/*
-  async getSearchResultsTextByCategory(input: any){
-    let ads: Ad[] = [];
-    if(input){
-      const q = query(
-        collection(this.firestore, "ads"),
-        where("category", ">=",input),
-        where("category", "<=", input+'\uf8ff'),
-        where("deal", "==", false));
-
-      const docSnap =  await getDocs(q);
-      ads = this.fillResults(docSnap);
-    }
-    return ads;
-  }
-*/
 }
