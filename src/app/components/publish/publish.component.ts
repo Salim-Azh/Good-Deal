@@ -81,7 +81,7 @@ export class PublishComponent implements OnInit {
           category,
           price,
           description,
-          file.name,
+          imagesUrl,
           state
         );
       });
@@ -92,7 +92,7 @@ export class PublishComponent implements OnInit {
         category,
         price,
         description,
-        "",
+        [],
         state
       );
     }

@@ -71,7 +71,7 @@ export class AdService {
     category: any,
     price: any,
     description: any,
-    imagesUrl: string,
+    imagesUrl: string[],
     state: any
   ) {
     const authUser = await this.getUser();

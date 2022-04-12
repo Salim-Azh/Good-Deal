@@ -88,8 +88,7 @@ export class HomeComponent implements OnInit {
       this.ads = await this.searchService.searchDefault();
 
       if (this.getScreenWidth > this.SCREEN_SM) {
-        console.log(this.ads);        //le tableau d'annonce n'est pas vide et contient toutes les annonces
-        this.selected = this.ads[0];  //mais quand je récupère le premier élément il est 'undefined'...
+        this.selected = this.ads[0];
         this.setTabletCSS();
       }
 
@@ -182,7 +181,6 @@ export class HomeComponent implements OnInit {
   async search(input?: string) {
     if (this.selectedResidence) {
       if (input) {
-        console.log("a")
         this.ads = await this.searchService.searchTextResidence(input, this.selectedResidence.reference);
       }
       else {
