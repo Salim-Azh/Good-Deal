@@ -17,6 +17,12 @@
       <p class="fs-small">le {{displayDate}}</p>
     </div>
 
+    <ng-container *ngIf="user?.userRef?.path != ad.advertiser.path">
+      <div>
+        <button *ngIf="user?.username" class="btn btn-sm btn-contact my-3" (click)="contactUser()">Contacter</button>
+      </div>
+    </ng-container>
+
     <div class="my-4">
       <div class="d-flex align-items-center mb-2">
         <mat-icon class="custom-icon-color me-2">location_on</mat-icon>
@@ -33,15 +39,14 @@
     </div>
 
     <ng-container *ngIf="user?.userRef?.path != ad.advertiser.path">
-      <button *ngIf="user?.username" class="btn btn-sm btn-contact" (click)="contactUser()">Contacter</button>
       <p *ngIf="!user?.username">
-          Pour contacter {{ad.advertiserName}} :
-          <a routerLink="/account"> Se Connecter</a>
+        Pour contacter {{ad.advertiserName}} :
+        <a routerLink="/account">Se Connecter</a>
       </p>
     </ng-container>
 
     <ng-container *ngIf="ad.description">
-      <h3 class="font-bold fs-title-2" >Description</h3>
+      <h3 class="font-bold fs-title-2">Description</h3>
       <p>{{ad.description}}</p>
     </ng-container>
 
