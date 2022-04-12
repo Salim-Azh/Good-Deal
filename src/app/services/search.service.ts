@@ -115,44 +115,27 @@ export class SearchService {
       getDownloadURL(ref(storage, 'Images/' + element.get('imagesUrl')))
       .then((url) => {
 
-      const ad = {
-        id: element.id,
-        advertiser: element.get('advertiser'),
-        advertiserName: element.get('advertiserName'),
-        category: element.get('category'),
-        createdAt: element.get('createdAt'),
-        deal: element.get('deal'),
-        description: element.get('description'),
-        imagesUrl: element.get('imagesUrl'),
-        latitude: element.get('latitude'),
-        longitude: element.get('longitude'),
-        price: element.get('price'),
-        residenceName: element.get('residenceName'),
-        residenceRef: element.get('residenceRef'),
-        state: element.get('state'),
-        title: element.get('title'),
-        titleIgnoreCase: element.get('titleIgnoreCase')
-      } as Ad
-      ads.push(ad);
+        const ad = {
+          id: element.id,
+          advertiser: element.get('advertiser'),
+          advertiserName: element.get('advertiserName'),
+          category: element.get('category'),
+          createdAt: element.get('createdAt'),
+          deal: element.get('deal'),
+          description: element.get('description'),
+          imagesUrl: url,
+          latitude: element.get('latitude'),
+          longitude: element.get('longitude'),
+          price: element.get('price'),
+          residenceName: element.get('residenceName'),
+          residenceRef: element.get('residenceRef'),
+          state: element.get('state'),
+          title: element.get('title'),
+          titleIgnoreCase: element.get('titleIgnoreCase')
+        } as Ad
+        ads.push(ad);
+      });
     });
-
     return ads;
   }
-
-/*
-  async getSearchResultsTextByCategory(input: any){
-    let ads: Ad[] = [];
-    if(input){
-      const q = query(
-        collection(this.firestore, "ads"),
-        where("category", ">=",input),
-        where("category", "<=", input+'\uf8ff'),
-        where("deal", "==", false));
-
-      const docSnap =  await getDocs(q);
-      ads = this.fillResults(docSnap);
-    }
-    return ads;
-  }
-*/
 }
