@@ -9,26 +9,29 @@
         <img src="{{ad.imagesUrl}}" alt="Image de l'annonce" class="cover">
     </div>
     <div class="details">
-        <h2>{{ad.title}}</h2>
-        <h3>{{ad.price}}$CA</h3>
+        <p class="ad-titre">{{ad.title}}</p>
+        <p class="ad-price">{{ad.price}}$CA</p>
+
+        <div class="ad-tableau">
         <table>
             <tr>
-                <th>Résidence</th>
+                <th><mat-icon> location_on</mat-icon></th>
                 <td>{{ad.residenceName}}</td>
             </tr>
             <tr>
-                <th>Catégorie</th>
-                <td>{{ad.category}}</td>
+                <th><mat-icon>face</mat-icon></th>
+                <td>{{ad.advertiserName}}</td>
             </tr>
             <tr>
-                <th>État</th>
-                <td>{{ad.state}}</td>
+                <th><mat-icon> category</mat-icon></th>
+                <td>{{ad.category}}</td>
             </tr>
+            
         </table>
-        <p><span></span> </p>
-        <p><span></span> </p>
-        <p><span></span> </p>
-        <p><span>Description</span></p>
+        </div>
+        <p class="ad-descr">Description</p>
         <p>{{ad.description}}</p>
+        <p class="ad-descr">État</p>
+        <p>{{ad.state}}</p>
     </div>
 </div>

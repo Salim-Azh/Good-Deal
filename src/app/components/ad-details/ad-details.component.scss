@@ -13,13 +13,30 @@ span{
     font-weight: bold;
 }
 
-td{
-    padding: 10px 0px 0px 25px;
+.ad-titre{
+    font-size: 20px;
+    font-weight: bold;
+}
+.ad-price{
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff7900;
 }
 
-th{
-    padding-top: 10px;
+.ad-descr{
+    font-size: 15px;
+    font-weight: bold;
 }
+
+td{
+    padding: 5px 0px 0px 25px;
+}
+
+.ad-tableau{
+    padding: 10px 0px 20px 0px;
+}
+
+
 
 .cover {
     object-fit: cover;
