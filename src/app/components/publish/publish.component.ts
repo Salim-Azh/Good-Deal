@@ -76,27 +76,27 @@ export class PublishComponent implements OnInit {
           if (url) {
             imagesUrl.push(url);
           }
-          await this.adService.createAd(
-            title,
-            category,
-            price,
-            description,
-            imagesUrl,
-            state
-          );
-        });
-      }
-      else{
         await this.adService.createAd(
           title,
           category,
           price,
           description,
-          [],
+          imagesUrl,
           state
         );
-      }
+      });
     }
+    else{
+      await this.adService.createAd(
+        title,
+        category,
+        price,
+        description,
+        [],
+        state
+      );
+    }
+  }
   }
 
   takePhoto(FormimagesUrl: HTMLInputElement, event: any) {

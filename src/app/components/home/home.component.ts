@@ -130,6 +130,7 @@ export class HomeComponent implements OnInit {
       else {
         this.adDetailsDisplay = "block";
         this.returnDisplay = "block";
+        this.searchCSS = "display:none;";
         this.adsDisplay = "none";
       }
     }
@@ -147,9 +148,9 @@ export class HomeComponent implements OnInit {
   }
 
   setTabletCSS() {
-    this.searchCSS = "position:fixed; right:0; left:0; z-index:1;";
+    this.searchCSS = "display:block; position:fixed; right:0; left:0; z-index:1;";
     this.adsCSS = "float:left; width:40%; overflow:scroll; padding-top:100px;";
-    this.detailsCSS = "float:left; height:100vh !important; width:60%; overflow:hidden; position:fixed; right:0; top:0; padding-top:100px;";
+    this.detailsCSS = "float:left; height:100vh !important; width:60%; overflow:hidden; position:fixed; right:0; top:0; padding-top:70px;";
     this.filterCSS = "position:fixed; min-width:52vw; left:41vw; top:72px; z-index:2;";
   }
 
@@ -180,7 +181,6 @@ export class HomeComponent implements OnInit {
   async search(input?: string) {
     if (this.selectedResidence) {
       if (input) {
-        console.log("a")
         this.ads = await this.searchService.searchTextResidence(input, this.selectedResidence.reference);
       }
       else {
@@ -215,13 +215,14 @@ export class HomeComponent implements OnInit {
       this.adsDisplay = "none";
       this.adDetailsDisplay = "block";
       this.returnDisplay = "block";
+      this.searchCSS = "display:none;";
     } else {
       this.returnDisplay = "none";
     }
   }
 
   /**Mode téléphone:
-   * permet à l'utilisateur de retourner dur la liste des annonces
+   * permet à l'utilisateur de retourner sur la liste des annonces
    * lorsqu'il est sur les détails d'une annonce
    *
    */
@@ -230,5 +231,6 @@ export class HomeComponent implements OnInit {
     this.selected = null;
     this.adDetailsDisplay = "none";
     this.adsDisplay = "block";
+    this.searchCSS = "display:block";
   }
 }
