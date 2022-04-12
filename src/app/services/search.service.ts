@@ -108,13 +108,8 @@ export class SearchService {
 
   private fillResults(docSnap: QuerySnapshot<DocumentData>) {
     let ads: Ad[] = [];
-    const storage = getStorage();
 
     docSnap.docs.forEach(element => {
-
-      getDownloadURL(ref(storage, 'Images/' + element.get('imagesUrl')))
-      .then((url) => {
-
         const ad = {
           id: element.id,
           advertiser: element.get('advertiser'),
@@ -123,7 +118,7 @@ export class SearchService {
           createdAt: element.get('createdAt'),
           deal: element.get('deal'),
           description: element.get('description'),
-          imagesUrl: url,
+          imagesUrl: element.get('imagesUrl'),
           latitude: element.get('latitude'),
           longitude: element.get('longitude'),
           price: element.get('price'),
@@ -135,7 +130,6 @@ export class SearchService {
         } as Ad
         ads.push(ad);
       });
-    });
     return ads;
   }
 }
