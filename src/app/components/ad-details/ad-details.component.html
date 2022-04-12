@@ -2,7 +2,7 @@
   <!--On utilisera la gallery quand on accepte plusieurs images pour un article-->
   <!--gallery  [items]="images" [thumb]="false"></gallery-->
 
-  <div fxFill class="img-background">
+  <div fxFill class="img-background gallery">
     <ng-container *ngIf="ad.imagesUrl.length == 0; else imgAvailable">
       <img src="../../../assets/img/no-photo-available.png" alt="Image de l'annonce" class="cover">
     </ng-container>
@@ -11,7 +11,6 @@
     </ng-template>
   </div>
   <div class="details">
-
     <div>
       <p class="font-bold fs-title">{{ad.title}}</p>
       <p class="ad-price fs-title-2">{{ad.price}}$CA</p>
