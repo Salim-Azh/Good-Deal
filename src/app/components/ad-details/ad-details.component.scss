@@ -1,4 +1,4 @@
-gallery {
+.gallery {
     height: 35vh;
 }
 
@@ -9,34 +9,29 @@ gallery {
     min-height: 65vh;
 }
 
-span{
-    font-weight: bold;
+.font-bold{
+  font-weight: 500;
 }
 
-.ad-titre{
-    font-size: 20px;
-    font-weight: bold;
+.fs-title{
+  font-size: 1.3rem;
 }
+
 .ad-price{
-    font-size: 18px;
-    font-weight: bold;
-    color: #ff7900;
+  color: #ff7900;
 }
 
-.ad-descr{
-    font-size: 15px;
-    font-weight: bold;
+.fs-title-2{
+  font-size: 1.1rem;
 }
 
-td{
-    padding: 5px 0px 0px 25px;
+.fs-small{
+  font-size: small;
 }
 
-.ad-tableau{
-    padding: 10px 0px 20px 0px;
+.custom-icon-color{
+  color: #ff7900;
 }
-
-
 
 .cover {
     object-fit: cover;
