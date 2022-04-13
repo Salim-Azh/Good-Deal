@@ -24,14 +24,14 @@ export class ChatService {
 
     }
 
-    private async getChats1() {
+    private async getChatsByUsername(username: String) {
       const user: User = await this.getUser();
       if (user) {
         this.username = user.username;
         const q = query(
           collection(this.firestore, "chats"),
           //where('members', 'array-contains', {"u1Username":user.username})
-          where('members.u1Username', '==', user.username)
+          where('members.'+username, '==', user.username)
         );
         console.log((await getDocs(q)).empty);
         return getDocs(q);
@@ -41,10 +41,14 @@ export class ChatService {
 
     async getChats() {
       let chats: Chat[] = [];
-        const docsSnap = await this.getChats1();
-        if (docsSnap) {
-          chats = this.fillResults(docsSnap)
-        }
+      const docsSnap1 = await this.getChatsByUsername("u1Username");
+      const docsSnap2 = await this.getChatsByUsername("u2Username");
+      if (docsSnap1) {
+        chats = this.fillResults(docsSnap1);
+      }
+      if (docsSnap2){
+        chats = chats.concat(this.fillResults(docsSnap2));
+      }
       return chats;
     }
 
