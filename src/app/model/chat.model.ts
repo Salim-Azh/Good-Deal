@@ -9,8 +9,8 @@ export interface Chat {
     messageText:string
     read: boolean
     sentAt: Timestamp
-    sentBy: DocumentReference
-    username: string
+    sentByRef: DocumentReference
+    sentByUsername: string
   }
 
   members: {

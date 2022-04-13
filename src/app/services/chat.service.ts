@@ -26,14 +26,22 @@ export class ChatService {
     }
   }
 
-  getChatByMembers(userRef1: DocumentReference,username1: string, userRef2: DocumentReference, username2: string){
-    const q = query(
+  async getChatByMembers(userRef1: DocumentReference, userRef2: DocumentReference){
+    let q = query(
       collection(this.firestore, "chats"),
       where("members.u1Ref", "==", userRef1),
-      where("members.u2Ref", "==", userRef2),
-      where("members.u1Username", "==", username1),
-      where("members.u2Username", "==", username2),
+      where("members.u2Ref", "==", userRef2)
     );
-    return getDocs(q);
+
+    const chat = await getDocs(q);
+    if (chat.empty) {
+      q = query(
+        collection(this.firestore, "chats"),
+        where("members.u1Ref", "==", userRef2),
+        where("members.u2Ref", "==", userRef1)
+      );
+      return getDocs(q);
+    }
+    return chat;
   }
 }
