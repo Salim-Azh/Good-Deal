@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { PublishComponent } from './components/publish/publish.component';
+import { MyChatComponent } from './components/my-chat/my-chat.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -13,8 +14,10 @@ const routes: Routes = [
   {path: 'publish', component: PublishComponent},
   {path: 'messages', component: MessagesComponent},
   {path: 'account', component: AccountComponent},
+  {path: 'my-chat', component: MyChatComponent},
   {path: 'home/ads/:id/details', component: AdDetailsComponent},
-  {path: '**', component: PageNotFoundComponent}
+  {path: '**', component: PageNotFoundComponent},
+
 
 ];
 

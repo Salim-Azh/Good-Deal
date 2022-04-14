@@ -1,5 +1,6 @@
 <div *ngIf="(authService.user |async);else notLoggedIn">
   <p>messages works!</p>
+  <a routerLink="/my-chat">Ma discussion</a>
 </div>
 <ng-template #notLoggedIn>
   <app-sign-in [redirectTo]="path"></app-sign-in>
