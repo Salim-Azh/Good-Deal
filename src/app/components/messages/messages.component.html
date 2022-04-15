@@ -5,7 +5,7 @@
   <h2>Mes messages</h2>
   <div class="list-group list-group-flush" *ngIf="chats.length > 0; else noChat">
     <div *ngFor="let chat of chats">
-      
+
       <div class="chat">
         <div class="chat-content">
         <div *ngIf="chat.members.u1Username == user.username; else user1">
@@ -14,7 +14,7 @@
         <ng-template #user1>
         <p class="nameContact">{{chat.members.u1Username}}</p>
         </ng-template>
-        <div *ngIf="chat.lastMessage.username == user.username; else pasMoi">
+        <div *ngIf="chat.lastMessage.sentByUsername == user.username; else pasMoi">
           <p class="chat-text">Vous : {{chat.lastMessage.messageText}}</p>
           </div>
           <ng-template #pasMoi>
