@@ -2,6 +2,7 @@ import { DocumentReference, Timestamp } from "firebase/firestore";
 
 export interface Ad {
   id: string;
+  ref: DocumentReference;
   advertiser: DocumentReference;
   advertiserName: string;
   category: string;

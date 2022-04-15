@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { getAuth } from 'firebase/auth';
+import { Component, Input, OnInit } from '@angular/core';
 import { DocumentReference } from 'firebase/firestore';
 import { User } from 'src/app/model/user.model';
 import { AdService } from 'src/app/services/ad.service';
@@ -13,18 +12,11 @@ import { UserService } from 'src/app/services/user.service';
 export class MyAdsListComponent implements OnInit {
 
   ads: { adRef: DocumentReference, title: string, id?: string, deal: boolean }[] = [];
-  user: User;
+  @Input() user!: User;
 
-  constructor(
-    private userService: UserService,
-    private adService: AdService
-  ) {
-    this.user = new User();
-  }
+  constructor(private adService: AdService, private userService: UserService) {}
 
-  async ngOnInit(): Promise<void> {
-    const uid = getAuth().currentUser?.uid
-    this.user = await this.userService.getUser(uid);
+  ngOnInit() {
     this.setAds(this.user.ads)
   }
 
@@ -64,23 +56,26 @@ export class MyAdsListComponent implements OnInit {
   async markAdAsDealByRef(adId: any, adRef: any) {
     if (adRef && adId) {
       await this.adService.markAdAsDealByRef(adId, adRef);
-      this.ngOnInit()
+      await this.updateAds();
     }
   }
 
   async cancelAdDealByRef(adId: any, adRef: any) {
     if (adRef && adId) {
       await this.adService.cancelAdDealByRef(adId, adRef);
-      this.ngOnInit()
+      await this.updateAds();
     }
   }
 
-
-  //NOT WORKING ON NESTED MAPS
-  async deleteAd(id: any, adRef: any, title: any) {
+  async deleteAd(id: any, adRef: any) {
     if (adRef && id) {
-      await this.adService.deleteAd(id, adRef,title);
-      this.ngOnInit()
+      await this.adService.deleteAd(id, adRef, this.user.userRef);
+      await this.updateAds();
     }
+  }
+
+  private async updateAds(){
+    this.user = await this.userService.getUser(this.user.id);
+    this.setAds(this.user.ads);
   }
 }
