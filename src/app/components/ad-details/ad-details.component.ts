@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { doc } from 'firebase/firestore';
 import { User } from 'src/app/model/user.model';
 import { ChatService } from 'src/app/services/chat.service';
 import { Ad } from '../../model/ad.model'
@@ -18,12 +19,15 @@ export class AdDetailsComponent implements OnInit {
   displayState: string;
   displayDate: string;
 
+
   constructor(
     private router : Router,
     private chatService : ChatService,
   ) {
     this.displayState = "";
     this.displayDate = "";
+
+
   }
   /**
    * images:  GalleryItem[] = [];
@@ -39,6 +43,32 @@ export class AdDetailsComponent implements OnInit {
 
     this.setDisplayState();
     this.setDisplayDate();
+    this.setMap()
+
+
+  }
+
+  setMap() {
+      let myLatLng = { lat: this.ad.latitude, lng: this.ad.longitude };
+      console.log('myLatLng: ', myLatLng)
+      console.log('residenceName', this.ad.residenceName)
+
+      console.log('Ad: ', this.ad)
+      let map = new google.maps.Map(
+        document.getElementById("map") as HTMLElement,
+        {
+          zoom: 18,
+          center: myLatLng,
+        }
+      );
+
+      new google.maps.Marker({
+        position: myLatLng,
+        map,
+        title: "Hello World!",
+      });
+
+
 
   }
 

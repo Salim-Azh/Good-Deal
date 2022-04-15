@@ -1,58 +1,65 @@
 <div>
-  <!--On utilisera la gallery quand on accepte plusieurs images pour un article-->
-  <!--gallery  [items]="images" [thumb]="false"></gallery-->
+    <!--On utilisera la gallery quand on accepte plusieurs images pour un article-->
+    <!--gallery  [items]="images" [thumb]="false"></gallery-->
 
-  <div fxFill class="img-background gallery">
-    <ng-container *ngIf="ad.imagesUrl.length == 0; else imgAvailable">
-      <img src="../../../assets/img/no-photo-available.png" alt="Image de l'annonce" class="cover">
-    </ng-container>
-    <ng-template #imgAvailable>
-      <img src="{{ad.imagesUrl}}" alt="Image de l'annonce" class="cover">
-    </ng-template>
-  </div>
-  <div class="details">
-    <div>
-      <p class="font-bold fs-title">{{ad.title}}</p>
-      <p class="ad-price fs-title-2">{{ad.price}}$CA</p>
-      <p class="fs-small">le {{displayDate}}</p>
+    <div fxFill class="img-background gallery">
+        <ng-container *ngIf="ad.imagesUrl.length == 0; else imgAvailable">
+            <img src="../../../assets/img/no-photo-available.png" alt="Image de l'annonce" class="cover">
+        </ng-container>
+        <ng-template #imgAvailable>
+            <img src="{{ad.imagesUrl}}" alt="Image de l'annonce" class="cover">
+        </ng-template>
     </div>
+    <div class="details">
+        <div>
+            <p class="font-bold fs-title">{{ad.title}}</p>
+            <p class="ad-price fs-title-2">{{ad.price}}$CA</p>
+            <p class="fs-small">le {{displayDate}}</p>
+        </div>
 
-    <ng-container *ngIf="user?.userRef?.path != ad.advertiser.path">
-      <div>
-        <button *ngIf="user?.username" class="btn btn-sm btn-contact my-3" (click)="contactUser()">Contacter</button>
-      </div>
-    </ng-container>
+        <ng-container *ngIf="user?.userRef?.path != ad.advertiser.path">
+            <div>
+                <button *ngIf="user?.username" class="btn btn-sm btn-contact my-3" (click)="contactUser()">Contacter</button>
+            </div>
+        </ng-container>
 
-    <div class="my-4">
-      <div class="d-flex align-items-center mb-2">
-        <mat-icon class="custom-icon-color me-2">location_on</mat-icon>
-        <span>{{ad.residenceName}}</span>
-      </div>
-      <div class="d-flex align-items-center mb-2">
-        <mat-icon class="custom-icon-color me-2">category</mat-icon>
-        <span>{{ad.category}}</span>
-      </div>
-      <div class="d-flex align-items-center">
-        <mat-icon class="custom-icon-color me-2">person</mat-icon>
-        <span>{{ad.advertiserName}}</span>
-      </div>
+        <div class="my-4">
+            <div class="d-flex align-items-center mb-2">
+                <mat-icon class="custom-icon-color me-2">location_on</mat-icon>
+                <span>{{ad.residenceName}}</span>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+                <mat-icon class="custom-icon-color me-2">category</mat-icon>
+                <span>{{ad.category}}</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <mat-icon class="custom-icon-color me-2">person</mat-icon>
+                <span>{{ad.advertiserName}}</span>
+            </div>
+        </div>
+
+        <ng-container *ngIf="user?.userRef?.path != ad.advertiser.path">
+            <p *ngIf="!user?.username">
+                Pour contacter {{ad.advertiserName}} :
+                <a routerLink="/account">Se Connecter</a>
+            </p>
+        </ng-container>
+
+        <ng-container *ngIf="ad.description">
+            <h3 class="font-bold fs-title-2">Description</h3>
+            <p>{{ad.description}}</p>
+        </ng-container>
+
+        <ng-container *ngIf="ad.state">
+            <h3 class="font-bold fs-title-2">État</h3>
+            <p>{{displayState}}</p>
+        </ng-container>
+        <ng-container>
+            <h3 class="font-bold fs-title-2">Localisation</h3>
+            {{ad.residenceName}} {{ad.latitude}} {{ad.longitude}}
+            <div class="full" id="map">
+            </div>
+            <!--<app-maps></app-maps>-->
+        </ng-container>
     </div>
-
-    <ng-container *ngIf="user?.userRef?.path != ad.advertiser.path">
-      <p *ngIf="!user?.username">
-        Pour contacter {{ad.advertiserName}} :
-        <a routerLink="/account">Se Connecter</a>
-      </p>
-    </ng-container>
-
-    <ng-container *ngIf="ad.description">
-      <h3 class="font-bold fs-title-2">Description</h3>
-      <p>{{ad.description}}</p>
-    </ng-container>
-
-    <ng-container *ngIf="ad.state">
-      <h3 class="font-bold fs-title-2">État</h3>
-      <p>{{displayState}}</p>
-    </ng-container>
-  </div>
 </div>
