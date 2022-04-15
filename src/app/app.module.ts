@@ -32,7 +32,6 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 import { AuthService } from './services/auth.service';
 import { AdDetailsComponent } from './components/ad-details/ad-details.component';
 import { GalleryModule} from 'ng-gallery';
-import { MapsComponent } from './components/maps/maps.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +45,6 @@ import { MapsComponent } from './components/maps/maps.component';
     MyAdsListComponent,
     SignInComponent,
     AdDetailsComponent,
-    MapsComponent,
   ],
   imports: [
     BrowserModule,
