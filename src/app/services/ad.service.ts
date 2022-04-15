@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { getAuth } from 'firebase/auth';
-import { addDoc, collection, deleteDoc, deleteField, doc, getDoc, Timestamp, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, deleteField, doc, DocumentReference, getDoc, Timestamp, updateDoc } from 'firebase/firestore';
 import { Ad } from '../model/ad.model';
 import { UserService } from './user.service';
 
@@ -14,9 +14,9 @@ export class AdService {
   constructor(
     private firestore: Firestore,
     private userService: UserService
-  ) {}
+  ) { }
 
-  private async getUser(){
+  private async getUser() {
     const uid = getAuth().currentUser?.uid
     return this.userService.getUser(uid);
   }
@@ -50,20 +50,13 @@ export class AdService {
     }
   }
 
-  //NOT WORKING ON NESTED MAPS
-  async deleteAd(id: any, adRef: any, title: any) {
-    const confirm = window.confirm(`Vous allez supprimer votre annonce toutes les données associée seront perdues. \n Voulez-vous vraiment supprimer l'annonce ${title}?`);
-    if (confirm) {
-      await deleteDoc(adRef);
-      const user = await this.getUser();
-      const userRef = doc(this.firestore, "users/" + user.id);
-      console.log(`users.${userRef.id}.ads.${id}`)
-      await updateDoc(userRef, {
-        ads:{
-          [id]: deleteField()
-        }
-      });
-    }
+  async deleteAd(adId: string, adRef: DocumentReference, userRef: DocumentReference) {
+    await deleteDoc(adRef);
+
+    console.log(`users.${userRef.id}.ads.${adId}`)
+    await updateDoc(userRef, {
+      [`ads.${adId}`]: deleteField()
+    });
   }
 
   async createAd(
