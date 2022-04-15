@@ -4,7 +4,7 @@ import { UserService } from './user.service';
 import { getAuth } from 'firebase/auth';
 import { User } from '../model/user.model';
 import { Chat } from '../model/chat.model';
-import { collection, DocumentData, DocumentReference, getDocs, query, QuerySnapshot, where } from 'firebase/firestore';
+import { addDoc, collection, DocumentData, DocumentReference, getDocs, query, QuerySnapshot, Timestamp, where } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class ChatService {
 
   username: string = "";
 
-  constructor( 
+  constructor(
     private firestore: Firestore,
     private userService: UserService
     ) {}
@@ -55,17 +55,17 @@ export class ChatService {
     private fillResults(docSnap: QuerySnapshot<DocumentData>) {
       let chats: Chat[] = [];
       docSnap.docs.forEach(element => {
-       
+
 
             let message = element.get('lastMessage');
             let lastMessage = {
               messageText: message.messageText,
               read: message.read,
               sentAt: message.sentAt,
-              sentBy: message.sentBy,
-              username: message.username
+              sentByRef: message.sentByRef,
+              sentByUsername: message.sentByUsername
             };
-    
+
             let membres = element.get('members');
             let members = {
               u1Ref: membres.u1Ref,
@@ -73,17 +73,53 @@ export class ChatService {
               u1Username: membres.u1Username,
               u2Username: membres.u2Username
             }
-            
-            const chat = { 
+
+            const chat = {
               id: element.id,
               ref: element.ref,
               createdAt: element.get('createdAt'),
               lastMessage: lastMessage,
               members: members
-          
+
         } as Chat
         chats.push(chat);
       });
       return chats;
     }
+
+  async createChat(userRef1: DocumentReference,username1: string, userRef2: DocumentReference, username2: string){
+    if (userRef1 != userRef2 && username1 != username2) {
+      const newChat = {
+        createdAt: Timestamp.fromDate(new Date()),
+        lastMessage: {
+        },
+        members: {
+          u1Ref: userRef1,
+          u2Ref: userRef2,
+          u1Username: username1,
+          u2Username: username2
+        }
+      }
+      await addDoc(collection(this.firestore, "chats"),newChat)
+    }
+  }
+
+  async getChatByMembers(userRef1: DocumentReference, userRef2: DocumentReference){
+    let q = query(
+      collection(this.firestore, "chats"),
+      where("members.u1Ref", "==", userRef1),
+      where("members.u2Ref", "==", userRef2)
+    );
+
+    const chat = await getDocs(q);
+    if (chat.empty) {
+      q = query(
+        collection(this.firestore, "chats"),
+        where("members.u1Ref", "==", userRef2),
+        where("members.u2Ref", "==", userRef1)
+      );
+      return getDocs(q);
+    }
+    return chat;
+  }
 }

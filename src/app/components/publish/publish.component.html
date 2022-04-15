@@ -1,6 +1,6 @@
 <div *ngIf="(authService.user | async);else notLoggedIn" class="modal__content">
     <div class="flex container">
-        <form>
+        <form method="post">
             <div class="section">
                 <h2>Déposer une annonce dans la résidence {{residenceName}}</h2>
                 <label class="monText">  Titre de mon annonce</label>
@@ -23,7 +23,7 @@
                     <span class="input-group-text">$CA</span>
                 </div>
             </div>
-            
+
             <div class="section">
                 <label for="state">État</label>
                 <select class="form-select" id="state" name="state" #FormState>
@@ -38,12 +38,37 @@
                 <label class="monText">Description</label>
                 <textarea class="form-control" id="description" name="description" #FormDesc></textarea>
             </div>
-            <button class="btn-sm" type="reset" (click)="createAd(
-                Formtitle.value,
-                FormCat.value,
-                FormPrice.value,
-                FormDesc.value,
-                FormState.value)">Publier</button>
+            <ng-container *ngIf=" (readablePhotoList$ | async) as readablePhotoList ">
+
+                <div class="mobile-camera-container">
+                    <input type="file" id="file" hidden accept="image/*" (change)="takePhoto(file, $event)" #file/>
+                    <label for="file" class="take-photo"><mat-icon>add_a_photo</mat-icon></label>
+
+                </div>
+
+                <div class="my-0">
+                    <div>
+                        <div *ngIf="readablePhotoList[0] && showPreview"  class="image-container">
+                            <img [src]="readablePhotoList[0]" alt="prévisualisation de l'image" class="custom-preview" id=" imagepreview ">
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </ng-container>
+            <button class="btn-sm mt-4" type="reset" (click)="
+        createAd(
+          Formtitle.value,
+          FormCat.value,
+          FormPrice.value,
+          FormDesc.value,
+          file,
+          FormState.value
+        )
+      ">
+      Publier
+    </button>
         </form>
     </div>
 </div>

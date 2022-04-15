@@ -1,5 +1,6 @@
 .content {
     padding: 25px 25px 120px 25px;
+    min-height: 95vh;
 }
 
 h3 {
@@ -7,10 +8,14 @@ h3 {
 }
 
 img {
-    max-width: 121%;
-    max-height: 120px;
     border-bottom: 1px solid lightgrey;
 }
+
+.cover {
+    object-fit: cover;
+    height: 120px;
+}
+
 
 mat-card-content {
     text-align: left;
@@ -80,5 +85,16 @@ a {
 .ad-details {
     background-color: #f5f5f5;
     border-left: 1px solid lightgrey;
-    height: 100vh !important;
+}
+
+.close{
+    color: #ff7900;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.btn-close{
+    position:fixed;
+    z-index: 2;
+    top: 5px;
 }

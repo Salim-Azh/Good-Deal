@@ -1,9 +1,8 @@
+<div class="modal__content">
+    <div *ngIf="authService.user |async">
+        <button (click)="signOut()" class=" btn-sm float-end me-2"> Se déconnecter</button>
+        <app-my-ads-list></app-my-ads-list>
+    </div>
 
-<div *ngIf="authService.user |async">
-  <button (click)="signOut()" class=" btn-sm float-end"> Se déconnecter</button>
-  <app-my-ads-list ></app-my-ads-list>
+    <app-sign-in *ngIf="!(authService.user |async)" [redirectTo]="path"></app-sign-in>
 </div>
-
-<app-sign-in
-  *ngIf="!(authService.user |async)"
-  [redirectTo]="path"  ></app-sign-in>

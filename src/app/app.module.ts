@@ -31,6 +31,7 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 
 import { AuthService } from './services/auth.service';
 import { AdDetailsComponent } from './components/ad-details/ad-details.component';
+import { GalleryModule} from 'ng-gallery';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { AdDetailsComponent } from './components/ad-details/ad-details.component
     MatButtonModule,
     MatSliderModule,
     MatCardModule,
+    GalleryModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
