@@ -1,0 +1,33 @@
+
+<div>
+  <ng-container *ngIf="chat?.members?.u1Username == currentUser.username;else withUser1">
+    <h2>Clavarder avec {{chat?.members?.u2Username}}</h2>
+  </ng-container>
+  <ng-template #withUser1>
+    <h2>Clavarder avec {{chat?.members?.u1Username}}</h2>
+  </ng-template>
+</div>
+
+<ul *ngFor="let msg of messages">
+  <ng-container *ngIf="currentUser.username == msg.sentByUsername; else onLeft">
+    <li class="on-right">
+      <span class="from">{{msg.sentByUsername}}</span>
+      <span class="time">{{msg.sentAt}}</span>
+      <p>{{msg.messageTxt}}</p>
+    </li>
+  </ng-container>
+
+  <ng-template #onLeft>
+    <li class="on-left">
+      <span class="from">{{msg.sentByUsername}}</span>
+      <span class="time">{{msg.sentAt}}</span>
+      <p>{{msg.messageTxt}}</p>
+    </li>
+  </ng-template>
+</ul>
+
+<div class="">
+  <textarea></textarea>
+  <button class="btn btn-sm">Envoyer</button>
+</div>
+

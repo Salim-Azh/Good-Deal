@@ -13,7 +13,7 @@ import { Chat } from 'src/app/model/chat.model';
 })
 export class MessagesComponent implements OnInit {
 
-  path: string = "/messages";
+  path: string = "/chats";
   authUid: string | undefined;
   user: User;
   chats: Chat[];
@@ -32,7 +32,7 @@ export class MessagesComponent implements OnInit {
   async ngOnInit(): Promise<void> {
 
     onAuthStateChanged(getAuth(), async user => {
-      
+
       this.chats = await this.chatService.getChats();
 
       if(user){
@@ -40,8 +40,8 @@ export class MessagesComponent implements OnInit {
         this.user = await this.userService.getUser(this.authUid);
       }
     });
-    
+
   }
 
-  
+
 }
