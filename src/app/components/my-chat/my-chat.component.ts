@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Timestamp } from 'firebase/firestore';
 import { Chat } from 'src/app/model/chat.model';
 import { Message } from 'src/app/model/message.model';
 import { User } from 'src/app/model/user.model';
@@ -31,12 +32,6 @@ export class MyChatComponent implements OnInit {
     this.messages = [];
   }
 
-  //async init(){
-  //  this.route.params.subscribe(async params => {
-  //    this.id = params['id'];
-  //  });
-  //}
-
   async ngOnInit() {
     this.route.params.subscribe(async params => {
       this.id = params['id'];
@@ -54,5 +49,15 @@ export class MyChatComponent implements OnInit {
     if(this.chat) {
       this.messages = await this.messageService.getMessagesByChatRef(this.chat.ref)
     }
+
+    this.messages.forEach(msg => {
+      //msg.sentAt = this.formatDate(msg.sentAt);
+    });
   }
+
+  formatDate(timestamp : Timestamp){
+
+  }
+
+
 }
