@@ -2,7 +2,7 @@ import { DocumentReference, Timestamp } from "firebase/firestore";
 
 export interface Message {
   chatRef: DocumentReference
-  messageText: string
+  messageTxt: string
   sentAt: Timestamp
   sentByRef: DocumentReference
   sentByUsername: string

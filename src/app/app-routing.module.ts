@@ -12,9 +12,9 @@ const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'publish', component: PublishComponent},
-  {path: 'messages', component: MessagesComponent},
+  {path: 'chats', component: MessagesComponent},
   {path: 'account', component: AccountComponent},
-  {path: 'my-chat', component: MyChatComponent},
+  {path: 'chats/:id', component: MyChatComponent},
   {path: 'home/ads/:id/details', component: AdDetailsComponent},
   {path: '**', component: PageNotFoundComponent},
 

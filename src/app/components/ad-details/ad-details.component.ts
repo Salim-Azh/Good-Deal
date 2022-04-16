@@ -100,6 +100,6 @@ export class AdDetailsComponent implements OnInit {
         await this.chatService.createChat(this.user.userRef, this.user.username, this.ad.advertiser, this.ad.advertiserName);
       }
     }
-    this.router.navigate(['messages'])
+    this.router.navigate(['chats'])
   }
 }
