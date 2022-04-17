@@ -45,7 +45,6 @@ export class MyChatComponent implements OnInit {
     try {
       this.chat = await this.chatService.getChatById(this.id)
     } catch (error) {
-      console.log(error)
     }
     this.authService.user.subscribe(async value => {
       this.currentUser = await this.userService.getUser(value?.uid);
@@ -53,13 +52,10 @@ export class MyChatComponent implements OnInit {
 
     if(this.chat) {
       this.messages = await this.messageService.getMessagesByChatRef(this.chat.ref)
-      //console.log(this.messages);
     }
 
     this.messages.forEach(msg => {
-      //console.log(msg.sentAt);
       this.heure = this.formatDate(msg.sentAt);
-      console.log(this.heure);
     });
   }
 
