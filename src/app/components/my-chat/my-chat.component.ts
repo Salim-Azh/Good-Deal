@@ -20,6 +20,10 @@ export class MyChatComponent implements OnInit {
   chat?:Chat;
   currentUser: User;
   messages: Message[];
+  ladate: any;
+  displayDate: string;
+  msg!: Message;
+  heure:any;
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -30,6 +34,7 @@ export class MyChatComponent implements OnInit {
     this.id = "";
     this.currentUser = new User();
     this.messages = [];
+    this.displayDate = "";
   }
 
   async ngOnInit() {
@@ -48,15 +53,31 @@ export class MyChatComponent implements OnInit {
 
     if(this.chat) {
       this.messages = await this.messageService.getMessagesByChatRef(this.chat.ref)
+      //console.log(this.messages);
     }
 
     this.messages.forEach(msg => {
-      //msg.sentAt = this.formatDate(msg.sentAt);
+      //console.log(msg.sentAt);
+      this.heure = this.formatDate(msg.sentAt);
+      console.log(this.heure);
     });
   }
 
-  formatDate(timestamp : Timestamp){
+  formatDate(ladate : Timestamp){
+    const date = ladate.toDate();
+    let datefinale = date.toLocaleDateString();
 
+    let lheure = date.getHours().toString();
+    let minute = date.getMinutes().toString();
+
+    if (lheure.length == 1) {
+      lheure = `0${lheure}`;
+    }
+    if (minute.length == 1) {
+      minute = `0${minute}`;
+    }
+
+    return this.displayDate = `${datefinale} ${lheure}:${minute}`
   }
 
 
