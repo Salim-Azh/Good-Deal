@@ -81,7 +81,6 @@ export class PublishComponent implements OnInit {
 
   setAdState(newValue:string){
     this.state = newValue;
-    console.log(this.state)
     this.setDisableBtn();
   }
 
