@@ -18,9 +18,7 @@
         </div>
 
         <ng-container *ngIf="user?.userRef?.path != ad.advertiser.path">
-            <div>
-                <button  *ngIf="user?.username" class="btn btn-sm btn-contact my-3" (click)="contactUser()">Contacter</button>
-            </div>
+          <button  *ngIf="user?.username" class="btn btn-sm btn-contact my-3" (click)="contactUser()">Contacter</button>
         </ng-container>
 
         <div class="my-5">

@@ -77,7 +77,7 @@ export class AdDetailsComponent implements OnInit {
 
     const contentString =
       `<h3>${this.ad.residenceName}</h3>
-    <p>${this.residence.displayAddress}</p>`
+      <p>${this.residence.displayAddress}</p>`
 
     const infowindow = new google.maps.InfoWindow({
       content: contentString,
@@ -124,12 +124,15 @@ export class AdDetailsComponent implements OnInit {
   }
 
   async contactUser() {
+    let chat = undefined;
     if (this.user && this.ad) {
-      const chat = await this.chatService.getChatByMembers(this.user.userRef, this.ad.advertiser);
+      chat = await this.chatService.getChatByMembers(this.user.userRef, this.ad.advertiser);
       if (chat.empty) {
         await this.chatService.createChat(this.user.userRef, this.user.username, this.ad.advertiser, this.ad.advertiserName);
       }
     }
-    this.router.navigate(['chats'])
+    if (chat) {
+      this.router.navigate([`/chats/${chat.docs[0].id}`])
+    }
   }
 }
