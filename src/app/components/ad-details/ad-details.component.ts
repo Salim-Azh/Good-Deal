@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/model/user.model';
 import { ChatService } from 'src/app/services/chat.service';
 import { Ad } from '../../model/ad.model'
-import { Loader } from "@googlemaps/js-api-loader"
+import { Loader } from "@googlemaps/js-api-loader" //intentional : don't remove maps loader
+import { ResidenceService } from 'src/app/services/residence.service';
+import { Residence } from 'src/app/model/residence.model';
 
 //import { GalleryItem, ImageItem } from 'ng-gallery';
 
@@ -19,55 +21,83 @@ export class AdDetailsComponent implements OnInit {
 
   displayState: string;
   displayDate: string;
+  residence!: Residence;
 
+  //images:  GalleryItem[] = [];
+  //thumbHeight=0;
 
   constructor(
-    private router : Router,
-    private chatService : ChatService,
+    private router: Router,
+    private chatService: ChatService,
+    private residenceService: ResidenceService,
   ) {
     this.displayState = "";
     this.displayDate = "";
-
-
   }
-  /**
-   * images:  GalleryItem[] = [];
-   * thumbHeight=0;
-   */
 
-
-  ngOnInit() {
-
-    /**
-     * this.images = [new ImageItem({ src: this.ad.imagesUrl})];
-     */
+  async ngOnInit() {
+    //this.images = [new ImageItem({ src: this.ad.imagesUrl})];
 
     this.setDisplayState();
     this.setDisplayDate();
+    this.residence = await this.residenceService.getResidenceByRef(this.ad.residenceRef);
     this.setMap()
   }
 
-  setMap() {
-      let myLatLng = { lat: this.ad.latitude, lng: this.ad.longitude };
-
-      let map = new google.maps.Map(
-        document.getElementById("map") as HTMLElement,
-        {
-          zoom: 16,
-          center: myLatLng,
+  onScroll() {
+    const element = document.getElementById("adDetails");
+    if (element) {
+      if (element.scrollTop > 20) {
+        const img = document.getElementById("adImg");
+        if (img) {
+          img.style.height = "15vh";
         }
-      );
+      }
+      else {
+        const img = document.getElementById("adImg");
 
-      new google.maps.Marker({
-        position: myLatLng,
-        map
-      });
-
-
-
+        if (img) {
+          img.style.height = "30vh";
+        }
+      }
+    }
   }
 
-  private setDisplayState(){
+
+  setMap() {
+    let myLatLng = { lat: this.ad.latitude, lng: this.ad.longitude };
+
+    let map = new google.maps.Map(
+      document.getElementById("map") as HTMLElement,
+      {
+        zoom: 16,
+        center: myLatLng,
+      }
+    );
+
+    const contentString =
+      `<h3>${this.ad.residenceName}</h3>
+    <p>${this.residence.displayAddress}</p>`
+
+    const infowindow = new google.maps.InfoWindow({
+      content: contentString,
+    });
+
+    const marker = new google.maps.Marker({
+      position: myLatLng,
+      map
+    });
+
+    marker.addListener("click", () => {
+      infowindow.open({
+        anchor: marker,
+        map,
+        shouldFocus: false,
+      });
+    });
+  }
+
+  private setDisplayState() {
     if (this.ad.state == "new") {
       this.displayState = "Neuf";
     }
@@ -93,10 +123,10 @@ export class AdDetailsComponent implements OnInit {
     this.displayDate = `${date.getFullYear()}-${month}-${day}`
   }
 
-  async contactUser(){
-    if(this.user && this.ad){
-      const chat = await this.chatService.getChatByMembers(this.user.userRef,this.ad.advertiser);
-      if(chat.empty){
+  async contactUser() {
+    if (this.user && this.ad) {
+      const chat = await this.chatService.getChatByMembers(this.user.userRef, this.ad.advertiser);
+      if (chat.empty) {
         await this.chatService.createChat(this.user.userRef, this.user.username, this.ad.advertiser, this.ad.advertiserName);
       }
     }
