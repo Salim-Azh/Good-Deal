@@ -44,7 +44,10 @@ export class AdDetailsComponent implements OnInit {
 
     this.setDisplayState();
     this.setDisplayDate();
-    this.setMap()
+    this.setMap();
+
+    //console.log(this.ad.advertiser.id);
+
   }
 
   setMap() {

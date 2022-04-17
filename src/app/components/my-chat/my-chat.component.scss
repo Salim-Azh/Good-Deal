@@ -19,6 +19,12 @@ h2 {
 	position: relative;
 }
 
+.gg {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Chat
 =================================================================== */
 
@@ -52,7 +58,7 @@ ul.chat li .message {
 	-webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 9px;
-  margin-block: -70px;
+  margin-block: -40px;
 }
 
 ul.chat li.right .message {

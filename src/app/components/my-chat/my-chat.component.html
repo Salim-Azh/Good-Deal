@@ -6,7 +6,7 @@
       <div class="box-header fixed-top" style="background-color: #ff7900;">
         <h2 class="d-flex align-items-center"><a style="color: white;" href="/messages"></a>
           <a href="/chats">
-          <img src="assets/icons/retour.png"  id="retour" >
+          <mat-icon style="color:white;">arrow_back</mat-icon>
           </a>
           <ng-container  *ngIf="chat?.members?.u1Username == currentUser.username;else withUser1">
             <h2 id="clavarder" > Clavarder avec {{chat?.members?.u2Username}}</h2>
@@ -24,7 +24,7 @@
         <ul *ngFor="let msg of messages" class="chat">
 
 
-          <ng-container class="gg" *ngIf="currentUser.username == msg.sentByUsername; else onLeft">
+          <ng-container class="gg" *ngIf="currentUser.username == msg.sentByUsername; else onLeft" #onRight>
             <li class="right">
               <span class="message"><span class="arrow"></span>
                 <span class="time">{{formatDate(msg.sentAt)}}</span>
