@@ -21,7 +21,7 @@
 
     <select class="form-select mb-3" name="residence " id="residence " #residenceName
       (change)="setResidenceNameFormState(residenceName.value)" required>
-      <option selected value="none">-- Sélectionnez votre résidence --</option>
+      <option selected value="">-- Sélectionnez votre résidence --</option>
       <ng-container *ngFor="let res of residences">
         <option value={{res.name}}>{{res.name}}</option>
       </ng-container>
@@ -38,6 +38,6 @@
     <button type="button" [disabled]="disabledLoginBtn" class="btn btn-sm" (click)="login() ">
       Connexion
     </button>
-    <a (click)="setFormType() " class="">S'inscrire ?</a>
+    <a (click)="setFormType()">S'inscrire ?</a>
   </ng-template>
 </form>

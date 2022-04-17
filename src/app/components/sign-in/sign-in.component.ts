@@ -74,7 +74,7 @@ export class SignInComponent implements OnInit {
 
   setDisableBtn(){
     if (this.signup) {
-      this.disabledSignUpBtn = !this.email || !this.password || !this.firstName || !this.residenceName
+      this.disabledSignUpBtn = !this.email || !this.password || !this.firstName || !this.residenceName;
     }
     else{
       this.disabledLoginBtn = !this.email || !this.password
