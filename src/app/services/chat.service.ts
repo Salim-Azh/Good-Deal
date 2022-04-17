@@ -74,9 +74,6 @@ export class ChatService {
         return -1;
       }
     });
-
-    console.log(chats)
-
     return chats;
   }
 
