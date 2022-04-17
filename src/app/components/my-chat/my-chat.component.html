@@ -1,36 +1,69 @@
-<div class="modal__content">
-  <div>
-    <ng-container *ngIf="chat?.members?.u1Username == currentUser.username;else withUser1">
-      <h2>Clavarder avec {{chat?.members?.u2Username}}</h2>
-    </ng-container>
-    <ng-template #withUser1>
-      <h2>Clavarder avec {{chat?.members?.u1Username}}</h2>
-    </ng-template>
+  <!-- start: Content -->
+  <div id="content" class="span10">
+
+
+    <div class="row wrapper border-bottom white-bg page-heading">
+      <div class="box-header fixed-top" style="background-color: #ff7900;">
+        <h2 class="d-flex align-items-center"><a style="color: white;" href="/messages"></a>
+          <a href="/chats">
+          <mat-icon style="color:white;">arrow_back</mat-icon>
+          </a>
+          <ng-container  *ngIf="chat?.members?.u1Username == currentUser.username;else withUser1">
+            <h2 id="clavarder" > Clavarder avec {{chat?.members?.u2Username}}</h2>
+          </ng-container>
+          <ng-template  #withUser1>
+            <h2 id="clavarder" > Clavarder avec {{chat?.members?.u1Username}}</h2>
+          </ng-template>
+        </h2>
+      </div>
+    </div>
+
+    <div class="row-fluid">
+      <div class="box-content">
+
+        <ul *ngFor="let msg of messages" class="chat">
+
+
+          <ng-container class="gg" *ngIf="currentUser.username == msg.sentByUsername; else onLeft" #onRight>
+            <li class="right">
+              <span class="message"><span class="arrow"></span>
+                <span class="time">{{formatDate(msg.sentAt)}}</span>
+                <span class="text">
+                  {{msg.messageTxt}}
+                </span>
+              </span>
+            </li>
+          </ng-container>
+
+
+          <ng-template class="hh" #onLeft>
+          <li class="left">
+            <span class="message"><span class="arrow"></span>
+              <span class="time">{{formatDate(msg.sentAt)}}</span>
+              <span class="text">
+                {{msg.messageTxt}}
+              </span>
+            </span>
+          </li>
+          </ng-template>
+
+
+
+        </ul>
+
+        <div class="chat-form fixed-bottom">
+          <table>
+            <tr>
+              <td id="first"> <textarea></textarea></td>
+              <td id="second"> <button class="lebouton" >Envoyer</button></td>
+            </tr>
+          </table>
+        </div>
+
+
+
+      </div>
+    </div>
   </div>
-
-  <ul *ngFor="let msg of messages" id="messages">
-    <ng-container *ngIf="currentUser.username == msg.sentByUsername; else onLeft">
-      <li class="on-right">
-        <span class="from">{{msg.sentByUsername}}</span>
-        <span class="time">{{msg.sentAt}}</span>
-        <p>{{msg.messageTxt}}</p>
-      </li>
-    </ng-container>
-
-    <ng-template #onLeft>
-      <li class="on-left">
-        <span class="from">{{msg.sentByUsername}}</span>
-        <span class="time">{{msg.sentAt}}</span>
-        <p>{{msg.messageTxt}}</p>
-      </li>
-    </ng-template>
-  </ul>
-
-  <form method="post">
-    <textarea #msgToSend></textarea>
-    <button type="reset" class="btn btn-sm" (click)="send(msgToSend.value)" >Envoyer</button>
-  </form>
-
-</div>
-
-
+  <!--/.fluid-container-->
+  <!-- end: Content -->

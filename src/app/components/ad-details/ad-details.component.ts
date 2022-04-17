@@ -112,15 +112,9 @@ export class AdDetailsComponent implements OnInit {
   private setDisplayDate() {
     const date = this.ad.createdAt.toDate();
 
-    let month = date.getMonth().toString();
-    let day = date.getDay().toString();
-    if (month.length == 1) {
-      month = `0${month}`;
-    }
-    if (day.length == 1) {
-      day = `0${day}`;
-    }
-    this.displayDate = `${date.getFullYear()}-${month}-${day}`
+    let datefinale = date.toLocaleDateString();
+
+    this.displayDate = `${datefinale}`
   }
 
   async contactUser() {

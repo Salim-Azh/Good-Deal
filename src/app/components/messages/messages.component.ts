@@ -56,6 +56,7 @@ export class MessagesComponent implements OnInit {
     onAuthStateChanged(getAuth(), async user => {
 
       this.chats = await this.chatService.getChats();
+      console.log(this.chats);
 
       if (this.getScreenWidth > this.SCREEN_SM) {
         this.selected = this.chats[0];
