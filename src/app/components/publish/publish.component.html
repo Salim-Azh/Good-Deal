@@ -1,14 +1,33 @@
 <div *ngIf="(authService.user | async);else notLoggedIn" class="modal__content">
   <div class="flex container">
-    <form method="post">
-      <div class="section">
+    <form (change)="setDisableBtn()">
+      <div class="section mb-4">
         <h2>Déposer une annonce dans la résidence {{residenceName}}</h2>
         <label class="monText"> Titre de mon annonce</label>
         <input type="text" id="title" name="title" class="form-control" placeholder="Exemple : Rideaux de douche"
-          autofocus #Formtitle>
+          autofocus #Formtitle (keyup)="setTitleState(Formtitle.value)" required>
       </div>
 
-      <div class="section">
+      <div class="section mb-4">
+        <label class="monText">Prix</label>
+        <div class="input-group">
+          <input type="number" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"
+            #FormPrice (keyup)="setPriceState(FormPrice.value)" required />
+          <span class="input-group-text">$CA</span>
+        </div>
+      </div>
+
+      <div class="section mb-4">
+        <label for="state">État</label>
+        <select class="form-select" id="state" name="state" #adState (change)="setAdState(adState.value)" required>
+          <option selected value="">État de l'article</option>
+          <option value="new">Neuf</option>
+          <option value="like new">Usagé - Comme Neuf</option>
+          <option value="used">Usagé</option>
+        </select>
+      </div>
+
+      <div class="section mb-4">
         <label class="monText"> Catégorie</label>
         <select class="form-select" id="category" name="category" #FormCat>
           <option selected>Choisissez une catégorie</option>
@@ -17,29 +36,11 @@
         </select>
       </div>
 
-      <div class="section">
-        <label class="monText">Prix</label>
-        <div class="input-group">
-          <input type="number" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"
-            #FormPrice>
-          <span class="input-group-text">$CA</span>
-        </div>
-      </div>
-
-      <div class="section">
-        <label for="state">État</label>
-        <select class="form-select" id="state" name="state" #FormState>
-          <option selected>État de l'article</option>
-          <option value="new">Neuf</option>
-          <option value="like new">Usagé - Comme Neuf</option>
-          <option value="used">Usagé</option>
-        </select>
-      </div>
-
-      <div class="section">
+      <div class="section mb-4">
         <label class="monText">Description</label>
         <textarea class="form-control" id="description" name="description" #FormDesc></textarea>
       </div>
+
       <ng-container *ngIf=" (readablePhotoList$ | async) as readablePhotoList ">
 
         <div class="mobile-camera-container">
@@ -59,17 +60,14 @@
           </div>
         </div>
       </ng-container>
-      
-      <button class="btn-sm mt-4" type="reset" (click)="
-        createAd(
+
+      <button class="btn btn-sm mt-4" type="reset" [disabled]="disabledPublishBtn" (click)="createAd(
           Formtitle.value,
           FormCat.value,
           FormPrice.value,
           FormDesc.value,
           file,
-          FormState.value
-        )
-      ">
+          adState.value)">
         Publier
       </button>
     </form>

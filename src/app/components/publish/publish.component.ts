@@ -26,6 +26,14 @@ export class PublishComponent implements OnInit {
   photoSourceObj: File | null;
   showPreview: boolean;
 
+  disabledPublishBtn : boolean;
+
+  title: string;
+  price: string
+  state: string;
+  category: string;
+  description: string;
+
   private photoReadersubject = new BehaviorSubject<(string | ArrayBuffer | null)[]>(
     []
   );
@@ -44,6 +52,12 @@ export class PublishComponent implements OnInit {
     this.user = new User();
     this.showPreview = false;
     this.photoSourceObj = null;
+    this.title = "";
+    this.price = "";
+    this.state = "";
+    this.category = "";
+    this.description = "";
+    this.disabledPublishBtn = true;
   }
 
   async ngOnInit(): Promise<void> {
@@ -53,6 +67,26 @@ export class PublishComponent implements OnInit {
       const docSnap = await getDoc(this.user.residence);
       this.residenceName = docSnap.get('name');
     }
+  }
+
+  setTitleState(newValue: string){
+    this.title = newValue;
+    this.setDisableBtn();
+  }
+
+  setPriceState(newValue: string){
+    this.price = newValue;
+    this.setDisableBtn();
+  }
+
+  setAdState(newValue:string){
+    this.state = newValue;
+    console.log(this.state)
+    this.setDisableBtn();
+  }
+
+  setDisableBtn(){
+    this.disabledPublishBtn = !this.title || !this.price || !this.state //|| this.state == "none";
   }
 
   async createAd(
