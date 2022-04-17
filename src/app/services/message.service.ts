@@ -1,7 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { Unsubscribe } from 'firebase/auth';
-import { collection, DocumentData, DocumentReference, getDocs, onSnapshot, orderBy, query, QueryDocumentSnapshot, where } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  DocumentData,
+  DocumentReference,
+  getDocs,
+  onSnapshot,
+  orderBy,
+  query,
+  QueryDocumentSnapshot,
+  Timestamp,
+  updateDoc,
+  where } from 'firebase/firestore';
 import { Message } from '../model/message.model';
 
 @Injectable({
@@ -9,25 +20,31 @@ import { Message } from '../model/message.model';
 })
 export class MessageService {
 
-  constructor(private firestore: Firestore) { }
+  constructor(private firestore: Firestore) {}
 
 
-  async getMessagesByChatRef(chatRef: DocumentReference) {
-    let res: Message[] = [];
+  async saveMessage(msg: string, username: string, userRef: DocumentReference<DocumentData>, chatRef: DocumentReference<DocumentData>) {
+    const sentAt = Timestamp.fromDate(new Date());
+    const newMsg = {
+      messageTxt: msg,
+      sentAt: sentAt,
+      sentByRef: userRef,
+      sentByUsername: username,
+      chatRef: chatRef
+    } as Message
 
-    const q = query(
-      collection(this.firestore, "messages"),
-      where("chatRef", "==", chatRef),
-      orderBy("sentAt")
-    );
+    await addDoc(collection(this.firestore, "messages"), newMsg);
 
-    const docsSnap = await getDocs(q);
-
-    docsSnap.forEach(element => {
-      res.push(this.convertToMessageModel(element));
-    });
-
-    return res;
+    const lastMsg  = {
+      read: false,
+      messageText: msg,
+      sentAt: sentAt,
+      sentByRef: userRef,
+      sentByUsername: username
+    }
+    await updateDoc(chatRef,{
+      lastMessage: lastMsg
+    })
   }
 
   async loadMessagesByChatRef(chatRef: DocumentReference) {
@@ -40,8 +57,10 @@ export class MessageService {
     );
 
     onSnapshot(q, (querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        res.push(this.convertToMessageModel(doc));
+      querySnapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          res.push(this.convertToMessageModel(change.doc));
+        }
       });
     });
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Timestamp } from 'firebase/firestore';
 import { Chat } from 'src/app/model/chat.model';
@@ -47,7 +47,7 @@ export class MyChatComponent implements OnInit {
     });
 
     if(this.chat) {
-      this.messages = await this.messageService.getMessagesByChatRef(this.chat.ref)
+      this.messages = await this.messageService.loadMessagesByChatRef(this.chat.ref)
     }
 
     this.messages.forEach(msg => {
@@ -59,5 +59,9 @@ export class MyChatComponent implements OnInit {
 
   }
 
-
+  async send(msg: string){
+    if (this.chat) {
+      await this.messageService.saveMessage(msg, this.currentUser.username, this.currentUser.userRef, this.chat.ref)
+    }
+  }
 }
