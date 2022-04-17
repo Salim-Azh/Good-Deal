@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Timestamp } from 'firebase/firestore';
 import { Chat } from 'src/app/model/chat.model';
@@ -16,8 +16,10 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class MyChatComponent implements OnInit {
 
+  @Input() chat!: Chat | null;
+
   id: string;
-  chat?:Chat;
+  //chat?:Chat;
   currentUser: User;
   messages: Message[];
   constructor(
@@ -33,32 +35,39 @@ export class MyChatComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.route.params.subscribe(async params => {
-      this.id = params['id'];
-    });
-
-    try {
-      this.chat = await this.chatService.getChatById(this.id)
-    } catch (error) {
-      console.log(error)
-    }
-    this.authService.user.subscribe(async value => {
-      this.currentUser = await this.userService.getUser(value?.uid);
-    });
-
-    if(this.chat) {
-      this.messages = await this.messageService.loadMessagesByChatRef(this.chat.ref)
-    }
-
-    this.messages.forEach(msg => {
-      //msg.sentAt = this.formatDate(msg.sentAt);
-    });
+    
   }
 
   formatDate(timestamp : Timestamp){
 
   }
 
+  async ngOnChanges(simpleChange: any) {
+    console.log(simpleChange);
+    this.route.params.subscribe(async params => {
+      this.id = params['id'];
+    });
+
+    /*try {
+      this.chat = await this.chatService.getChatById(this.id)
+    } catch (error) {
+      console.log(error)
+    }*/
+    this.authService.user.subscribe(async value => {
+      this.currentUser = await this.userService.getUser(value?.uid);
+    });
+
+    console.log(this.chat);
+    if(this.chat) {
+      this.messages = await this.messageService.loadMessagesByChatRef(this.chat.ref)
+      console.log(this.messages);
+    }
+
+    this.messages.forEach(msg => {
+      //msg.sentAt = this.formatDate(msg.sentAt);
+    });
+  }
+  
   async send(msg: string){
     if (this.chat) {
       await this.messageService.saveMessage(msg, this.currentUser.username, this.currentUser.userRef, this.chat.ref)
