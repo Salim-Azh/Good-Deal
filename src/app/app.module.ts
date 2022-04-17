@@ -33,6 +33,7 @@ import { AuthService } from './services/auth.service';
 import { AdDetailsComponent } from './components/ad-details/ad-details.component';
 import { GalleryModule} from 'ng-gallery';
 import { MyChatComponent } from './components/my-chat/my-chat.component';
+import { enableIndexedDbPersistence } from 'firebase/firestore';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,11 @@ import { MyChatComponent } from './components/my-chat/my-chat.component';
     MatToolbarModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
+    provideFirestore(() => {
+      const firestore = getFirestore();
+      enableIndexedDbPersistence(firestore);
+      return firestore
+    }),
     provideMessaging(() => getMessaging()),
     provideRemoteConfig(() => getRemoteConfig()),
     provideStorage(() => getStorage()),

@@ -34,7 +34,6 @@ export class MessagesComponent implements OnInit {
     onAuthStateChanged(getAuth(), async user => {
 
       this.chats = await this.chatService.getChats();
-
       if(user){
         this.authUid = user.uid;
         this.user = await this.userService.getUser(this.authUid);
