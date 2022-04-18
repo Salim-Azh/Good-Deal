@@ -5,8 +5,8 @@
         <ng-container class="gg" *ngIf="currentUser.username == msg.sentByUsername; else onLeft">
           <li class="right">
             <span class="message">
-              <span class="time">{{formatDate(msg.sentAt)}}</span>
-              <span class="text">
+              <span class="me-1">{{formatDate(msg.sentAt)}}</span>
+              <span class="text fs-6">
                 {{msg.messageTxt}}
               </span>
             </span>
@@ -17,9 +17,9 @@
         <ng-template class="hh" #onLeft>
           <li class="left">
             <div class="message  d-flex flex-column">
-              <span class="fw-bold">{{msg.sentByUsername}}</span>
-              <span class="">{{formatDate(msg.sentAt)}}</span>
-              <span class="text">
+              <span class="fw-normal fs-6 color-orange">{{msg.sentByUsername}}</span>
+              <span class="me-1 color-second">{{formatDate(msg.sentAt)}}</span>
+              <span class="text fs-6 color-second">
                 {{msg.messageTxt}}
               </span>
             </div>
