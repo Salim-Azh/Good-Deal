@@ -1,7 +1,5 @@
-<!-- start: Content -->
-<div id="content">
-  <div class="row-fluid">
-    <div class="box-content">
+<div class="box-content">
+    <div class="modal__content">
 
       <ul *ngFor="let msg of messages" class="chat">
         <ng-container class="gg" *ngIf="currentUser.username == msg.sentByUsername; else onLeft" #onRight>
@@ -28,7 +26,7 @@
         </ng-template>
       </ul>
 
-      <div class="chat-form" [style]="textFieldCSS">
+      <div class="chat-form w-100" [style]="textFieldCSS">
         <form method="post" class="d-flex justify-content-around align-items-center">
           <textarea #msgToSend></textarea>
           <mat-icon (click)="send(msgToSend.value)">send</mat-icon>
@@ -37,4 +35,3 @@
 
     </div>
   </div>
-</div>

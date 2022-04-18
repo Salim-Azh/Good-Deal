@@ -57,9 +57,7 @@ export class MyChatComponent implements OnInit, OnDestroy {
 
     if (this.chat) {
       this.messages = await this.messageService.loadMessagesByChatRef(this.chat.ref)
-      console.log(this.messages);
     }
-    console.log(this.chat)
 
     this.messages.forEach(msg => {
       this.heure = this.formatDate(msg.sentAt);
@@ -87,6 +85,10 @@ export class MyChatComponent implements OnInit, OnDestroy {
       this.setTabletCSS();
     } else {
       this.setPhoneCSS();
+    }
+
+    if (this.chat) {
+      this.messages = await this.messageService.loadMessagesByChatRef(this.chat.ref)
     }
   }
 

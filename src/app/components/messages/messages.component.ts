@@ -44,6 +44,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
 
   async ngOnInit(): Promise<void> {
+    this.chats = await this.chatService.getChats();
+
     this.getScreenWidth = window.innerWidth;
 
     if (this.getScreenWidth < this.SCREEN_SM) {
