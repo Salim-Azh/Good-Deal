@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, HostListener } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Timestamp } from 'firebase/firestore';
+import { Subscription } from 'rxjs';
 import { Chat } from 'src/app/model/chat.model';
 import { Message } from 'src/app/model/message.model';
 import { User } from 'src/app/model/user.model';
@@ -14,22 +15,24 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './my-chat.component.html',
   styleUrls: ['./my-chat.component.scss']
 })
-export class MyChatComponent implements OnInit {
+export class MyChatComponent implements OnInit, OnDestroy {
 
-  @Input() chat!: Chat | null;
+  @Input() chat?: Chat;
 
   public getScreenWidth: any;
   SCREEN_SM = 960;
   textFieldCSS = "";
 
   id: string;
-  //chat?:Chat;
   currentUser: User;
   messages: Message[];
   ladate: any;
   displayDate: string;
   msg!: Message;
-  heure:any;
+  heure: any;
+
+  subscription: Subscription = new Subscription;
+
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -44,60 +47,60 @@ export class MyChatComponent implements OnInit {
   }
 
   async ngOnInit() {
-
-    this.getScreenWidth = window.innerWidth;
-
-    if(this.getScreenWidth > this.SCREEN_SM){
-      this.setTabletCSS();
-    }else{
-      this.setPhoneCSS();
-    }
-
-  }
-
-
-  async ngOnChanges(simpleChange: any) {
-
-    this.getScreenWidth = window.innerWidth;
-
-    if(this.getScreenWidth > this.SCREEN_SM){
-      this.setTabletCSS();
-    }else{
-      this.setPhoneCSS();
-    }
-
-    this.route.params.subscribe(async params => {
+    let subscription1 = this.route.params.subscribe(async params => {
       this.id = params['id'];
     });
 
-    /*try {
-      this.chat = await this.chatService.getChatById(this.id)
-    } catch (error) {
-      console.log(error)
-    }*/
-    
-    this.authService.user.subscribe(async value => {
+    let subscription2 = this.authService.user.subscribe(async value => {
       this.currentUser = await this.userService.getUser(value?.uid);
     });
 
-    console.log(this.chat);
-    if(this.chat) {
+    if (this.chat) {
       this.messages = await this.messageService.loadMessagesByChatRef(this.chat.ref)
       console.log(this.messages);
     }
+    console.log(this.chat)
 
     this.messages.forEach(msg => {
       this.heure = this.formatDate(msg.sentAt);
     });
+
+    this.subscription.add(subscription1)
+    this.subscription.add(subscription2)
+
+    this.getScreenWidth = window.innerWidth;
+
+    if (this.getScreenWidth > this.SCREEN_SM) {
+      this.setTabletCSS();
+    } else {
+      this.setPhoneCSS();
+    }
+
   }
-  
-  async send(msg: string){
+
+
+  async ngOnChanges(_simpleChange: any) {
+
+    this.getScreenWidth = window.innerWidth;
+
+    if (this.getScreenWidth > this.SCREEN_SM) {
+      this.setTabletCSS();
+    } else {
+      this.setPhoneCSS();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  async send(msg: string) {
     if (this.chat) {
       await this.messageService.saveMessage(msg, this.currentUser.username, this.currentUser.userRef, this.chat.ref)
     }
   }
 
-  formatDate(ladate : Timestamp){
+  formatDate(ladate: Timestamp) {
     const date = ladate.toDate();
     let datefinale = date.toLocaleDateString();
 
@@ -122,22 +125,18 @@ export class MyChatComponent implements OnInit {
     if (this.getScreenWidth < this.SCREEN_SM) {
       //this.textFieldCSS = "";
       this.setPhoneCSS();
-    }else{
+    } else {
       this.setTabletCSS();
-    }
 
+
+    }
   }
 
   setTabletCSS(){
-
-    this.textFieldCSS="padding: 15px 20px 35px 20px; bottom:76px; right: 0; width: 60%;";
-
+    this.textFieldCSS = "padding: 15px 20px 35px 20px; bottom:76px; right: 0; width: 60%;";
   }
 
   setPhoneCSS(){
-    
-    this.textFieldCSS="padding:20px; bottom:0; left:0;";
-
+    this.textFieldCSS = "padding:20px; bottom:0; left:0;";
   }
-
 }

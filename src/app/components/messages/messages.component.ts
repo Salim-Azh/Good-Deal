@@ -5,6 +5,7 @@ import { ChatService } from 'src/app/services/chat.service';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { User } from '../../model/user.model';
 import { Chat } from 'src/app/model/chat.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-messages',
@@ -17,7 +18,7 @@ export class MessagesComponent implements OnInit {
   authUid: string | undefined;
   user: User;
   chats: Chat[];
-  selected: Chat | null = null;
+  selected?: Chat;
 
   public getScreenWidth: any;
   SCREEN_SM = 960;
@@ -32,7 +33,8 @@ export class MessagesComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private userService: UserService,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private router: Router
     ) {
       this.authUid = undefined;
       this.user = new User();
@@ -56,9 +58,7 @@ export class MessagesComponent implements OnInit {
     await this.initMasterDetailsPattern();
 
     onAuthStateChanged(getAuth(), async user => {
-
       this.chats = await this.chatService.getChats();
-      console.log(this.chats);
 
       if (this.getScreenWidth > this.SCREEN_SM) {
         this.selected = this.chats[0];
@@ -78,12 +78,12 @@ export class MessagesComponent implements OnInit {
    */
    @HostListener('window:resize', ['$event'])
    onWindowResize() {
- 
+
      this.getScreenWidth = window.innerWidth;
      if (this.selected == null) {
       this.selected = this.chats[0];
     }
- 
+
     if (this.getScreenWidth < this.SCREEN_SM) {
       this.chatCSS = "";
       this.messagesCSS = "";
@@ -109,10 +109,9 @@ export class MessagesComponent implements OnInit {
     this.chatCSS = "float:left; height:100vh !important; width:60%; overflow:hidden; position:fixed; right:0; top:0;";
   }
 
-  async onSelect(chat: Chat){
+  onSelect(chat: Chat){
     this.detailsMode = true;
     this.selected = chat;
-
     if(this.getScreenWidth < this.SCREEN_SM) {
       this.messagesDisplay = "none";
       this.chatDisplay = "block";
@@ -124,7 +123,7 @@ export class MessagesComponent implements OnInit {
 
   async redirectedToAdsList() {
     this.detailsMode = false;
-    this.selected = null;
+    this.selected = undefined;
     this.chatDisplay = "none";
     this.messagesDisplay = "block";
   }
