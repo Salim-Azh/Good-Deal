@@ -22,7 +22,7 @@ export class MyChatComponent implements OnInit, OnDestroy {
   currentUser: User;
   messages: Message[];
 
-  subscription!: Subscription
+  subscription: Subscription = new Subscription;
 
   constructor(
     private authService: AuthService,
