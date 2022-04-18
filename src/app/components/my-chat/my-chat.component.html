@@ -1,29 +1,12 @@
-<div id="content" class="span10">
-  <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="box-header fixed-top" style="background-color: #ff7900;">
-      <h2 class="d-flex align-items-center"><a style="color: white;" href="/messages"></a>
-        <a href="/chats">
-          <mat-icon style="color:white;">arrow_back</mat-icon>
-        </a>
-        <ng-container *ngIf="chat?.members?.u1Username == currentUser.username;else withUser1">
-          <h2 id="clavarder"> Clavarder avec {{chat?.members?.u2Username}}</h2>
-        </ng-container>
-        <ng-template #withUser1>
-          <h2 id="clavarder"> Clavarder avec {{chat?.members?.u1Username}}</h2>
-        </ng-template>
-      </h2>
-    </div>
-  </div>
+<div class="box-content">
+    <div class="modal__content">
 
-  <div class="row-fluid">
-    <div class="box-content">
-
-      <ul *ngFor="let msg of messages" class="chat">
-        <ng-container class="gg" *ngIf="currentUser.username == msg.sentByUsername; else onLeft" #onRight>
+      <ul *ngFor="let msg of messages.slice().reverse()" class="chat">
+        <ng-container class="gg" *ngIf="currentUser.username == msg.sentByUsername; else onLeft">
           <li class="right">
-            <span class="message"><span class="arrow"></span>
-              <span class="time">{{formatDate(msg.sentAt)}}</span>
-              <span class="text">
+            <span class="message">
+              <span class="me-1">{{formatDate(msg.sentAt)}}</span>
+              <span class="text fs-6">
                 {{msg.messageTxt}}
               </span>
             </span>
@@ -33,22 +16,22 @@
 
         <ng-template class="hh" #onLeft>
           <li class="left">
-            <span class="message"><span class="arrow"></span>
-              <span class="time">{{formatDate(msg.sentAt)}}</span>
-              <span class="text">
+            <div class="message  d-flex flex-column">
+              <span class="fw-normal fs-6 color-orange">{{msg.sentByUsername}}</span>
+              <span class="me-1 color-second">{{formatDate(msg.sentAt)}}</span>
+              <span class="text fs-6 color-second">
                 {{msg.messageTxt}}
               </span>
-            </span>
+            </div>
           </li>
         </ng-template>
       </ul>
 
-      <div class="chat-form fixed-bottom">
-        <form method="post" class="d-flex justify-content-around">
+      <div class="chat-form" [style]="textFieldCSS">
+        <form method="post" class="d-flex justify-content-around align-items-center">
           <textarea #msgToSend></textarea>
-          <button type="reset" class="btn btn-sm" (click)="send(msgToSend.value)">Envoyer</button>
+          <mat-icon (click)="send(msgToSend.value); msgToSend.value=''">send</mat-icon>
         </form>
       </div>
     </div>
   </div>
-</div>

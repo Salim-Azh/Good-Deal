@@ -1,11 +1,9 @@
-<div class="messagerie">
-  <div *ngIf="(authService.user |async);else notLoggedIn">
-    <div class="list-group list-group-flush" *ngIf="chats.length > 0; else noChat">
+<div *ngIf="(authService.user |async);else notLoggedIn">
+  <div class="messagerie modal__content" [style.display]="messagesDisplay" [style]="messagesCSS">
+    <div class="list-group list-group-flush">
       <div *ngFor="let chat of chats">
-
-        <div routerLink="/chats/{{chat.id}}" class="chat">
+        <div [class.selected]="chat === selected" (click)="onSelect(chat)" class="chat">
           <div class="chat-content">
-
             <ng-container *ngIf="chat.members.u1Username == user.username; else user1">
               <p class="nameContact">{{chat.members.u2Username}}</p>
             </ng-container>
@@ -19,18 +17,35 @@
             <ng-template #notMe>
               <p class="chat-text">{{chat.lastMessage.messageText}}</p>
             </ng-template>
-
           </div>
         </div>
       </div>
     </div>
+    <ng-template *ngIf="chats.length > 0">
+      <span class="ms-2">Aucune conversation en cours.</span>
+    </ng-template>
+  </div>
+
+  <div [style.display]="chatDisplay" [style]="chatCSS" *ngIf="selected">
+    
+    <div class="box-header fixed-top" [style.display]="returnDisplay">
+
+      <a (click)="redirectedToChatList()">
+        <mat-icon>arrow_back</mat-icon>
+      </a>
+
+      <ng-container *ngIf="selected?.members?.u1Username == user.username;else withUser1">
+        <h3 class="clavarder">Clavarder avec {{selected?.members?.u2Username}}</h3>
+      </ng-container>
+
+      <ng-template #withUser1>
+        <h3 class="clavarder">Clavarder avec {{selected?.members?.u1Username}}</h3>
+      </ng-template>
+    </div>
+      <app-my-chat [chat]="selected"></app-my-chat>
   </div>
 </div>
 
 <ng-template #notLoggedIn>
   <app-sign-in [redirectTo]="path"></app-sign-in>
-</ng-template>
-
-<ng-template #noChat>
-  Aucune conversation n'a été commencée.
 </ng-template>

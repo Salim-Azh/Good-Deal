@@ -62,7 +62,6 @@ export class AdDetailsComponent implements OnInit {
     }
   }
 
-
   setMap() {
     let myLatLng = { lat: this.ad.latitude, lng: this.ad.longitude };
 

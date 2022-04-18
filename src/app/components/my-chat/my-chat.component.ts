@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Timestamp } from 'firebase/firestore';
 import { Subscription } from 'rxjs';
@@ -15,16 +15,21 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './my-chat.component.html',
   styleUrls: ['./my-chat.component.scss']
 })
-export class MyChatComponent implements OnInit, OnDestroy {
+export class MyChatComponent implements OnInit,OnDestroy {
+
+  @Input() chat?: Chat;
+
+  public getScreenWidth: any;
+  SCREEN_SM = 960;
+  textFieldCSS = "";
 
   id: string;
-  chat?:Chat;
   currentUser: User;
   messages: Message[];
   ladate: any;
   displayDate: string;
   msg!: Message;
-  heure:any;
+  heure: any;
 
   subscription: Subscription = new Subscription
 
@@ -46,16 +51,11 @@ export class MyChatComponent implements OnInit, OnDestroy {
       this.id = params['id'];
     });
 
-    try {
-      this.chat = await this.chatService.getChatById(this.id)
-    } catch (error) {
-    }
-
     let subscription2 = this.authService.user.subscribe(async value => {
       this.currentUser = await this.userService.getUser(value?.uid);
     });
 
-    if(this.chat) {
+    if (this.chat) {
       this.messages = await this.messageService.loadMessagesByChatRef(this.chat.ref)
     }
 
@@ -63,11 +63,46 @@ export class MyChatComponent implements OnInit, OnDestroy {
       this.heure = this.formatDate(msg.sentAt);
     });
 
+    this.getScreenWidth = window.innerWidth;
+
+    if (this.getScreenWidth > this.SCREEN_SM) {
+      this.setTabletCSS();
+    } else {
+      this.setPhoneCSS();
+    }
+
     this.subscription.add(subscription1)
     this.subscription.add(subscription2)
+
   }
 
-  formatDate(ladate : Timestamp){
+
+  async ngOnChanges(_simpleChange: any) {
+
+    this.getScreenWidth = window.innerWidth;
+
+    if (this.getScreenWidth > this.SCREEN_SM) {
+      this.setTabletCSS();
+    } else {
+      this.setPhoneCSS();
+    }
+
+    if (this.chat) {
+      this.messages = await this.messageService.loadMessagesByChatRef(this.chat.ref)
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  async send(msg: string) {
+    if (this.chat) {
+      await this.messageService.saveMessage(msg, this.currentUser.username, this.currentUser.userRef, this.chat.ref)
+    }
+  }
+
+  formatDate(ladate: Timestamp) {
     const date = ladate.toDate();
     let datefinale = date.toLocaleDateString();
 
@@ -84,13 +119,26 @@ export class MyChatComponent implements OnInit, OnDestroy {
     return this.displayDate = `${datefinale} ${lheure}:${minute}`
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+
+    this.getScreenWidth = window.innerWidth;
+
+    if (this.getScreenWidth < this.SCREEN_SM) {
+      //this.textFieldCSS = "";
+      this.setPhoneCSS();
+    } else {
+      this.setTabletCSS();
+
+
+    }
   }
 
-  async send(msg: string){
-    if (this.chat) {
-      await this.messageService.saveMessage(msg, this.currentUser.username, this.currentUser.userRef, this.chat.ref)
-    }
+  setTabletCSS(){
+    this.textFieldCSS = "padding: 15px 20px 35px 20px; bottom:76px; width: 60%;";
+  }
+
+  setPhoneCSS(){
+    this.textFieldCSS = "padding:20px; bottom:0; left:0; min-width: 100%";
   }
 }
