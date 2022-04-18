@@ -36,35 +36,29 @@ export class MessagesComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     private userService: UserService,
     private chatService: ChatService,
-    private router: Router
-    ) {
-      this.authUid = undefined;
-      this.user = new User();
-      this.chats = [];
-    }
+  ) {
+    this.authUid = undefined;
+    this.user = new User();
+    this.chats = [];
+  }
 
-  async initMasterDetailsPattern() {
 
+  async ngOnInit(): Promise<void> {
     this.getScreenWidth = window.innerWidth;
 
-    if(this.getScreenWidth < this.SCREEN_SM) {
+    if (this.getScreenWidth < this.SCREEN_SM) {
       this.messagesDisplay = "block";
       this.chatDisplay = "none";
     }
     else {
       this.returnDisplay = "none";
     }
-  }
-
-  async ngOnInit(): Promise<void> {
-    await this.initMasterDetailsPattern();
 
     this.sub = this.authService.user.subscribe(async value => {
       this.user = await this.userService.getUser(value?.uid);
     });
 
     this.chats = await this.chatService.getChats();
-
 
     if (this.getScreenWidth > this.SCREEN_SM) {
       this.selected = this.chats[0];
@@ -76,21 +70,18 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  /**
-   * Dès que la taille de l'écran change le patron maître-détails s'adapte
-   */
-   @HostListener('window:resize', ['$event'])
-   onWindowResize() {
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
 
-     this.getScreenWidth = window.innerWidth;
-     if (this.selected == null) {
+    this.getScreenWidth = window.innerWidth;
+    if (!this.selected) {
       this.selected = this.chats[0];
     }
 
     if (this.getScreenWidth < this.SCREEN_SM) {
       this.chatCSS = "";
       this.messagesCSS = "";
-      if (this.detailsMode == false) {
+      if (!this.detailsMode) {
         this.chatDisplay = "none";
       }
       else {
@@ -99,23 +90,24 @@ export class MessagesComponent implements OnInit, OnDestroy {
         this.messagesDisplay = "none";
       }
     }
-     else {
-       this.chatDisplay = "block";
-       this.messagesDisplay = "block";
-       this.returnDisplay = "none";
-       this.setTabletCSS();
-     }
-   }
+    else {
+      this.chatDisplay = "block";
+      this.messagesDisplay = "block";
+      this.returnDisplay = "none";
+      this.setTabletCSS();
+    }
+  }
 
-   setTabletCSS() {
+  setTabletCSS() {
     this.messagesCSS = "float:left; width:40%; overflow:scroll; padding-top:20px;";
     this.chatCSS = "float:left; height:100vh !important; width:60%; overflow:hidden; position:fixed; right:0; top:0;";
   }
 
-  onSelect(chat: Chat){
+  onSelect(chat: Chat) {
     this.detailsMode = true;
     this.selected = chat;
-    if(this.getScreenWidth < this.SCREEN_SM) {
+    console.log(this.selected)
+    if (this.getScreenWidth < this.SCREEN_SM) {
       this.messagesDisplay = "none";
       this.chatDisplay = "block";
       this.returnDisplay = "block";
@@ -124,7 +116,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  async redirectedToAdsList() {
+  redirectedToChatList() {
     this.detailsMode = false;
     this.selected = undefined;
     this.chatDisplay = "none";
