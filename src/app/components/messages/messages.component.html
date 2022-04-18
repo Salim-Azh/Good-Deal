@@ -1,4 +1,4 @@
-<div *ngIf="(authService.user |async);else notLoggedIn">
+<div class="modal__content" *ngIf="(authService.user |async);else notLoggedIn">
   <div class="messagerie" [style.display]="messagesDisplay" [style]="messagesCSS">
     <div class="list-group list-group-flush" *ngIf="chats.length > 0; else noChat">
       <div *ngFor="let chat of chats">
