@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { ChatService } from 'src/app/services/chat.service';
@@ -6,19 +6,21 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { User } from '../../model/user.model';
 import { Chat } from 'src/app/model/chat.model';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.scss']
 })
-export class MessagesComponent implements OnInit {
+export class MessagesComponent implements OnInit, OnDestroy {
 
   path: string = "/chats";
   authUid: string | undefined;
   user: User;
   chats: Chat[];
   selected?: Chat;
+  sub: Subscription = new Subscription;
 
   public getScreenWidth: any;
   SCREEN_SM = 960;
@@ -48,29 +50,30 @@ export class MessagesComponent implements OnInit {
     if(this.getScreenWidth < this.SCREEN_SM) {
       this.messagesDisplay = "block";
       this.chatDisplay = "none";
-    } else {
+    }
+    else {
       this.returnDisplay = "none";
     }
   }
 
   async ngOnInit(): Promise<void> {
-
     await this.initMasterDetailsPattern();
 
-    onAuthStateChanged(getAuth(), async user => {
-      this.chats = await this.chatService.getChats();
-
-      if (this.getScreenWidth > this.SCREEN_SM) {
-        this.selected = this.chats[0];
-        this.setTabletCSS();
-      }
-
-      if(user){
-        this.authUid = user.uid;
-        this.user = await this.userService.getUser(this.authUid);
-      }
+    this.sub = this.authService.user.subscribe(async value => {
+      this.user = await this.userService.getUser(value?.uid);
     });
 
+    this.chats = await this.chatService.getChats();
+
+
+    if (this.getScreenWidth > this.SCREEN_SM) {
+      this.selected = this.chats[0];
+      this.setTabletCSS();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   /**

@@ -15,6 +15,11 @@
     border-top: 1px solid #ff7900;
 }
 
+.chat.selected{
+  border-bottom: 1px solid #ff7900;
+  border-top: 1px solid #ff7900;
+}
+
 .chat-content{
     padding: 14px;
 }
@@ -52,9 +57,9 @@ h2{
     background-color: #ff7900;
 	height: 45px;
   	padding: 10px;
-      
+
  // 	background: #578EBE;
-	
+
 //	overflow: hidden;
 }
 

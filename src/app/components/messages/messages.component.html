@@ -1,31 +1,29 @@
-<div>
+<div *ngIf="(authService.user |async);else notLoggedIn">
   <div class="messagerie" [style.display]="messagesDisplay" [style]="messagesCSS">
-    <div *ngIf="(authService.user |async);else notLoggedIn">
-      <div class="list-group list-group-flush" *ngIf="chats.length > 0; else noChat">
-        <div *ngFor="let chat of chats">
+    <div class="list-group list-group-flush" *ngIf="chats.length > 0; else noChat">
+      <div *ngFor="let chat of chats">
+        <div [class.selected]="chat === selected" (click)="onSelect(chat)" class="chat">
+          <div class="chat-content">
+            <ng-container *ngIf="chat.members.u1Username == user.username; else user1">
+              <p class="nameContact">{{chat.members.u2Username}}</p>
+            </ng-container>
+            <ng-template #user1>
+              <p class="nameContact">{{chat.members.u1Username}}</p>
+            </ng-template>
 
-          <div [class.selected]="chat === selected" (click)="onSelect(chat)" class="chat">
-            <div class="chat-content">
-
-              <ng-container *ngIf="chat.members.u1Username == user.username; else user1">
-                <p class="nameContact">{{chat.members.u2Username}}</p>
-              </ng-container>
-              <ng-template #user1>
-                <p class="nameContact">{{chat.members.u1Username}}</p>
-              </ng-template>
-
-              <ng-container *ngIf="chat.lastMessage.sentByUsername == user.username; else notMe">
-                <p class="chat-text">Vous : {{chat.lastMessage.messageText}}</p>
-              </ng-container>
-              <ng-template #notMe>
-                <p class="chat-text">{{chat.lastMessage.messageText}}</p>
-              </ng-template>
-
-            </div>
+            <ng-container *ngIf="chat.lastMessage.sentByUsername == user.username; else notMe">
+              <p class="chat-text">Vous : {{chat.lastMessage.messageText}}</p>
+            </ng-container>
+            <ng-template #notMe>
+              <p class="chat-text">{{chat.lastMessage.messageText}}</p>
+            </ng-template>
           </div>
         </div>
       </div>
     </div>
+    <ng-template #noChat>
+      <span class="ms-2">Aucune conversation en cours.</span>
+    </ng-template>
   </div>
 
   <div [style.display]="chatDisplay" [style]="chatCSS">
@@ -49,8 +47,4 @@
 
 <ng-template #notLoggedIn>
   <app-sign-in [redirectTo]="path"></app-sign-in>
-</ng-template>
-
-<ng-template #noChat>
-  Aucune conversation en cours.
 </ng-template>
