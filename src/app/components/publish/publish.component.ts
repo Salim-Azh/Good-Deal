@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { getDoc } from 'firebase/firestore';
+import { getDoc, Timestamp } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { User } from 'src/app/model/user.model';
 import { UserService } from 'src/app/services/user.service';
@@ -22,29 +22,21 @@ import { Router } from '@angular/router';
 export class PublishComponent implements OnInit {
   user: User;
   path: string = '/publish';
-
-  residenceName: string = 'Residence ...';
-
-  photoSourceObj: File | null;
-  showPreview: boolean;
+  residenceName: string;
 
   disabledPublishBtn: boolean;
-
   title: string;
   price: string
   state: string;
   category: string;
   description: string;
+  photoSourceObj: File | null;
+  showPreview: boolean;
 
-  private photoReadersubject = new BehaviorSubject<(string | ArrayBuffer | null)[]>(
-    []
-  );
+  private photoReadersubject = new BehaviorSubject<(string | ArrayBuffer | null)[]>([]);
   public readablePhotoList$ = this.photoReadersubject.asObservable();
 
-  private filePhotoListSubject = new BehaviorSubject<{}[]>([]);
-  public filePhotoList$ = this.filePhotoListSubject.asObservable();
-
-  @Input() file?: File;
+  file?: File;
 
   constructor(
     public authService: AuthService,
@@ -61,6 +53,7 @@ export class PublishComponent implements OnInit {
     this.category = "";
     this.description = "";
     this.disabledPublishBtn = true;
+    this.residenceName = ""
   }
 
   async ngOnInit(): Promise<void> {
@@ -91,29 +84,32 @@ export class PublishComponent implements OnInit {
     this.disabledPublishBtn = !this.title || !this.price || !this.state //|| this.state == "none";
   }
 
-  async createAd(title: string, category: any, price: any, description: any, file: any, state: any) {
+  async createAd(title: string, category: any, price: any, description: any, state: any) {
     if (this.user) {
       this.showPreview = false;
-      if (file) {
-        const storage = getStorage();
-        const storageRef = ref(storage, 'Images/' + file.name);
-        const uploadTask = uploadBytesResumable(storageRef, file);
-        // Listen for state changes, errors, and completion of the upload.
-        uploadTask.then(async (snapshot) => {
-          let url = await getDownloadURL(snapshot.ref);
-          let imagesUrl: string[] = [];
-          if (url) {
-            imagesUrl.push(url);
-          }
-          await this.adService.createAd(
-            title,
-            category,
-            price,
-            description,
-            imagesUrl,
-            state
-          );
-        });
+      if (this.file) {
+        const type = this.file.type
+        if (type == "image/jpeg" || type == "image/png") {
+          const storage = getStorage();
+          const storageRef = ref(storage, `Images/${Timestamp.fromDate(new Date()).toMillis()}.${type == "image/jpeg" ? "jpg" : "png"}`);
+          const uploadTask = uploadBytesResumable(storageRef, this.file);
+          // Listen for state changes, errors, and completion of the upload.
+          uploadTask.then(async (snapshot) => {
+            let url = await getDownloadURL(snapshot.ref);
+            let imagesUrl: string[] = [];
+            if (url) {
+              imagesUrl.push(url);
+            }
+            await this.adService.createAd(
+              title,
+              category,
+              price,
+              description,
+              imagesUrl,
+              state
+            );
+          });
+        }
       }
       else {
         await this.adService.createAd(
@@ -130,13 +126,13 @@ export class PublishComponent implements OnInit {
     }
   }
 
-  takePhoto(FormimagesUrl: HTMLInputElement, event: any) {
+  takePhoto(imagesUrl: HTMLInputElement, event: any) {
     this.file = event.target.files[0];
-    if (FormimagesUrl.files) {
-      this.photoSourceObj = FormimagesUrl.files[0];
+    if (imagesUrl.files) {
+      this.photoSourceObj = imagesUrl.files[0];
     }
 
-    if (!!this.photoSourceObj) {
+    if (this.photoSourceObj) {
       this.showPreview = true;
       const reader = new FileReader();
       reader.readAsDataURL(this.photoSourceObj);
@@ -145,7 +141,7 @@ export class PublishComponent implements OnInit {
         const imageUrl = reader.result;
 
         this.photoReadersubject.next([
-          ...this.photoReadersubject.getValue(),
+          //...this.photoReadersubject.getValue(),
           imageUrl,
         ]);
 
@@ -153,4 +149,7 @@ export class PublishComponent implements OnInit {
     }
   }
 
+  removeFile(){
+    this.photoReadersubject.next([]);
+  }
 }

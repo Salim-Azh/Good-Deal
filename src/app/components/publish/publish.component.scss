@@ -10,6 +10,7 @@
 }
 
 .modal__content {
+    background-color: #F8F8F8;
     position: absolute;
     width: 100%;
     max-height: 90vh;
@@ -30,20 +31,47 @@ label {
     border: none;
 }
 
-mat-icon {
-    font-size: 40px;
-    color: #516079;
+.form-field-border{
+  border: 1px solid #ff7900;
+}
+
+input[type="file"]{
+  display: none;
+}
+
+mat-icon{
+  color: #516079;
+}
+
+mat-icon#upload {
+  color: white;
+}
+
+.take-photo{
+  border: 1px solid #ff7900;
+  background-color: #ff7900;
+  color: white;
 }
 
 .image-container {
-    height: 30vh;
-    max-height: 30vh;
+    height: 50vh;
+    max-height: 50vh;
     border: 1px solid #516079;
 }
 
 
 .custom-preview {
-    height: 30vh;
-    max-width: 100%;
+    height: 35vh;
     object-fit: cover;
+}
+
+mat-card-content {
+  text-align: left;
+}
+
+mat-card-title {
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -4,13 +4,13 @@
     <p class="fst-italic"><span class="red">*</span> Champs requis</p>
     <form (change)="setDisableBtn()">
       <div class="section mb-4">
-        <label class="monText"> Titre de mon annonce <span class="red">*</span></label>
+        <label> Titre de mon annonce <span class="red">*</span></label>
         <input type="text" id="title" name="title" class="form-control" placeholder="Exemple : Rideaux de douche"
           autofocus #Formtitle (keyup)="setTitleState(Formtitle.value)" required>
       </div>
 
       <div class="section mb-4">
-        <label class="monText">Prix <span class="red">*</span></label>
+        <label>Prix <span class="red">*</span></label>
         <div class="input-group">
           <input type="number" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"
             #FormPrice (keyup)="setPriceState(FormPrice.value)" required />
@@ -29,7 +29,7 @@
       </div>
 
       <div class="section mb-4">
-        <label class="monText"> Catégorie</label>
+        <label> Catégorie</label>
         <select class="form-select" id="category" name="category" #FormCat>
           <option selected>Choisissez une catégorie</option>
           <option value="Electronique">Electronique</option>
@@ -38,33 +38,44 @@
       </div>
 
       <div class="section mb-4">
-        <label class="monText">Description</label>
+        <label>Description</label>
         <textarea class="form-control" id="description" name="description" #FormDesc></textarea>
       </div>
 
       <ng-container *ngIf=" (readablePhotoList$ | async) as readablePhotoList ">
 
         <div class="mobile-camera-container">
-          <input type="file" id="file" hidden accept="image/*" (change)="takePhoto(file, $event)" #file />
-          <label for="file" class="take-photo">
-            <mat-icon>add_a_photo</mat-icon>
+          <label for="file" class="d-flex align-items-end take-photo">
+            <mat-icon id="upload" class="me-2">add_a_photo</mat-icon> <span>Prendre une photo</span>
           </label>
-
+          <input type="file" id="file" accept="image/*" (change)="takePhoto(file, $event)" #file />
         </div>
 
-        <div class="my-0 d-flex justify-content-center image-container">
-          <div *ngIf="readablePhotoList[0] && showPreview">
-            <img [src]="readablePhotoList[0]" alt="prévisualisation de l'image" class="custom-preview" id="imagepreview">
+        <div class="my-0 d-flex justify-content-center align-items-center image-container">
+
+          <div *ngIf="readablePhotoList[0] && showPreview;else noPreview">
+            <mat-card class="mat-elevation-z4 mt-3">
+              <div>
+                <img mat-card-image [src]="readablePhotoList[0]" alt="prévisualisation de l'image"
+                  class="custom-preview" id="imagepreview">
+              </div>
+              <mat-card-content class="d-flex flex-row-reverse">
+                <mat-icon (click)="removeFile()">delete</mat-icon>
+              </mat-card-content>
+            </mat-card>
           </div>
+
+          <ng-template #noPreview>
+            <p>Aucun fichier choisi</p>
+          </ng-template>
         </div>
       </ng-container>
 
-      <button class="btn mt-5 mb-4" type="reset" [disabled]="disabledPublishBtn" (click)="createAd(
+      <button class="btn mt-4 mb-4" type="reset" [disabled]="disabledPublishBtn" (click)="createAd(
           Formtitle.value,
           FormCat.value,
           FormPrice.value,
           FormDesc.value,
-          file,
           adState.value)">
         Publier
       </button>
