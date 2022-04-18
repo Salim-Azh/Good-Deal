@@ -1,60 +1,69 @@
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { getAuth } from 'firebase/auth';
-import { addDoc, collection, deleteDoc, deleteField, doc, DocumentReference, getDoc, Timestamp, updateDoc } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  deleteField,
+  doc,
+  DocumentReference,
+  getDoc,
+  Timestamp,
+  updateDoc,
+} from 'firebase/firestore';
 import { Ad } from '../model/ad.model';
 import { UserService } from './user.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdService {
-
-
-  constructor(
-    private firestore: Firestore,
-    private userService: UserService
-  ) { }
+  constructor(private firestore: Firestore, private userService: UserService) {}
 
   private async getUser() {
-    const uid = getAuth().currentUser?.uid
+    const uid = getAuth().currentUser?.uid;
     return this.userService.getUser(uid);
   }
 
   async markAdAsDealByRef(adId: any, adRef: any) {
     if (adRef && adId) {
       await updateDoc(adRef, {
-        deal: true
+        deal: true,
       });
 
       const user = await this.getUser();
       const userRef = doc(this.firestore, 'users/' + user.id);
-      const dealProperty = `ads.${adId}.deal`
+      const dealProperty = `ads.${adId}.deal`;
       await updateDoc(userRef, {
-        [dealProperty]: true
-      })
+        [dealProperty]: true,
+      });
     }
   }
 
   async cancelAdDealByRef(adId: any, adRef: any) {
     if (adRef && adId) {
       await updateDoc(adRef, {
-        deal: false
+        deal: false,
       });
       const user = await this.getUser();
       const userRef = doc(this.firestore, 'users/' + user.id);
-      const dealProperty = `ads.${adId}.deal`
+      const dealProperty = `ads.${adId}.deal`;
       console.log('Id Ads: ', adId);
       await updateDoc(userRef, {
-        [dealProperty]: false
+        [dealProperty]: false,
       });
     }
   }
 
-  async deleteAd(adId: string, adRef: DocumentReference, userRef: DocumentReference) {
+  async deleteAd(
+    adId: string,
+    adRef: DocumentReference,
+    userRef: DocumentReference
+  ) {
     await deleteDoc(adRef);
     await updateDoc(userRef, {
-      [`ads.${adId}`]: deleteField()
+      [`ads.${adId}`]: deleteField(),
     });
   }
 
@@ -86,31 +95,29 @@ export class AdService {
         residenceRef: authUser.residence,
         state: state,
         title: title,
-        titleIgnoreCase: title.toLowerCase()
-      } as Ad
+        titleIgnoreCase: title.toLowerCase(),
+      } as Ad;
 
-      const newAdRef = await addDoc(collection(this.firestore, "ads"), newAd);
+      const newAdRef = await addDoc(collection(this.firestore, 'ads'), newAd);
 
-      const dealProperty = `ads.${newAdRef.id}.deal`
-      const adRefProp = `ads.${newAdRef.id}.adRef`
-      const titleRefProp = `ads.${newAdRef.id}.title`
+      const dealProperty = `ads.${newAdRef.id}.deal`;
+      const adRefProp = `ads.${newAdRef.id}.adRef`;
+      const titleRefProp = `ads.${newAdRef.id}.title`;
 
       await updateDoc(userRef, {
         [adRefProp]: newAdRef,
         [dealProperty]: false,
-        [titleRefProp]: title
-      })
+        [titleRefProp]: title,
+      });
     }
   }
 
-
-  async getAdById(id: string): Promise<any>{
-    const docRef = doc(this.firestore, "ads", id);
+  async getAdById(id: string): Promise<any> {
+    const docRef = doc(this.firestore, 'ads', id);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-
-      return  {
+      return {
         id: docSnap.id,
         ref: docSnap.ref,
         advertiser: docSnap.get('advertiser'),
@@ -127,16 +134,37 @@ export class AdService {
         residenceRef: docSnap.get('residenceRef'),
         state: docSnap.get('state'),
         title: docSnap.get('title'),
-        titleIgnoreCase: docSnap.get('titleIgnoreCase')
-      }
+        titleIgnoreCase: docSnap.get('titleIgnoreCase'),
+      };
     }
   }
 
-  async updateAd(adId: string, adRef: DocumentReference, userRef: DocumentReference) {
-    await updateDoc(userRef, {
-      [`ads.${adId}`]: deleteField()
+  async updateAd(
+    adRef: DocumentReference,
+    title: string,
+    oldTitle: string,
+    category: any,
+    price: any,
+    description: any,
+    imagesUrl: string[],
+    state: any
+  ) {
+    await updateDoc(adRef, {
+      category: category,
+      description: description,
+      imagesUrl: imagesUrl,
+      price: price,
+      state: state,
+      title: title,
+      titleIgnoreCase: title.toLowerCase(),
     });
+
+    if (title != oldTitle) {
+      const authUser = await this.getUser();
+      const userRef = doc(this.firestore, `users/${authUser.id}`);
+      await updateDoc(userRef, {
+        [`ads.${adRef.id}.title`]: title,
+      });
     }
-
+  }
 }
-
