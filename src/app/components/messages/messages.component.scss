@@ -28,3 +28,35 @@
 h2{
     padding : 20px;
 }
+
+.clavarder
+{
+    font-size: 15px;
+    color: white;
+    font-weight: bold;
+    padding-left: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.box-header {
+    position: fixed;
+    top: 0;
+    background-color: #ff7900;
+	height: 45px;
+  	padding: 10px;
+      
+ // 	background: #578EBE;
+	
+//	overflow: hidden;
+}
+
+mat-icon {
+    color: white;
+    float: left;
+    padding-right: 20px !important;
+}
+
+
+

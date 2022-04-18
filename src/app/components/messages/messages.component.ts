@@ -23,7 +23,7 @@ export class MessagesComponent implements OnInit {
   SCREEN_SM = 960;
   messagesDisplay = "";
   chatDisplay = "";
-  navbarDisplay = "";
+  returnDisplay = "";
   detailsMode = false;
 
   chatCSS = "";
@@ -46,7 +46,9 @@ export class MessagesComponent implements OnInit {
     if(this.getScreenWidth < this.SCREEN_SM) {
       this.messagesDisplay = "block";
       this.chatDisplay = "none";
-    } 
+    } else {
+      this.returnDisplay = "none";
+    }
   }
 
   async ngOnInit(): Promise<void> {
@@ -82,20 +84,22 @@ export class MessagesComponent implements OnInit {
       this.selected = this.chats[0];
     }
  
-     if (this.getScreenWidth < this.SCREEN_SM) {
-       this.chatCSS = "";
-       this.messagesCSS = "";
-       if (this.detailsMode == false) {
-         this.chatDisplay = "none";
-       }
-       else {
-         this.chatDisplay = "block";
-         this.messagesDisplay = "none";
-       }
-     }
+    if (this.getScreenWidth < this.SCREEN_SM) {
+      this.chatCSS = "";
+      this.messagesCSS = "";
+      if (this.detailsMode == false) {
+        this.chatDisplay = "none";
+      }
+      else {
+        this.chatDisplay = "block";
+        this.returnDisplay = "block";
+        this.messagesDisplay = "none";
+      }
+    }
      else {
        this.chatDisplay = "block";
        this.messagesDisplay = "block";
+       this.returnDisplay = "none";
        this.setTabletCSS();
      }
    }
@@ -114,10 +118,16 @@ export class MessagesComponent implements OnInit {
     if(this.getScreenWidth < this.SCREEN_SM) {
       this.messagesDisplay = "none";
       this.chatDisplay = "block";
+      this.returnDisplay = "block";
     } else {
-
+      this.returnDisplay = "none";
     }
   }
 
-
+  async redirectedToAdsList() {
+    this.detailsMode = false;
+    this.selected = null;
+    this.chatDisplay = "none";
+    this.messagesDisplay = "block";
+  }
 }
