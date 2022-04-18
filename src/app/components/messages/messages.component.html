@@ -1,5 +1,6 @@
 <div>
   <div class="messagerie" [style.display]="messagesDisplay" [style]="messagesCSS">
+    <h2>Mes messages</h2>
     <div *ngIf="(authService.user |async);else notLoggedIn">
       <div class="list-group list-group-flush" *ngIf="chats.length > 0; else noChat">
         <div *ngFor="let chat of chats">
@@ -28,7 +29,7 @@
     </div>
   </div>
 
-  <div [style.display]="chatDisplay" [style]="chatCSS">
+  <div [style.display]="chatDisplay" [style]="chatCSS"> 
     
       <div class="box-header fixed-top" [style.display]="returnDisplay">
           

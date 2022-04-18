@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Timestamp } from 'firebase/firestore';
 import { Chat } from 'src/app/model/chat.model';
@@ -17,6 +17,10 @@ import { UserService } from 'src/app/services/user.service';
 export class MyChatComponent implements OnInit {
 
   @Input() chat!: Chat | null;
+
+  public getScreenWidth: any;
+  SCREEN_SM = 960;
+  textFieldCSS = "";
 
   id: string;
   //chat?:Chat;
@@ -40,12 +44,28 @@ export class MyChatComponent implements OnInit {
   }
 
   async ngOnInit() {
-    
+
+    this.getScreenWidth = window.innerWidth;
+
+    if(this.getScreenWidth > this.SCREEN_SM){
+      this.setTabletCSS();
+    }else{
+      this.setPhoneCSS();
+    }
+
   }
 
 
   async ngOnChanges(simpleChange: any) {
-    console.log(simpleChange);
+
+    this.getScreenWidth = window.innerWidth;
+
+    if(this.getScreenWidth > this.SCREEN_SM){
+      this.setTabletCSS();
+    }else{
+      this.setPhoneCSS();
+    }
+
     this.route.params.subscribe(async params => {
       this.id = params['id'];
     });
@@ -93,4 +113,31 @@ export class MyChatComponent implements OnInit {
 
     return this.displayDate = `${datefinale} ${lheure}:${minute}`
   }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+
+    this.getScreenWidth = window.innerWidth;
+
+    if (this.getScreenWidth < this.SCREEN_SM) {
+      //this.textFieldCSS = "";
+      this.setPhoneCSS();
+    }else{
+      this.setTabletCSS();
+    }
+
+  }
+
+  setTabletCSS(){
+
+    this.textFieldCSS="padding: 15px 20px 35px 20px; bottom:76px; right: 0; width: 60%;";
+
+  }
+
+  setPhoneCSS(){
+    
+    this.textFieldCSS="padding:20px; bottom:0; left:0;";
+
+  }
+
 }

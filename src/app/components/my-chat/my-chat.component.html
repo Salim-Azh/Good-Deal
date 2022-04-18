@@ -1,5 +1,5 @@
   <!-- start: Content -->
-  <div id="content" class="span10">
+  <div id="content">
 
 
     <div class="row-fluid">
@@ -35,11 +35,11 @@
 
         </ul>
 
-        <div class="chat-form fixed-bottom">
+        <div class="chat-form" [style]="textFieldCSS">
           <table>
             <tr>
               <td id="first"> <textarea></textarea></td>
-              <td id="second"> <button class="lebouton" >Envoyer</button></td>
+              <td id="second"><mat-icon>send</mat-icon></td>
             </tr>
           </table>
         </div>
