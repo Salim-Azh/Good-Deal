@@ -135,7 +135,7 @@ export class MyChatComponent implements OnInit, OnDestroy {
   }
 
   setTabletCSS(){
-    this.textFieldCSS = "padding: 15px 20px 35px 20px; bottom:76px; right: 0; width: 60%;";
+    this.textFieldCSS = "padding: 15px 20px 35px 20px; bottom:76px; width: 60%;";
   }
 
   setPhoneCSS(){
