@@ -121,7 +121,8 @@ export class AdDetailsComponent implements OnInit {
       }
     }
     if (chat) {
-      this.router.navigate([`/chats/${chat.docs[0].id}`])
+      const data = { id: chat.docs[0].id };
+      this.router.navigateByUrl('/chats',{state: data})
     }
   }
 }

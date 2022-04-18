@@ -2,7 +2,6 @@ import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { ChatService } from 'src/app/services/chat.service';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { User } from '../../model/user.model';
 import { Chat } from 'src/app/model/chat.model';
 import { Router } from '@angular/router';
@@ -36,7 +35,10 @@ export class MessagesComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     private userService: UserService,
     private chatService: ChatService,
+    private router: Router
   ) {
+    this.router.getCurrentNavigation()?.extras.state;
+
     this.authUid = undefined;
     this.user = new User();
     this.chats = [];
@@ -44,8 +46,15 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
 
   async ngOnInit(): Promise<void> {
+    const id:string = history.state.id;
     this.chats = await this.chatService.getChats();
-
+    if (id) {
+      this.chats.forEach(chat => {
+        if (chat.id == id) {
+          this.selected = chat;
+        }
+      });
+    }
     this.getScreenWidth = window.innerWidth;
 
     if (this.getScreenWidth < this.SCREEN_SM) {
@@ -63,7 +72,9 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.chats = await this.chatService.getChats();
 
     if (this.getScreenWidth > this.SCREEN_SM) {
-      this.selected = this.chats[0];
+      if (!this.selected) {
+        this.selected = this.chats[0];
+      }
       this.setTabletCSS();
     }
   }
