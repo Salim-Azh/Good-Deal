@@ -37,7 +37,6 @@ export class AdDetailsComponent implements OnInit {
 
   async ngOnInit() {
     //this.images = [new ImageItem({ src: this.ad.imagesUrl})];
-
     this.setDisplayState();
     this.setDisplayDate();
     this.residence = await this.residenceService.getResidenceByRef(this.ad.residenceRef);

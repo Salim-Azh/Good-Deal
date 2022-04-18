@@ -1,7 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DocumentReference } from 'firebase/firestore';
+import { Subscription } from 'rxjs';
 import { User } from 'src/app/model/user.model';
 import { AdService } from 'src/app/services/ad.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -9,15 +11,26 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './my-ads-list.component.html',
   styleUrls: ['./my-ads-list.component.scss']
 })
-export class MyAdsListComponent implements OnInit {
+export class MyAdsListComponent implements OnInit, OnDestroy {
 
   ads: { adRef: DocumentReference, title: string, id?: string, deal: boolean }[] = [];
-  @Input() user!: User;
+  user!: User;
+  sub!: Subscription;
 
-  constructor(private adService: AdService, private userService: UserService) {}
+  constructor(
+    private adService: AdService,
+    private userService: UserService,
+    private authService: AuthService) {}
 
   ngOnInit() {
-    this.setAds(this.user.ads)
+    this.sub = this.authService.user.subscribe(async value => {
+      this.user = await this.userService.getUser(value?.uid);
+      this.setAds(this.user.ads)
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   setAds(ads: { adRef: DocumentReference, title: string, id?: string, deal: boolean }[]){
