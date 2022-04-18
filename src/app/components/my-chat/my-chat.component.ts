@@ -21,6 +21,10 @@ export class MyChatComponent implements OnInit, OnDestroy {
   chat?:Chat;
   currentUser: User;
   messages: Message[];
+  ladate: any;
+  displayDate: string;
+  msg!: Message;
+  heure:any;
 
   subscription: Subscription = new Subscription
 
@@ -34,6 +38,7 @@ export class MyChatComponent implements OnInit, OnDestroy {
     this.id = "";
     this.currentUser = new User();
     this.messages = [];
+    this.displayDate = "";
   }
 
   async ngOnInit() {
@@ -44,7 +49,6 @@ export class MyChatComponent implements OnInit, OnDestroy {
     try {
       this.chat = await this.chatService.getChatById(this.id)
     } catch (error) {
-      console.log(error)
     }
 
     let subscription2 = this.authService.user.subscribe(async value => {
@@ -55,9 +59,29 @@ export class MyChatComponent implements OnInit, OnDestroy {
       this.messages = await this.messageService.loadMessagesByChatRef(this.chat.ref)
     }
 
+    this.messages.forEach(msg => {
+      this.heure = this.formatDate(msg.sentAt);
+    });
+
     this.subscription.add(subscription1)
     this.subscription.add(subscription2)
+  }
 
+  formatDate(ladate : Timestamp){
+    const date = ladate.toDate();
+    let datefinale = date.toLocaleDateString();
+
+    let lheure = date.getHours().toString();
+    let minute = date.getMinutes().toString();
+
+    if (lheure.length == 1) {
+      lheure = `0${lheure}`;
+    }
+    if (minute.length == 1) {
+      minute = `0${minute}`;
+    }
+
+    return this.displayDate = `${datefinale} ${lheure}:${minute}`
   }
 
   ngOnDestroy(): void {
