@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { getAuth } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 import { Ad } from 'src/app/model/ad.model';
 import { User } from 'src/app/model/user.model';
@@ -23,12 +22,15 @@ export class UpdateAdComponent implements OnInit {
   state: string;
 
   id: string;
-  ad?: Ad;
+  ad!: Ad;
   currentUser: User;
 
 
   photoSourceObj: File | null;
   showPreview: boolean;
+
+  showOld: boolean;
+  oldImgDeleted: boolean;
 
   private photoReadersubject = new BehaviorSubject<(string | ArrayBuffer | null)[]>([]);
   public readablePhotoList$ = this.photoReadersubject.asObservable();
@@ -38,10 +40,10 @@ export class UpdateAdComponent implements OnInit {
     public authService: AuthService,
     private route: ActivatedRoute,
     private adService: AdService,
-    private userService: UserService) {
+    private userService: UserService
+  ) {
     this.id = "";
     this.currentUser = new User();
-
 
     this.title = "";
     this.price = "";
@@ -49,7 +51,8 @@ export class UpdateAdComponent implements OnInit {
     this.disabledPublishBtn = true;
     this.showPreview = false;
     this.photoSourceObj = null;
-
+    this.oldImgDeleted = false;
+    this.showOld = false;
 
   }
 
@@ -67,8 +70,10 @@ export class UpdateAdComponent implements OnInit {
     this.authService.user.subscribe(async value => {
       this.currentUser = await this.userService.getUser(value?.uid);
     });
-    console.log(this.id)
+
+    this.showOldImg();
   }
+
 
   setDisableBtn() {
     this.disabledPublishBtn = !this.title || !this.price || !this.state //|| this.state == "none";
@@ -101,6 +106,7 @@ export class UpdateAdComponent implements OnInit {
       reader.readAsDataURL(this.photoSourceObj);
 
       reader.onload = (_e) => {
+        this.showOld = false;
         const imageUrl = reader.result;
 
         this.photoReadersubject.next([
@@ -112,13 +118,27 @@ export class UpdateAdComponent implements OnInit {
     }
   }
 
+  showOldImg(){
+    this.showOld = !this.showOld;
+  }
+
+  removeOldFile(){
+    this.oldImgDeleted = true;
+    this.showOld = false;
+  }
+
   removeFile(){
     this.photoReadersubject.next([]);
   }
 
 
   updateAd(title: string, category: any, price: any, description: any, state: any){
-
+    if (this.oldImgDeleted) {
+      //Comme publish (on change l'image : soit il n'y en a plus soit il y en a une nouvelle)
+    }
+    else {
+      //on ne change pas l'image
+    }
   }
 
 

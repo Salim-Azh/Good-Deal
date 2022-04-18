@@ -1,74 +1,91 @@
 <div *ngIf="(authService.user | async);" class="modal__content">
-    <div class="flex container">
-        <h2>Déposer une annonce dans la résidence {{ad?.residenceName}}</h2>
-        <p class="fst-italic"><span class="red">*</span> Champs requis</p>
-        <form (change)="setDisableBtn()">
-            <div class="section mb-4">
-                <label> Titre de mon annonce <span class="red">*</span></label>
-                <input type="text" id="title" name="title" class="form-control" placeholder="Exemple : Rideaux de douche" autofocus #Formtitle (keyup)="setTitleState(Formtitle.value)" required value="{{ ad?.title }}">
-            </div>
+  <div class="flex container">
+    <h2>Déposer une annonce dans la résidence {{ad?.residenceName}}</h2>
+    <p class="fst-italic"><span class="red">*</span> Champs requis</p>
+    <form (change)="setDisableBtn()">
+      <div class="section mb-4">
+        <label> Titre de mon annonce <span class="red">*</span></label>
+        <input type="text" id="title" name="title" class="form-control" placeholder="Exemple : Rideaux de douche"
+          autofocus #Formtitle (keyup)="setTitleState(Formtitle.value)" required value="{{ ad?.title }}">
+      </div>
 
-            <div class="section mb-4">
-                <label>Prix <span class="red">*</span></label>
-                <div class="input-group">
-                    <input type="number" class="form-control" aria-label="Dollar amount (with dot and two decimal places)" #FormPrice (keyup)="setPriceState(FormPrice.value)" required value="{{ ad?.price }}" />
-                    <span class="input-group-text">$CA</span>
-                </div>
-            </div>
+      <div class="section mb-4">
+        <label>Prix <span class="red">*</span></label>
+        <div class="input-group">
+          <input type="number" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"
+            #FormPrice (keyup)="setPriceState(FormPrice.value)" required value="{{ ad?.price }}" />
+          <span class="input-group-text">$CA</span>
+        </div>
+      </div>
 
-            <div class="section mb-4">
-                <label for="state">État <span class="red">*</span></label>
-                <select class="form-select" id="state" name="state" #adState (change)="setAdState(adState.value)" required value="{{ ad?.state }}">
+      <div class="section mb-4">
+        <label for="state">État <span class="red">*</span></label>
+        <select class="form-select" id="state" name="state" #adState (change)="setAdState(adState.value)" required
+          value="{{ ad?.state }}">
           <option selected value="">État de l'article</option>
           <option value="new">Neuf</option>
           <option value="like new">Usagé - Comme Neuf</option>
           <option value="used">Usagé</option>
         </select>
-            </div>
+      </div>
 
-            <div class="section mb-4">
-                <label> Catégorie</label>
-                <select class="form-select" id="category" name="category" #FormCat value="{{ ad?.category }}">
+      <div class="section mb-4">
+        <label> Catégorie</label>
+        <select class="form-select" id="category" name="category" #FormCat value="{{ ad?.category }}">
           <option selected>Choisissez une catégorie</option>
           <option value="Electronique">Electronique</option>
           <option value="Mobilier">Mobilier</option>
         </select>
-            </div>
+      </div>
 
-            <div class="section mb-4">
-                <label>Description</label>
-                <textarea class="form-control" id="description" name="description" #FormDesc value="{{ ad?.description }}"></textarea>
-            </div>
+      <div class="section mb-4">
+        <label>Description</label>
+        <textarea class="form-control" id="description" name="description" #FormDesc
+          value="{{ ad?.description }}"></textarea>
+      </div>
 
-            <ng-container *ngIf=" (readablePhotoList$ | async) as readablePhotoList ">
+      <ng-container *ngIf=" (readablePhotoList$ | async) as readablePhotoList ">
 
-                <div class="mobile-camera-container">
-                    <label for="file" class="d-flex align-items-end take-photo">
+        <div class="mobile-camera-container">
+          <label for="file" class="d-flex align-items-end take-photo">
             <mat-icon id="upload" class="me-2">add_a_photo</mat-icon> <span>Prendre une photo</span>
           </label>
-                    <input type="file" id="file" accept="image/*" (change)="takePhoto(file, $event)" #file />
-                </div>
+          <input type="file" id="file" accept="image/*" (change)="takePhoto(file, $event)" #file />
+        </div>
 
-                <div class="my-0 d-flex justify-content-center align-items-center image-container">
+        <div class="my-0 d-flex justify-content-center align-items-center image-container">
 
-                    <div *ngIf="readablePhotoList[0] && showPreview;else noPreview">
-                        <mat-card class="mat-elevation-z4 my-3">
-                            <div>
-                                <img mat-card-image [src]="readablePhotoList[0]" alt="prévisualisation de l'image" class="custom-preview" id="imagepreview">
-                            </div>
-                            <mat-card-content class="d-flex flex-row-reverse">
-                                <mat-icon (click)="removeFile()">delete</mat-icon>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
+          <ng-container *ngIf="showOld">
+            <mat-card class="mat-elevation-z4 my-3">
+              <div>
+                <img mat-card-image [src]="ad.imagesUrl[0]" alt="prévisualisation de l'image"
+                  class="custom-preview" id="imagepreview">
+              </div>
+              <mat-card-content class="d-flex flex-row-reverse">
+                <mat-icon (click)="removeOldFile()">delete</mat-icon>
+              </mat-card-content>
+            </mat-card>
+          </ng-container>
 
-                    <ng-template #noPreview>
-                        <p>Aucun fichier choisi</p>
-                    </ng-template>
-                </div>
-            </ng-container>
+          <div *ngIf="readablePhotoList[0] && showPreview;else noPreview">
+            <mat-card class="mat-elevation-z4 my-3">
+              <div>
+                <img mat-card-image [src]="readablePhotoList[0]" alt="prévisualisation de l'image"
+                  class="custom-preview" id="imagepreview">
+              </div>
+              <mat-card-content class="d-flex flex-row-reverse">
+                <mat-icon (click)="removeFile()">delete</mat-icon>
+              </mat-card-content>
+            </mat-card>
+          </div>
 
-            <button class="btn mt-4 mb-4" type="reset" [disabled]="disabledPublishBtn" (click)="updateAd(
+          <ng-template #noPreview>
+            <p *ngIf="!showOld">Aucun fichier choisi</p>
+          </ng-template>
+        </div>
+      </ng-container>
+
+      <button class="btn mt-4 mb-4" type="reset" [disabled]="disabledPublishBtn" (click)="updateAd(
           Formtitle.value,
           FormCat.value,
           FormPrice.value,
@@ -76,6 +93,6 @@
           adState.value)">
         Modifier
       </button>
-        </form>
-    </div>
+    </form>
+  </div>
 </div>
