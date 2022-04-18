@@ -26,7 +26,7 @@
     </ng-template>
   </div>
 
-  <div [style.display]="chatDisplay" [style]="chatCSS">
+  <div [style.display]="chatDisplay" [style]="chatCSS" *ngIf="selected">
     <div class="box-header fixed-top" [style.display]="returnDisplay">
 
       <a (click)="redirectedToChatList()">
