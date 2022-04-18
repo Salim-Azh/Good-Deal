@@ -5,9 +5,16 @@
   margin-right: 5px;
 }
 
+.txt-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .btn-noDeal{
   border: none;
 }
+
 .w-custom{
   min-width: 80vw;
   max-width: 80vw;

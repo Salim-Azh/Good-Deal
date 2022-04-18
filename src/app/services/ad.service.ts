@@ -53,8 +53,6 @@ export class AdService {
 
   async deleteAd(adId: string, adRef: DocumentReference, userRef: DocumentReference) {
     await deleteDoc(adRef);
-
-    console.log(`users.${userRef.id}.ads.${adId}`)
     await updateDoc(userRef, {
       [`ads.${adId}`]: deleteField()
     });

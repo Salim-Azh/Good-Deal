@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { User } from 'src/app/model/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
@@ -8,19 +9,23 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss']
 })
-export class AccountComponent implements OnInit {
+export class AccountComponent implements OnInit, OnDestroy {
   path: string = "/home"
   user: User | undefined = undefined;
 
-  constructor(public authService: AuthService, private userService: UserService) {
-  }
+  sub!:Subscription
 
-  async ngOnInit() {
-    this.authService.user.subscribe(async value => {
+  constructor(public authService: AuthService, private userService: UserService) {}
+
+  ngOnInit() {
+    this.sub = this.authService.user.subscribe(async value => {
       this.user = await this.userService.getUser(value?.uid);
     });
   }
 
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
 
   signOut(){
     this.authService.signOut();
