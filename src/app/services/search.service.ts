@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { getAuth } from 'firebase/auth';
-import { collection, DocumentData, DocumentReference, getDocs, query, QuerySnapshot, where } from 'firebase/firestore';
-import { getDownloadURL, getStorage, ref } from 'firebase/storage';
+import { collection, DocumentData, DocumentReference, getDocs, orderBy, query, QuerySnapshot, where } from 'firebase/firestore';
 import { Ad } from '../model/ad.model';
 import { User } from '../model/user.model';
 import { UserService } from './user.service';
@@ -26,7 +25,8 @@ export class SearchService {
     const docsSnap = await getDocs(
       query(
         collection(this.firestore, "ads"),
-        where("deal", "==", false)
+        where("deal", "==", false),
+        orderBy("createdAt", "desc")
       )
     );
     return this.fillResults(docsSnap)
@@ -38,7 +38,8 @@ export class SearchService {
       const q = query(
         collection(this.firestore, "ads"),
         where("residenceRef", "==", user.residence),
-        where("deal", "==", false)
+        where("deal", "==", false),
+        orderBy("createdAt", "desc")
       );
       return getDocs(q);
     }
@@ -73,7 +74,8 @@ export class SearchService {
       const q = query(
         collection(this.firestore, "ads"),
         where("deal", "==", false),
-        where("residenceRef", "==", residenceRef)
+        where("residenceRef", "==", residenceRef),
+        orderBy("createdAt", "desc")
       );
       const docSnap =  await getDocs(q);
       ads = this.fillResults(docSnap);
@@ -87,7 +89,8 @@ export class SearchService {
       const q = query(
         collection(this.firestore, "ads"),
         where("deal", "==", false),
-        where("residenceRef", "==", residenceRef)
+        where("residenceRef", "==", residenceRef),
+        orderBy("createdAt", 'desc')
       );
       const docSnap =  await getDocs(q);
       ads = this.fillResults(docSnap);
@@ -98,7 +101,7 @@ export class SearchService {
   private textSearch(ads: Ad[], text: string){
     let results: Ad[] = [];
     ads.forEach(ad => {
-      const re = new RegExp(`\\b${text}\\b`, 'i');
+      const re = new RegExp(`.*${text}.*`, 'i');
       if(ad.titleIgnoreCase.search(re) != -1){
         results.push(ad);
       }
