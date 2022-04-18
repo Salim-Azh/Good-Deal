@@ -44,7 +44,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.chats = [];
   }
 
-
   async ngOnInit(): Promise<void> {
     const id:string = history.state.id;
     this.chats = await this.chatService.getChats();
@@ -65,18 +64,16 @@ export class MessagesComponent implements OnInit, OnDestroy {
       this.returnDisplay = "none";
     }
 
-    this.sub = this.authService.user.subscribe(async value => {
-      this.user = await this.userService.getUser(value?.uid);
-    });
-
-    this.chats = await this.chatService.getChats();
-
     if (this.getScreenWidth > this.SCREEN_SM) {
       if (!this.selected) {
         this.selected = this.chats[0];
       }
       this.setTabletCSS();
     }
+
+    this.sub = this.authService.user.subscribe(async value => {
+      this.user = await this.userService.getUser(value?.uid);
+    });
   }
 
   ngOnDestroy(): void {
