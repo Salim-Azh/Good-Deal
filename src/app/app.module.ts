@@ -34,6 +34,7 @@ import { AdDetailsComponent } from './components/ad-details/ad-details.component
 import { GalleryModule} from 'ng-gallery';
 import { MyChatComponent } from './components/my-chat/my-chat.component';
 import { enableIndexedDbPersistence } from 'firebase/firestore';
+import { UpdateAdComponent } from './components/update-ad/update-ad.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { enableIndexedDbPersistence } from 'firebase/firestore';
     SignInComponent,
     AdDetailsComponent,
     MyChatComponent,
+    UpdateAdComponent,
   ],
   imports: [
     BrowserModule,

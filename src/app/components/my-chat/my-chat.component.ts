@@ -26,7 +26,7 @@ export class MyChatComponent implements OnInit, OnDestroy {
   msg!: Message;
   heure:any;
 
-  subscription: Subscription = new Subscription;
+  subscription: Subscription = new Subscription
 
   constructor(
     private authService: AuthService,
