@@ -12,6 +12,8 @@ import {
   ref,
   uploadBytesResumable,
 } from 'firebase/storage';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-publish',
   templateUrl: './publish.component.html',
@@ -26,7 +28,7 @@ export class PublishComponent implements OnInit {
   photoSourceObj: File | null;
   showPreview: boolean;
 
-  disabledPublishBtn : boolean;
+  disabledPublishBtn: boolean;
 
   title: string;
   price: string
@@ -47,7 +49,8 @@ export class PublishComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private userService: UserService,
-    private adService: AdService
+    private adService: AdService,
+    private router: Router
   ) {
     this.user = new User();
     this.showPreview = false;
@@ -69,36 +72,29 @@ export class PublishComponent implements OnInit {
     }
   }
 
-  setTitleState(newValue: string){
+  setTitleState(newValue: string) {
     this.title = newValue;
     this.setDisableBtn();
   }
 
-  setPriceState(newValue: string){
+  setPriceState(newValue: string) {
     this.price = newValue;
     this.setDisableBtn();
   }
 
-  setAdState(newValue:string){
+  setAdState(newValue: string) {
     this.state = newValue;
     this.setDisableBtn();
   }
 
-  setDisableBtn(){
+  setDisableBtn() {
     this.disabledPublishBtn = !this.title || !this.price || !this.state //|| this.state == "none";
   }
 
-  async createAd(
-    title: string,
-    category: any,
-    price: any,
-    description: any,
-    file: any,
-    state: any
-  ) {
+  async createAd(title: string, category: any, price: any, description: any, file: any, state: any) {
     if (this.user) {
       this.showPreview = false;
-      if(file){
+      if (file) {
         const storage = getStorage();
         const storageRef = ref(storage, 'Images/' + file.name);
         const uploadTask = uploadBytesResumable(storageRef, file);
@@ -109,27 +105,29 @@ export class PublishComponent implements OnInit {
           if (url) {
             imagesUrl.push(url);
           }
+          await this.adService.createAd(
+            title,
+            category,
+            price,
+            description,
+            imagesUrl,
+            state
+          );
+        });
+      }
+      else {
         await this.adService.createAd(
           title,
           category,
           price,
           description,
-          imagesUrl,
+          [],
           state
         );
-      });
+      }
+
+      this.router.navigate(["account"])
     }
-    else{
-      await this.adService.createAd(
-        title,
-        category,
-        price,
-        description,
-        [],
-        state
-      );
-    }
-  }
   }
 
   takePhoto(FormimagesUrl: HTMLInputElement, event: any) {
