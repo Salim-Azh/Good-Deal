@@ -22,6 +22,7 @@ export class MyChatComponent implements OnInit,OnDestroy {
   public getScreenWidth: any;
   SCREEN_SM = 960;
   textFieldCSS = "";
+  modal__contentCSS = "";
 
   id: string;
   currentUser: User;
@@ -136,9 +137,12 @@ export class MyChatComponent implements OnInit,OnDestroy {
 
   setTabletCSS(){
     this.textFieldCSS = "padding: 15px 20px 35px 20px; bottom:76px; width: 60%;";
+    this.modal__contentCSS = "top:5px; bottom:80px;";
   }
+
 
   setPhoneCSS(){
     this.textFieldCSS = "padding:20px; bottom:0; left:0; min-width: 100%";
+    this.modal__contentCSS = "top:45px; bottom:45px;";
   }
 }
