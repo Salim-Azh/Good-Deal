@@ -41,7 +41,8 @@ ul.chat li .message {
 
 ul.chat li.right .message {
   text-align: left;
-  margin-left: 75px;
+  float: right;
+  margin-right: 2vh;
   background: #fff;
   background-color: #ff7900;
   color: white;
@@ -49,7 +50,7 @@ ul.chat li.right .message {
 
 ul.chat li.left .message {
   text-align: left;
-  margin-right: 75px;
+  float: left;
   background: #fcfcfc;
 }
 
@@ -81,6 +82,8 @@ ul.chat li .message .text {
   font-size: 12px;
   vertical-align: middle;
   border-radius: 20px;
+  color: #516079;
+  font-size: medium;
 }
 
 textarea:focus {
@@ -101,13 +104,6 @@ textarea:focus {
   margin-top: -9px;
 }
 
-.clavarder {
-  margin-top: 10px;
-  margin-left: 10px;
-  font-size: 15px;
-  background-color: #ff7900;
-}
-
 .modal__content { //reverse display always on bottom
   position: absolute;
   width: 100%;
@@ -115,6 +111,7 @@ textarea:focus {
   top: 5px;
   overflow-y: scroll !important;
   display: flex;
+  background-color: #f8f8f8;
   flex-direction: column-reverse;
 }
 
