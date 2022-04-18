@@ -110,10 +110,10 @@ export class AdService {
     const docRef = doc(this.firestore, "ads", id);
     const docSnap = await getDoc(docRef);
 
-    /*if (docSnap.exists()) {
-      const ad: Ad =  this.convertToChatModel(docSnap);
-      return ad;
-    }*/
+    if (docSnap.exists()) {
+      //const ad: Ad =  this.convertToChatModel(docSnap);
+      //return ad;
+    }
   }
 
   async updateAd(adId: string, adRef: DocumentReference, userRef: DocumentReference) {

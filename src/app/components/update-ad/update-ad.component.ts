@@ -38,6 +38,10 @@ export class UpdateAdComponent implements OnInit {
     this.authService.user.subscribe(async value => {
       this.currentUser = await this.userService.getUser(value?.uid);
     });
+    console.log(this.id)
   }
+
+
+
 
 }
