@@ -26,7 +26,7 @@
         </ng-template>
       </ul>
 
-      <div class="chat-form w-100" [style]="textFieldCSS">
+      <div class="chat-form" [style]="textFieldCSS">
         <form method="post" class="d-flex justify-content-around align-items-center">
           <textarea #msgToSend></textarea>
           <mat-icon (click)="send(msgToSend.value)">send</mat-icon>

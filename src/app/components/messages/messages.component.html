@@ -33,8 +33,6 @@
         <mat-icon>arrow_back</mat-icon>
       </a>
 
-    {{selected?.members?.u1Username == user.username}}
-
       <ng-container *ngIf="selected?.members?.u1Username == user.username;else withUser1">
         <h3 class="clavarder">Clavarder avec {{selected?.members?.u2Username}}</h3>
       </ng-container>
@@ -43,11 +41,8 @@
         <h3 class="clavarder">Clavarder avec {{selected?.members?.u1Username}}</h3>
       </ng-template>
     </div>
-    <div>
       <app-my-chat [chat]="selected"></app-my-chat>
-    </div>
   </div>
-
 </div>
 
 <ng-template #notLoggedIn>
