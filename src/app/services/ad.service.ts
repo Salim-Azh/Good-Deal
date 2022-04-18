@@ -44,6 +44,7 @@ export class AdService {
       const user = await this.getUser();
       const userRef = doc(this.firestore, 'users/' + user.id);
       const dealProperty = `ads.${adId}.deal`
+      console.log('Id Ads: ', adId);
       await updateDoc(userRef, {
         [dealProperty]: false
       });
@@ -103,5 +104,23 @@ export class AdService {
       })
     }
   }
+
+
+  async getAdById(id: string): Promise<any>{
+    const docRef = doc(this.firestore, "ads", id);
+    const docSnap = await getDoc(docRef);
+
+    /*if (docSnap.exists()) {
+      const ad: Ad =  this.convertToChatModel(docSnap);
+      return ad;
+    }*/
+  }
+
+  async updateAd(adId: string, adRef: DocumentReference, userRef: DocumentReference) {
+    await updateDoc(userRef, {
+      [`ads.${adId}`]: deleteField()
+    });
+    }
+
 }
 

@@ -1,27 +1,26 @@
 <h2 class="ms-3 mt-5">Mes annonces</h2>
 <div class="mx-2">
-  <ul class="list-group list-group-flush" *ngIf="ads.length > 0; else noAds">
-    <li class="list-group-item py-4" *ngFor="let ad of ads">
-        <h3>{{ ad.title }}</h3>
+    <ul class="list-group list-group-flush" *ngIf="ads.length > 0; else noAds">
+        <li class="list-group-item py-4" *ngFor="let ad of ads">
+            <h3>{{ ad.title }}</h3>
 
-        <div class="d-flex justify-content-between align-items-center w-custom">
-          <div>
-            <button mat-icon-button [routerLink]="['/home/ads', ad.id, 'details']">
+            <div class="d-flex justify-content-between align-items-center w-custom">
+                <div>
+                    <button mat-icon-button [routerLink]="['/account', ad.id]">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button (click)="deleteAd(ad.id, ad.adRef)">
+                    <button mat-icon-button (click)="deleteAd(ad.id, ad.adRef)">
               <mat-icon>delete</mat-icon>
             </button>
-          </div>
+                </div>
 
-          <button *ngIf="!ad.deal" class="btn-sm btn-secondary btn-noDeal"
-            (click)="markAdAsDealByRef(ad.id, ad.adRef)">Retirer</button>
-          <button *ngIf="ad.deal" class="btn-sm btn-deal" (click)="cancelAdDealByRef(ad.id, ad.adRef)">Rétablir</button>
-        </div>
-    </li>
-  </ul>
+                <button *ngIf="!ad.deal" class="btn-sm btn-secondary btn-noDeal" (click)="markAdAsDealByRef(ad.id, ad.adRef)">Retirer</button>
+                <button *ngIf="ad.deal" class="btn-sm btn-deal" (click)="cancelAdDealByRef(ad.id, ad.adRef)">Rétablir</button>
+            </div>
+        </li>
+    </ul>
 </div>
 
 <ng-template #noAds>
-  Vous n'avez pas d'annonces en ligne
+    Vous n'avez pas d'annonces en ligne
 </ng-template>
