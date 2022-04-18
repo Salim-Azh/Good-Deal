@@ -109,8 +109,26 @@ export class AdService {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      //const ad: Ad =  this.convertToChatModel(docSnap);
-      //return ad;
+
+      return  {
+        id: docSnap.id,
+        ref: docSnap.ref,
+        advertiser: docSnap.get('advertiser'),
+        advertiserName: docSnap.get('advertiserName'),
+        category: docSnap.get('category'),
+        createdAt: docSnap.get('createdAt'),
+        deal: docSnap.get('deal'),
+        description: docSnap.get('description'),
+        imagesUrl: docSnap.get('imagesUrl'),
+        latitude: docSnap.get('latitude'),
+        longitude: docSnap.get('longitude'),
+        price: docSnap.get('price'),
+        residenceName: docSnap.get('name'),
+        residenceRef: docSnap.get('residenceRef'),
+        state: docSnap.get('state'),
+        title: docSnap.get('title'),
+        titleIgnoreCase: docSnap.get('titleIgnoreCase')
+      }
     }
   }
 
