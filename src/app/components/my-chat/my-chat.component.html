@@ -1,10 +1,10 @@
 <div class="box-content">
     <div class="modal__content">
 
-      <ul *ngFor="let msg of messages" class="chat">
-        <ng-container class="gg" *ngIf="currentUser.username == msg.sentByUsername; else onLeft" #onRight>
+      <ul *ngFor="let msg of messages.slice().reverse()" class="chat">
+        <ng-container class="gg" *ngIf="currentUser.username == msg.sentByUsername; else onLeft">
           <li class="right">
-            <span class="message"><span class="arrow"></span>
+            <span class="message">
               <span class="time">{{formatDate(msg.sentAt)}}</span>
               <span class="text">
                 {{msg.messageTxt}}
@@ -16,12 +16,13 @@
 
         <ng-template class="hh" #onLeft>
           <li class="left">
-            <span class="message"><span class="arrow"></span>
-              <span class="time">{{formatDate(msg.sentAt)}}</span>
+            <div class="message  d-flex flex-column">
+              <span class="fw-bold">{{msg.sentByUsername}}</span>
+              <span class="">{{formatDate(msg.sentAt)}}</span>
               <span class="text">
                 {{msg.messageTxt}}
               </span>
-            </span>
+            </div>
           </li>
         </ng-template>
       </ul>
@@ -29,9 +30,8 @@
       <div class="chat-form" [style]="textFieldCSS">
         <form method="post" class="d-flex justify-content-around align-items-center">
           <textarea #msgToSend></textarea>
-          <mat-icon (click)="send(msgToSend.value)">send</mat-icon>
+          <mat-icon (click)="send(msgToSend.value); msgToSend.value=''">send</mat-icon>
         </form>
       </div>
-
     </div>
   </div>

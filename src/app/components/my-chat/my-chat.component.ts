@@ -15,7 +15,7 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './my-chat.component.html',
   styleUrls: ['./my-chat.component.scss']
 })
-export class MyChatComponent implements OnInit, OnDestroy {
+export class MyChatComponent implements OnInit,OnDestroy {
 
   @Input() chat?: Chat;
 
@@ -63,9 +63,6 @@ export class MyChatComponent implements OnInit, OnDestroy {
       this.heure = this.formatDate(msg.sentAt);
     });
 
-    this.subscription.add(subscription1)
-    this.subscription.add(subscription2)
-
     this.getScreenWidth = window.innerWidth;
 
     if (this.getScreenWidth > this.SCREEN_SM) {
@@ -73,6 +70,9 @@ export class MyChatComponent implements OnInit, OnDestroy {
     } else {
       this.setPhoneCSS();
     }
+
+    this.subscription.add(subscription1)
+    this.subscription.add(subscription2)
 
   }
 
