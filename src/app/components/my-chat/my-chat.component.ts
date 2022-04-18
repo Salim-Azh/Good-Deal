@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Timestamp } from 'firebase/firestore';
+import { Subscription } from 'rxjs';
 import { Chat } from 'src/app/model/chat.model';
 import { Message } from 'src/app/model/message.model';
 import { User } from 'src/app/model/user.model';
@@ -14,7 +15,7 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './my-chat.component.html',
   styleUrls: ['./my-chat.component.scss']
 })
-export class MyChatComponent implements OnInit {
+export class MyChatComponent implements OnInit, OnDestroy {
 
   id: string;
   chat?:Chat;
@@ -24,6 +25,9 @@ export class MyChatComponent implements OnInit {
   displayDate: string;
   msg!: Message;
   heure:any;
+
+  subscription: Subscription = new Subscription;
+
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -38,7 +42,7 @@ export class MyChatComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.route.params.subscribe(async params => {
+    let subscription1 = this.route.params.subscribe(async params => {
       this.id = params['id'];
     });
 
@@ -46,17 +50,21 @@ export class MyChatComponent implements OnInit {
       this.chat = await this.chatService.getChatById(this.id)
     } catch (error) {
     }
-    this.authService.user.subscribe(async value => {
+
+    let subscription2 = this.authService.user.subscribe(async value => {
       this.currentUser = await this.userService.getUser(value?.uid);
     });
 
     if(this.chat) {
-      this.messages = await this.messageService.getMessagesByChatRef(this.chat.ref)
+      this.messages = await this.messageService.loadMessagesByChatRef(this.chat.ref)
     }
 
     this.messages.forEach(msg => {
       this.heure = this.formatDate(msg.sentAt);
     });
+
+    this.subscription.add(subscription1)
+    this.subscription.add(subscription2)
   }
 
   formatDate(ladate : Timestamp){
@@ -76,5 +84,13 @@ export class MyChatComponent implements OnInit {
     return this.displayDate = `${datefinale} ${lheure}:${minute}`
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
+  async send(msg: string){
+    if (this.chat) {
+      await this.messageService.saveMessage(msg, this.currentUser.username, this.currentUser.userRef, this.chat.ref)
+    }
+  }
 }

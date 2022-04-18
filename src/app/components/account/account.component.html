@@ -10,7 +10,7 @@
       <button (click)="signOut()" class=" btn-sm me-4"> Se déconnecter</button>
     </div>
 
-    <app-my-ads-list [user]="user"></app-my-ads-list>
+    <app-my-ads-list></app-my-ads-list>
   </div>
 
   <app-sign-in *ngIf="!(authService.user |async)" [redirectTo]="path"></app-sign-in>

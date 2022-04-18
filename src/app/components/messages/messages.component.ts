@@ -32,10 +32,7 @@ export class MessagesComponent implements OnInit {
   async ngOnInit(): Promise<void> {
 
     onAuthStateChanged(getAuth(), async user => {
-
       this.chats = await this.chatService.getChats();
-      console.log(this.chats);
-
       if(user){
         this.authUid = user.uid;
         this.user = await this.userService.getUser(this.authUid);

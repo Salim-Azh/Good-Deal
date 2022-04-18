@@ -4,7 +4,7 @@ import { UserService } from './user.service';
 import { getAuth } from 'firebase/auth';
 import { User } from '../model/user.model';
 import { Chat } from '../model/chat.model';
-import { addDoc, collection, doc, DocumentData, DocumentReference, getDoc, getDocs, query, QueryDocumentSnapshot, QuerySnapshot, Timestamp, where } from 'firebase/firestore';
+import { addDoc, collection, doc, DocumentData, DocumentReference, getDoc, getDocs, getDocsFromCache, query, QueryDocumentSnapshot, QuerySnapshot, Timestamp, where } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +34,7 @@ export class ChatService {
     }
   }
 
-  private async getChatsByUsername(username: String) {
+  private async getChatsByUsername(username: string) {
     const user: User = await this.getUser();
     if (user) {
       this.username = user.username;
@@ -42,7 +42,13 @@ export class ChatService {
         collection(this.firestore, "chats"),
         where('members.' + username, '==', user.username)
       );
-      return getDocs(q);
+
+      return getDocs(q).then((res)=> {
+        return res
+      })
+      .catch(()=> {
+        return getDocsFromCache(q)
+      });
     }
     return null
   }
@@ -57,6 +63,17 @@ export class ChatService {
     if (docsSnap2) {
       chats = chats.concat(this.fillResults(docsSnap2));
     }
+    chats = chats.sort((chat1, chat2)=>{
+      if (chat1.lastMessage.sentAt < chat2.lastMessage.sentAt) {
+        return 1;
+      }
+      else if(chat1.lastMessage.sentAt == chat2.lastMessage.sentAt){
+        return 0;
+      }
+      else {
+        return -1;
+      }
+    });
     return chats;
   }
 

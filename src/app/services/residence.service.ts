@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { collection, getDocs, query, QuerySnapshot } from 'firebase/firestore';
-import { DocumentData } from 'rxfire/firestore/interfaces';
+import { collection, DocumentData, DocumentReference, DocumentSnapshot, getDoc, getDocs, query, QuerySnapshot } from 'firebase/firestore';
 import { Residence } from '../model/residence.model';
 
 @Injectable({
@@ -10,6 +9,23 @@ import { Residence } from '../model/residence.model';
 export class ResidenceService {
 
   constructor(private firestore: Firestore) { }
+
+  async getResidenceByRef(residenceRef: DocumentReference<DocumentData>) {
+    const docSnap = await getDoc(residenceRef);
+    return this.convertToResidenceModel(docSnap);
+  }
+
+  private convertToResidenceModel(docSnap: DocumentSnapshot<DocumentData>) {
+    return {
+      id: docSnap.id,
+      reference: docSnap.ref,
+      name: docSnap.get('name'),
+      city: docSnap.get('city'),
+      displayAddress: docSnap.get('displayAddress'),
+      latitude: docSnap.get('latitude'),
+      longitude: docSnap.get('longitude')
+    } as Residence
+  }
 
   async getResidences() {
     const docsSnap = await getDocs(
@@ -23,16 +39,7 @@ export class ResidenceService {
   private fillResults(docSnap: QuerySnapshot<DocumentData>) {
     let residences: Residence[] = []
     docSnap.docs.forEach(element => {
-      const ad = {
-        id: element.id,
-        reference: element.ref,
-        name: element.get('name'),
-        city: element.get('city'),
-        displayAddress: element.get('displayAddress'),
-        latitude: element.get('latitude'),
-        longitude: element.get('longitude')
-      } as Residence
-      residences.push(ad);
+      residences.push(this.convertToResidenceModel(element));
     });
     return residences;
   }
