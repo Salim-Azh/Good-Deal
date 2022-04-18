@@ -108,7 +108,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
   onSelect(chat: Chat) {
     this.detailsMode = true;
     this.selected = chat;
-    console.log(this.selected)
     if (this.getScreenWidth < this.SCREEN_SM) {
       this.messagesDisplay = "none";
       this.chatDisplay = "block";
