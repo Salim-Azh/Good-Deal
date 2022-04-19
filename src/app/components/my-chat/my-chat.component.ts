@@ -28,22 +28,23 @@ export class MyChatComponent implements OnInit,OnDestroy {
   messages: Message[];
   ladate: any;
   displayDate: string;
-  msg!: Message;
   heure: any;
+  msgToSend?: string;
 
   subscription: Subscription = new Subscription
+  sendBtnDisabled: boolean;
 
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
     private userService: UserService,
-    private chatService: ChatService,
     private messageService: MessageService,
   ) {
     this.id = "";
     this.currentUser = new User();
     this.messages = [];
     this.displayDate = "";
+    this.sendBtnDisabled = true;
   }
 
   async ngOnInit() {
@@ -97,7 +98,7 @@ export class MyChatComponent implements OnInit,OnDestroy {
   }
 
   async send(msg: string) {
-    if (this.chat) {
+    if (this.chat && !this.sendBtnDisabled) {
       await this.messageService.saveMessage(msg, this.currentUser.username, this.currentUser.userRef, this.chat.ref)
     }
   }
@@ -140,5 +141,10 @@ export class MyChatComponent implements OnInit,OnDestroy {
 
   setPhoneCSS(){
     this.textFieldCSS = "padding:20px; bottom:0; left:0; min-width: 100%";
+  }
+
+  setMsgState(msgToSend: string){
+    this.msgToSend = msgToSend;
+    this.sendBtnDisabled = !this.msgToSend
   }
 }

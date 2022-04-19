@@ -81,7 +81,7 @@ export class PublishComponent implements OnInit {
   }
 
   setDisableBtn() {
-    this.disabledPublishBtn = !this.title || !this.price || !this.state //|| this.state == "none";
+    this.disabledPublishBtn = !this.title || !this.price || !this.state
   }
 
   async createAd(title: string, category: any, price: any, description: any, state: any) {

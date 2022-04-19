@@ -29,7 +29,7 @@
 
       <div class="chat-form" [style]="textFieldCSS">
         <form method="post" class="d-flex justify-content-around align-items-center">
-          <textarea #msgToSend></textarea>
+          <textarea #msgToSend (keyup)="setMsgState(msgToSend.value)"></textarea>
           <mat-icon (click)="send(msgToSend.value); msgToSend.value=''">send</mat-icon>
         </form>
       </div>
