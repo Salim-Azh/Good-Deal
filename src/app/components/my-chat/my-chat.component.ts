@@ -140,7 +140,7 @@ export class MyChatComponent implements OnInit,OnDestroy {
 
   setTabletCSS(){
     this.textFieldCSS = "padding: 15px 20px 35px 20px; bottom:76px; width: 60%;";
-    this.modal__contentCSS = "top:5px; bottom:80px;";
+    this.modal__contentCSS = "top:5px; bottom:110px;";
   }
 
 
