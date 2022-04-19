@@ -34,17 +34,37 @@ export class ChatService {
     }
   }
 
-  private async getChatsByUsername(username: string) {
+  async loadChats() {
     let chats: Chat[] = []
 
     const user: User = await this.getUser();
     if (user) {
       this.username = user.username;
-      const q = query(
+      let q = query(
         collection(this.firestore, "chats"),
-        where('members.' + username, '==', user.username)
+        where('members.u1Username', '==', user.username)
       );
 
+      onSnapshot(q, (querySnapshot) => {
+        querySnapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            chats.push(this.convertToChatModel(change.doc));
+          }
+          if (change.type === "modified") {
+            const updateChat = this.convertToChatModel(change.doc);
+            for (let i = 0; i < chats.length; i++) {
+              if(chats[i].id == updateChat.id){
+                chats[i] = updateChat;
+              }
+            }
+          }
+        });
+      });
+
+      q = query(
+        collection(this.firestore, "chats"),
+        where('members.u2Username', '==', user.username)
+      );
       onSnapshot(q, (querySnapshot) => {
         querySnapshot.docChanges().forEach((change) => {
           if (change.type === "added") {
@@ -65,7 +85,7 @@ export class ChatService {
     return chats;
   }
 
-  async getChats() {
+  /*async getChats() {
     let chats = await this.getChatsByUsername("u1Username");
     const docsSnap2 = await this.getChatsByUsername("u2Username");
 
@@ -83,7 +103,7 @@ export class ChatService {
       }
     });
     return chats;
-  }
+  }*/
 
   private convertToChatModel(element: QueryDocumentSnapshot<DocumentData>){
     let message = element.get('lastMessage');
