@@ -4,7 +4,7 @@ import { UserService } from './user.service';
 import { getAuth } from 'firebase/auth';
 import { User } from '../model/user.model';
 import { Chat } from '../model/chat.model';
-import { addDoc, updateDoc, collection, doc, DocumentData, DocumentReference, getDoc, getDocs, getDocsFromCache, query, QueryDocumentSnapshot, QuerySnapshot, Timestamp, where } from 'firebase/firestore';
+import { addDoc, updateDoc, collection, doc, DocumentData, DocumentReference, getDoc, getDocs, getDocsFromCache, query, QueryDocumentSnapshot, QuerySnapshot, Timestamp, where, onSnapshot } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +35,8 @@ export class ChatService {
   }
 
   private async getChatsByUsername(username: string) {
+    let chats: Chat[] = []
+
     const user: User = await this.getUser();
     if (user) {
       this.username = user.username;
@@ -43,26 +45,32 @@ export class ChatService {
         where('members.' + username, '==', user.username)
       );
 
-      return getDocs(q).then((res)=> {
-        return res
-      })
-      .catch(()=> {
-        return getDocsFromCache(q)
+      onSnapshot(q, (querySnapshot) => {
+        querySnapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            chats.push(this.convertToChatModel(change.doc));
+          }
+          if (change.type === "modified") {
+            const updateChat = this.convertToChatModel(change.doc);
+            for (let i = 0; i < chats.length; i++) {
+              if(chats[i].id == updateChat.id){
+                chats[i] = updateChat;
+              }
+            }
+          }
+        });
       });
     }
-    return null
+
+    return chats;
   }
 
   async getChats() {
-    let chats: Chat[] = [];
-    const docsSnap1 = await this.getChatsByUsername("u1Username");
+    let chats = await this.getChatsByUsername("u1Username");
     const docsSnap2 = await this.getChatsByUsername("u2Username");
-    if (docsSnap1) {
-      chats = this.fillResults(docsSnap1);
-    }
-    if (docsSnap2) {
-      chats = chats.concat(this.fillResults(docsSnap2));
-    }
+
+    chats = chats.concat(docsSnap2);
+
     chats = chats.sort((chat1, chat2)=>{
       if (chat1.lastMessage.sentAt < chat2.lastMessage.sentAt) {
         return 1;
