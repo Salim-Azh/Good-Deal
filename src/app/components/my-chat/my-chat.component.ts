@@ -7,7 +7,6 @@ import { Message } from 'src/app/model/message.model';
 import { User } from 'src/app/model/user.model';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { AuthService } from 'src/app/services/auth.service';
-import { ChatService } from 'src/app/services/chat.service';
 import { MessageService } from 'src/app/services/message.service';
 import { UserService } from 'src/app/services/user.service';
 

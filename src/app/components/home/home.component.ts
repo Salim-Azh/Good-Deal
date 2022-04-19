@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit {
   }
 
   /**
-   * Innitialisation du patron maître-détails
+   * Initialisation du patron maître-détails
    * selon la taille de l'écran
    */
   async initMasterDetailsPattern() {
