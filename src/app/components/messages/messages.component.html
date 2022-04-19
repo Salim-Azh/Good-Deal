@@ -15,7 +15,8 @@
               <p class="chat-text">Vous : {{chat.lastMessage.messageText}}</p>
             </ng-container>
             <ng-template #notMe>
-              <p class="chat-text">{{chat.lastMessage.messageText}}</p>
+              <p class="chat-text" *ngIf="chat.lastMessage.read"> {{chat.lastMessage.messageText}}</p>
+              <p class="chat-text not-read" *ngIf="!chat.lastMessage.read"> {{chat.lastMessage.messageText}}</p>
             </ng-template>
           </div>
         </div>
