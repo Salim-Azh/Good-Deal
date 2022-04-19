@@ -115,7 +115,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   async getChats(){
 
-    this.chats = await this.chatService.getChats();
+    this.chats = await this.chatService.loadChats();
 
   }
 
