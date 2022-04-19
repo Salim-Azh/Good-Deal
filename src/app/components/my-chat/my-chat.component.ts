@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Chat } from 'src/app/model/chat.model';
 import { Message } from 'src/app/model/message.model';
 import { User } from 'src/app/model/user.model';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService } from 'src/app/services/chat.service';
 import { MessageService } from 'src/app/services/message.service';
@@ -56,9 +57,12 @@ export class MyChatComponent implements OnInit,OnDestroy {
       this.currentUser = await this.userService.getUser(value?.uid);
     });
 
-    if (this.chat) {
-      this.messages = await this.messageService.loadMessagesByChatRef(this.chat.ref)
-    }
+    onAuthStateChanged(getAuth(), async user => {
+
+      if (this.chat) {
+        this.messages = await this.messageService.loadMessagesByChatRef(this.chat.ref)
+      }
+    });
 
     this.messages.forEach(msg => {
       this.heure = this.formatDate(msg.sentAt);
@@ -126,7 +130,6 @@ export class MyChatComponent implements OnInit,OnDestroy {
     this.getScreenWidth = window.innerWidth;
 
     if (this.getScreenWidth < this.SCREEN_SM) {
-      //this.textFieldCSS = "";
       this.setPhoneCSS();
     } else {
       this.setTabletCSS();

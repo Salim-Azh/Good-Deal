@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { ChatService } from 'src/app/services/chat.service';
@@ -46,15 +47,26 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
 
   async ngOnInit(): Promise<void> {
-    const id:string = history.state.id;
-    this.chats = await this.chatService.getChats();
-    if (id) {
-      this.chats.forEach(chat => {
-        if (chat.id == id) {
-          this.selected = chat;
-        }
+
+    this.initMasterDetailsPattern();
+
+    onAuthStateChanged(getAuth(), async user => {
+
+      await this.getChats();
+
+      if (this.chats){
+        this.initMasterDetailsPattern();
+      }
+
+      this.sub = this.authService.user.subscribe(async value => {
+        this.user = await this.userService.getUser(value?.uid);
       });
-    }
+    });
+  }
+
+
+  initMasterDetailsPattern() {
+
     this.getScreenWidth = window.innerWidth;
 
     if (this.getScreenWidth < this.SCREEN_SM) {
@@ -63,20 +75,12 @@ export class MessagesComponent implements OnInit, OnDestroy {
     }
     else {
       this.returnDisplay = "none";
-    }
-
-    this.sub = this.authService.user.subscribe(async value => {
-      this.user = await this.userService.getUser(value?.uid);
-    });
-
-    this.chats = await this.chatService.getChats();
-
-    if (this.getScreenWidth > this.SCREEN_SM) {
       if (!this.selected) {
         this.selected = this.chats[0];
       }
       this.setTabletCSS();
     }
+
   }
 
   ngOnDestroy(): void {
@@ -111,12 +115,19 @@ export class MessagesComponent implements OnInit, OnDestroy {
     }
   }
 
+  async getChats(){
+
+    this.chats = await this.chatService.getChats();
+
+  }
+
   setTabletCSS() {
     this.messagesCSS = "float:left; width:40%; overflow:scroll; padding-top:20px;";
     this.chatCSS = "float:left; height:100vh !important; width:60%; overflow:hidden; position:fixed; right:0; top:0;";
   }
 
   onSelect(chat: Chat) {
+
     this.detailsMode = true;
     this.selected = chat;
     if (this.getScreenWidth < this.SCREEN_SM) {
@@ -126,6 +137,9 @@ export class MessagesComponent implements OnInit, OnDestroy {
     } else {
       this.returnDisplay = "none";
     }
+
+    this.chatService.read(chat.id);
+
   }
 
   redirectedToChatList() {
@@ -134,4 +148,5 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.chatDisplay = "none";
     this.messagesDisplay = "block";
   }
+  
 }
