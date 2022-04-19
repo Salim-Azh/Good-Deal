@@ -14,8 +14,13 @@
             <ng-container *ngIf="chat.lastMessage.sentByUsername == user.username; else notMe">
               <p class="chat-text">Vous : {{chat.lastMessage.messageText}}</p>
             </ng-container>
-            <ng-template #notMe>
-              <p class="chat-text">{{chat.lastMessage.messageText}}</p>
+            <ng-template #notMe> 
+              <ng-container *ngIf="chat.lastMessage.read == true; else notRead">
+                <p class="chat-text">{{chat.lastMessage.messageText}}</p>
+              </ng-container>
+            </ng-template>
+            <ng-template #notRead>
+              <p class="chat-text not-read">{{chat.lastMessage.messageText}}</p>
             </ng-template>
           </div>
         </div>
@@ -33,7 +38,6 @@
       <a (click)="redirectedToChatList()">
         <mat-icon>arrow_back</mat-icon>
       </a>
-
       <ng-container *ngIf="selected?.members?.u1Username == user.username;else withUser1">
         <h3 class="clavarder">{{selected?.members?.u2Username}}</h3>
       </ng-container>

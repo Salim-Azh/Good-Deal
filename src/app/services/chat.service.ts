@@ -4,7 +4,7 @@ import { UserService } from './user.service';
 import { getAuth } from 'firebase/auth';
 import { User } from '../model/user.model';
 import { Chat } from '../model/chat.model';
-import { addDoc, collection, doc, DocumentData, DocumentReference, getDoc, getDocs, getDocsFromCache, query, QueryDocumentSnapshot, QuerySnapshot, Timestamp, where } from 'firebase/firestore';
+import { addDoc, updateDoc, collection, doc, DocumentData, DocumentReference, getDoc, getDocs, getDocsFromCache, query, QueryDocumentSnapshot, QuerySnapshot, Timestamp, where } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -148,5 +148,12 @@ export class ChatService {
       return getDocs(q);
     }
     return chat;
+  }
+
+  async read(id:string){
+    const docRef = doc(this.firestore, "chats", id);
+    await updateDoc(docRef, {
+      "lastMessage.read" : true
+    });
   }
 }
