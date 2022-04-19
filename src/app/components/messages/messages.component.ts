@@ -45,7 +45,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.chats = [];
   }
 
-
   async ngOnInit(): Promise<void> {
 
     this.initMasterDetailsPattern();
@@ -80,7 +79,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
       }
       this.setTabletCSS();
     }
-
   }
 
   ngOnDestroy(): void {
@@ -148,5 +146,5 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.chatDisplay = "none";
     this.messagesDisplay = "block";
   }
-  
+
 }

@@ -61,10 +61,6 @@ h2{
     background-color: #ff7900;
   	height: 45px;
   	padding: 10px;
-
- // 	background: #578EBE;
-
-//	overflow: hidden;
 }
 
 mat-icon {
@@ -81,4 +77,6 @@ mat-icon {
   overflow-y: scroll;
 }
 
-
+.not-read{
+  font-weight: bold;
+}
