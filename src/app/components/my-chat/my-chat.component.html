@@ -1,6 +1,7 @@
 <div class="box-content">
-    <div class="modal__content">
+    <div class="modal__content" [style]="modal__contentCSS">
 
+      
       <ul *ngFor="let msg of messages.slice().reverse()" class="chat">
         <ng-container class="gg" *ngIf="currentUser.username == msg.sentByUsername; else onLeft">
           <li class="right">
@@ -26,6 +27,7 @@
           </li>
         </ng-template>
       </ul>
+    
 
       <div class="chat-form" [style]="textFieldCSS">
         <form method="post" class="d-flex justify-content-around align-items-center">
