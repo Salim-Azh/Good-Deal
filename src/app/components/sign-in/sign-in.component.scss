@@ -9,3 +9,9 @@ input, select, .alert{
   max-width: 90vw;
   margin-left: 5vw;
 }
+
+input:focus { 
+  outline: none !important;
+  border-color: #ff7900;
+  box-shadow: 0 0 10px #ff7900;
+}

@@ -36,6 +36,12 @@ a {
     text-decoration: none;
 }
 
+input:focus { 
+    outline: none !important;
+    border-color: #ff7900;
+    box-shadow: 0 0 10px #ff7900;
+}
+
 .search-btn {
     color: rgba(255, 121, 0, 1);
     margin-right: 7rem;

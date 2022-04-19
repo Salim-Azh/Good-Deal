@@ -9,6 +9,12 @@
   color: red;
 }
 
+input:focus { 
+  outline: none !important;
+  border-color: #ff7900;
+  box-shadow: 0 0 10px #ff7900;
+}
+
 .modal__content {
     background-color: #F8F8F8;
     position: absolute;
