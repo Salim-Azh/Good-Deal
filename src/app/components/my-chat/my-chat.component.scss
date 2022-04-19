@@ -107,13 +107,12 @@ textarea:focus {
 .modal__content { //reverse display always on bottom
   position: absolute;
   width: 100%;
-  bottom: 80px;
-  top: 5px;
   overflow-y: scroll !important;
   display: flex;
   background-color: #f8f8f8;
   flex-direction: column-reverse;
 }
+
 
 mat-icon {
   color: #ff7900;
