@@ -7,7 +7,6 @@ import { Loader } from "@googlemaps/js-api-loader" //intentional : don't remove 
 import { ResidenceService } from 'src/app/services/residence.service';
 import { Residence } from 'src/app/model/residence.model';
 
-//import { GalleryItem, ImageItem } from 'ng-gallery';
 
 @Component({
   selector: 'app-ad-details',
@@ -23,9 +22,6 @@ export class AdDetailsComponent implements OnInit {
   displayDate: string;
   residence!: Residence;
 
-  //images:  GalleryItem[] = [];
-  //thumbHeight=0;
-
   constructor(
     private router: Router,
     private chatService: ChatService,
@@ -36,7 +32,6 @@ export class AdDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    //this.images = [new ImageItem({ src: this.ad.imagesUrl})];
     this.setDisplayState();
     this.setDisplayDate();
     this.residence = await this.residenceService.getResidenceByRef(this.ad.residenceRef);

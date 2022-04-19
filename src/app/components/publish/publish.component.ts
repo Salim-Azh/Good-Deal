@@ -141,7 +141,6 @@ export class PublishComponent implements OnInit {
         const imageUrl = reader.result;
 
         this.photoReadersubject.next([
-          //...this.photoReadersubject.getValue(),
           imageUrl,
         ]);
 
